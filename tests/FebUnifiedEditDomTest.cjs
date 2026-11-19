@@ -1,0 +1,12 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{parseHTML}=require('linkedom');
+const src=fs.readFileSync(__dirname+'/../validation_demandes_finances.php','utf8');
+const {document}=parseHTML('<html><body><button id="save"></button><div id="content"><input data-feb-scheduled-date value="2026-10-20"><div data-feb-edit-fields><input data-feb-edit-description value="Service numérique"><input data-feb-edit-amount value="45000"><input data-feb-edit-start value="2026-10-20"><input data-feb-edit-end value="2026-10-21"><input data-feb-edit-beneficiary-mode value="supplier"><input data-feb-edit-fournisseur-id value="2"><input data-feb-edit-chantier-id value="5"><input data-feb-edit-ligne-devis-id value="6"><input data-feb-edit-debourse-id value="7"><input data-feb-edit-ligne-debourse-id value="8"></div></div></body></html>').window;
+const button=document.querySelector('#save'),content=document.querySelector('#content'),values={};let submissions=0;
+const ctx={approvalContent:content,approvalSaveAmount:button,approvalConfirm:{},approvalIntegrate:{},approvalReturn:{},pendingApprovalForm:{submit(){submissions++}},previewForPopup:{},approvalSelectors:{},setPendingValue:(key,value)=>values[key]=value};
+const a=src.indexOf('        const copyPopupEditsToForm =');const b=src.indexOf("        document.querySelectorAll('.js-feb-approve-form')",a);
+const c=src.indexOf("        approvalSaveAmount?.addEventListener('click',");const d=src.indexOf('        approvalIntegrate?.addEventListener',c);
+vm.runInNewContext(src.slice(a,b)+src.slice(c,d),ctx);
+button.click();assert.equal(submissions,1);assert.equal(values.action,'save_popup_adjustments');assert.equal(values.fd_fournisseur_id,'2');assert.equal(values.fd_ligne_debourse_id,'8');assert.equal(values.montant,'45000');assert.equal(values.planned_start_date,'2026-10-20');assert.equal(values.description,'Service numérique');assert.ok(content.querySelector('[data-workflow-progress-host]'));
+assert.equal(src.includes('data-feb-modal-save-planning class='),false);
+assert.equal(fs.readFileSync(__dirname+'/../assets/js/feb-finance-list-tools.js','utf8').includes('data-feb-save-assignment'),false);
+console.log('FebUnifiedEditDomTest: OK (one save, combined popup values, supplier, budget, amount, dates and progress host)');

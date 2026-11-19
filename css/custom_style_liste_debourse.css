@@ -1,0 +1,151 @@
+/* Palette & fond alignés sur selection_portail (comme liste_devis) */
+body {
+    background-color: #f5f7fb !important;
+    background-image:
+        radial-gradient(24rem 24rem at 0% 0%, rgba(199, 210, 254, 0.55) 0%, rgba(199, 210, 254, 0) 60%),
+        radial-gradient(28rem 28rem at 100% 100%, rgba(221, 214, 254, 0.55) 0%, rgba(221, 214, 254, 0) 62%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar/menu : rendu "glass" */
+.navbar {
+    background: rgba(255, 255, 255, 0.70);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.navbar .navbar-brand img {
+    height: 40px;
+    width: auto;
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #374151 !important;
+    font-weight: 600;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.9rem;
+    border: 1px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    background: rgba(238, 242, 255, 0.75) !important;
+    border-color: rgba(199, 210, 254, 0.90) !important;
+}
+
+.navbar .navbar-nav .nav-link.active {
+    background: #111827 !important;
+    border-color: #111827 !important;
+    color: #ffffff !important;
+}
+
+.container {
+    margin-top: 2rem;
+}
+
+/* Boutons Bootstrap : alignement portail */
+.btn-primary {
+    background-color: #111827 !important;
+    border-color: #111827 !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover {
+    background-color: #1f2937 !important;
+    border-color: #1f2937 !important;
+    color: #ffffff !important;
+}
+
+.btn {
+    border-radius: 1rem;
+    font-weight: 700;
+}
+
+.btn-sm {
+    border-radius: 0.9rem;
+}
+
+/* Select-search (Select2) */
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(229, 231, 235, 0.95);
+    background: rgba(255, 255, 255, 0.80);
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 36px;
+    padding-left: 0.85rem;
+    padding-right: 2.2rem;
+    color: #111827;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px;
+    right: 10px;
+}
+
+.select2-dropdown {
+    border-radius: 0.9rem;
+    border-color: rgba(229, 231, 235, 1);
+    overflow: hidden;
+}
+
+/* Cards déboursé */
+.card.debourse-card {
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.88);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(17, 24, 39, 0.10);
+    border-left: 6px solid rgba(79, 70, 229, 0.55);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, .07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    overflow: hidden;
+}
+
+.card.debourse-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px -5px rgba(0, 0, 0, .15);
+    border-left-color: rgba(79, 70, 229, 0.85);
+}
+
+.debourse-title {
+    font-size: 0.98rem;
+    font-weight: 900;
+    color: #111827;
+}
+
+.debourse-meta {
+    font-size: 0.92rem;
+    color: rgba(17, 24, 39, 0.72);
+}
+
+.debourse-price {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #16a34a;
+}
+
+.card-footer {
+    background: rgba(255, 255, 255, 0.65);
+    border-top: 1px solid rgba(229, 231, 235, 0.9);
+    padding: 12px 16px;
+}
+
+.btn-action {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-action i {
+    font-size: 14px;
+}

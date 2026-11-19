@@ -1,0 +1,4189 @@
+:root {
+    --finea-blue: #1d2b57;
+    --finea-yellow: #fabd02;
+}
+
+.pc-financial-pilot{overflow:hidden;border:1px solid rgba(255,255,255,.8);border-radius:30px;background:rgba(255,255,255,.96);box-shadow:0 18px 55px rgba(15,23,42,.09)}
+.pc-financial-pilot.is-loading{opacity:.72;pointer-events:none}
+.pc-financial-toolbar{display:flex;align-items:end;justify-content:space-between;gap:1.5rem;padding:1.5rem;background:linear-gradient(135deg,#0f172a,#1d2b57);color:#fff}
+.pc-financial-toolbar h2{margin:.25rem 0;font-size:1.5rem;font-weight:900}.pc-financial-toolbar p{color:#cbd5e1;font-size:.86rem}
+.pc-pilot-project-select{min-width:320px;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.pc-pilot-project-select span{display:block;margin-bottom:.45rem;color:#fde68a}.pc-pilot-project-select select{width:100%;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:#fff;padding:.8rem;color:#0f172a;text-transform:none;letter-spacing:0}
+.pc-pilot-project-badges{display:flex;flex-wrap:wrap;gap:.55rem;max-width:720px;max-height:150px;overflow:auto;padding:.15rem}.pc-pilot-project-badges button{display:inline-flex;align-items:center;gap:.45rem;max-width:100%;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.09);padding:.62rem .85rem;color:#fff;font-weight:900;cursor:pointer;text-align:left}.pc-pilot-project-badges button span{display:block;overflow:hidden;margin:0;color:inherit;text-overflow:ellipsis;white-space:nowrap;text-transform:none;letter-spacing:0}.pc-pilot-project-badges button:hover,.pc-pilot-project-badges button.is-active{border-color:#fabd02;background:#fabd02;color:#0f172a}
+.pc-financial-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;padding:1rem 1.5rem;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+.pc-financial-summary>div{display:grid;gap:.25rem}.pc-financial-summary span{font-size:.7rem;font-weight:900;text-transform:uppercase;color:#64748b}.pc-financial-summary strong{color:#0f172a}
+.pc-financial-summary .pc-data-warning{display:flex;grid-column:1/-1;align-items:center;gap:.55rem;border-radius:12px;background:#fff7ed;padding:.65rem .8rem;color:#9a3412;font-size:.75rem;font-weight:800}.pc-financial-summary .pc-data-warning span{color:inherit;font-size:inherit;text-transform:none}
+.pc-financial-layout{display:grid;grid-template-columns:minmax(280px,.75fr) minmax(0,1.75fr);height:clamp(520px,68vh,760px);min-height:430px;overflow:hidden}
+.pc-financial-lines{overflow-y:auto;overscroll-behavior:contain;padding:1rem;border-right:1px solid #e2e8f0;background:#f8fafc;scrollbar-gutter:stable}.pc-financial-detail{overflow-y:auto;overscroll-behavior:contain;padding:1.25rem;scrollbar-gutter:stable;scroll-behavior:smooth}
+.pc-financial-lines::-webkit-scrollbar,.pc-financial-detail::-webkit-scrollbar{width:9px}.pc-financial-lines::-webkit-scrollbar-track,.pc-financial-detail::-webkit-scrollbar-track{background:#f1f5f9}.pc-financial-lines::-webkit-scrollbar-thumb,.pc-financial-detail::-webkit-scrollbar-thumb{border:2px solid #f1f5f9;border-radius:999px;background:#94a3b8}
+.pc-line-detail-head{position:sticky;top:-1.25rem;z-index:8;margin:-1.25rem -1.25rem 0;padding:1.25rem;border-bottom:1px solid #e2e8f0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px)}
+.pc-quote-line{display:flex;width:100%;gap:.7rem;margin-bottom:.65rem;border:1px solid #e2e8f0;border-radius:18px;background:#fff;padding:1rem;text-align:left;transition:.18s}.pc-quote-line:hover,.pc-quote-line.is-active{border-color:#f59e0b;box-shadow:0 8px 24px rgba(15,23,42,.08)}.pc-quote-line.is-active{background:#fffbeb}
+.pc-quote-line-check input,.pc-debourse summary>input,.pc-cost-detail input{width:1.15rem;height:1.15rem;accent-color:#16a34a}.pc-quote-line-body{display:block;min-width:0;flex:1}.pc-quote-line-body strong{display:block;color:#0f172a}.pc-quote-line-body small{display:block;margin:.25rem 0 .55rem;color:#64748b}.pc-quote-line-body em{display:block;margin-top:.25rem;color:#475569;font-size:.72rem;font-style:normal;font-weight:900}
+.pc-pilot-progress{height:.45rem;overflow:hidden;border-radius:999px;background:#e2e8f0}.pc-pilot-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#f59e0b,#16a34a);transition:width .25s}
+.pc-line-detail-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}.pc-line-detail-head p{font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#64748b}.pc-line-detail-head h3{margin:.2rem 0;font-size:1.35rem;font-weight:900;color:#0f172a}.pc-line-detail-head span{color:#475569;font-size:.85rem}.pc-line-progress{min-width:180px;text-align:right}.pc-line-progress strong{display:block;margin-bottom:.4rem;color:#166534;font-size:1.2rem}
+.pc-line-planning,.pc-inline-dates{display:flex;align-items:end;gap:.75rem;margin-top:1rem;border:1px solid #bfdbfe;border-radius:18px;background:#eff6ff;padding:1rem}.pc-line-planning>div{margin-right:auto}.pc-line-planning strong{display:block;color:#1e3a8a}.pc-line-planning small{color:#64748b}.pc-line-planning label,.pc-inline-dates label{font-size:.7rem;font-weight:900;text-transform:uppercase;color:#475569}.pc-line-planning input,.pc-inline-dates input{display:block;margin-top:.3rem;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:.55rem}.pc-line-planning button,.pc-inline-dates button{border-radius:10px;background:#1d2b57;padding:.65rem .9rem;color:#fff;font-size:.78rem;font-weight:900}
+.pc-debourse-list{display:grid;gap:.8rem;margin-top:1rem}.pc-debourse{overflow:hidden;border:1px solid #e2e8f0;border-radius:18px}.pc-debourse summary{display:flex;align-items:center;gap:.8rem;padding:1rem;cursor:pointer;list-style:none;background:#fff}.pc-debourse summary::-webkit-details-marker{display:none}.pc-debourse summary>span:nth-of-type(1){min-width:0;flex:1}.pc-debourse summary strong,.pc-debourse summary small{display:block}.pc-debourse summary small{margin-top:.2rem;color:#64748b}.pc-debourse-progress{width:150px}.pc-debourse-progress b{display:block;margin-bottom:.3rem;text-align:right;color:#166534;font-size:.78rem}.pc-debourse[open] summary i{transform:rotate(180deg)}.pc-debourse-body{padding:0 1rem 1rem;background:#f8fafc}.pc-inline-dates{margin-top:0;border:0;background:transparent;padding:.75rem 0}
+.pc-debourse-comment{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:end;margin:.25rem 0 1rem;padding:1rem;border:1px solid #dbeafe;border-radius:16px;background:#eff6ff}.pc-debourse-comment label strong,.pc-debourse-comment label span{display:block}.pc-debourse-comment label span{margin:.2rem 0 .55rem;color:#64748b;font-size:.76rem}.pc-debourse-comment textarea{width:100%;min-height:76px;resize:vertical;border:1px solid #cbd5e1;border-radius:12px;background:#fff;padding:.7rem;color:#0f172a}.pc-debourse-comment button{border:0;border-radius:12px;background:#1d4ed8;padding:.8rem 1rem;color:#fff;font-weight:900}
+.pc-meeting-project-picker{display:flex;flex-wrap:wrap;gap:.55rem;max-height:280px;overflow:auto;padding:.15rem}.pc-preparation-badge{position:relative;max-width:100%;cursor:pointer}.pc-preparation-badge input{position:absolute;opacity:0;pointer-events:none}.pc-preparation-badge span{display:inline-flex;align-items:center;gap:.45rem;max-width:100%;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:.58rem .82rem;color:#fff;font-size:.78rem;font-weight:900;text-align:left;text-transform:none;letter-spacing:0}.pc-preparation-badge input:checked+span{border-color:#fabd02;background:#fabd02;color:#0f172a}
+.pc-select-all-projects{display:inline-flex;align-items:center;gap:.45rem;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.1);padding:.55rem .8rem;color:#fff;font-size:.76rem;font-weight:900;cursor:pointer}.pc-select-all-projects:hover,.pc-select-all-projects[aria-pressed="true"]{border-color:#fabd02;background:#fabd02;color:#0f172a}
+.pc-preparation-project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;max-height:430px;overflow:auto}.pc-preparation-project-card{position:relative;display:block;cursor:pointer}.pc-preparation-project-card>input{position:absolute;opacity:0}.pc-preparation-project-card span{display:flex;align-items:center;gap:.6rem;height:100%;border:1px solid #e2e8f0;border-radius:16px;background:#f8fafc;padding:.85rem;color:#334155}.pc-preparation-project-card>input:checked+span{border-color:#f59e0b;background:#fffbeb;color:#92400e;box-shadow:0 0 0 2px rgba(245,158,11,.12)}.pc-preparation-people{display:grid;gap:.6rem;max-height:430px;overflow:auto}.pc-preparation-people label{display:flex;align-items:center;gap:.7rem;border:1px solid #e2e8f0;border-radius:15px;padding:.75rem;background:#f8fafc;cursor:pointer}.pc-preparation-people label:has(input:checked){border-color:#4f46e5;background:#eef2ff}.pc-preparation-people span,.pc-preparation-people strong,.pc-preparation-people small{display:block}.pc-preparation-people small{margin-top:.15rem;color:#64748b}.pc-preparation-summary{display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;margin-top:1.5rem;border:1px solid #fde68a;border-radius:24px;background:#fffbeb;padding:1.25rem 1.4rem}.pc-preparation-summary h2{font-size:1.25rem;font-weight:900;color:#0f172a}.pc-preparation-summary p{margin-top:.45rem;color:#475569}.pc-preparation-summary>div:last-child{display:grid;grid-template-columns:auto auto;gap:.25rem .5rem;white-space:nowrap}.pc-preparation-summary>div:last-child strong{color:#92400e;font-size:1.2rem}
+.pc-agenda-in-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:1.25rem;margin-top:1.15rem;border:1px solid rgba(250,189,2,.38);border-radius:18px;background:rgba(255,255,255,.08);padding:1rem}.pc-agenda-in-toolbar span,.pc-agenda-in-toolbar strong{display:block}.pc-agenda-in-toolbar>div:first-child>span{color:#fde68a;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.16em}.pc-agenda-in-toolbar>div:first-child>strong{margin-top:.25rem;font-size:1rem;color:#fff}.pc-agenda-in-toolbar>div:first-child>p{margin-top:.3rem;color:#e2e8f0}.pc-agenda-counts{display:grid;grid-template-columns:auto auto;gap:.2rem .5rem;white-space:nowrap}.pc-agenda-counts strong{color:#fabd02;font-size:1.2rem}.pc-agenda-counts span{color:#cbd5e1;text-transform:none;letter-spacing:0}.pc-meeting-finish{display:grid;gap:1.25rem;margin-top:1.5rem;border:1px solid #e2e8f0;border-radius:28px;background:#fff;padding:1.5rem;box-shadow:0 18px 55px rgba(15,23,42,.08)}.pc-meeting-finish h2{font-size:1.35rem;font-weight:900;color:#0f172a}.pc-meeting-finish>div>p:last-child{margin-top:.35rem;color:#64748b}.pc-meeting-finish-fields{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.pc-meeting-finish-fields label{font-weight:900;color:#334155}.pc-meeting-finish-fields textarea{display:block;width:100%;min-height:120px;margin-top:.45rem;border:1px solid #cbd5e1;border-radius:16px;padding:.85rem;font-weight:400}.pc-meeting-finish>button{justify-self:end}
+.pc-office-points{margin:0 0 1rem;border:1px solid #c7d2fe;border-radius:18px;background:#eef2ff;padding:1rem}.pc-office-points-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem}.pc-office-points-head strong,.pc-office-points-head span{display:block}.pc-office-points-head span{margin-top:.15rem;color:#64748b;font-size:.76rem}.pc-office-points-head b{border-radius:999px;background:#fff;padding:.4rem .65rem;color:#4338ca;font-size:.75rem}.pc-office-point{display:grid;grid-template-columns:minmax(220px,2fr) repeat(6,minmax(110px,1fr)) auto;gap:.6rem;align-items:end;margin-top:.65rem;border:1px solid #dbeafe;border-radius:15px;background:#fff;padding:.75rem}.pc-office-point label{color:#475569;font-size:.7rem;font-weight:900}.pc-office-point input,.pc-office-point textarea,.pc-office-point select{display:block;width:100%;margin-top:.3rem;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:.55rem;color:#0f172a;font-size:.8rem;font-weight:400}.pc-office-point textarea{min-height:58px;resize:vertical}.pc-office-point button{border:0;border-radius:11px;background:#1d4ed8;padding:.7rem .8rem;color:#fff;font-weight:900}.pc-office-point.is-new{border-style:dashed;border-color:#818cf8;background:#f8faff}.pc-staff-performance{margin:1rem 0;border:1px solid #fde68a;border-radius:18px;background:#fffbeb;padding:1rem}.pc-performance-badges{display:flex;flex-wrap:wrap;gap:.65rem}.pc-performance-badges>div{display:grid;grid-template-columns:1fr auto;gap:.15rem .75rem;min-width:210px;border:1px solid #fed7aa;border-radius:14px;background:#fff;padding:.75rem}.pc-performance-badges strong{color:#0f172a}.pc-performance-badges b{color:#166534}.pc-performance-badges small{color:#64748b}.pc-performance-badges p{color:#64748b}.pc-stars{grid-column:1/-1;color:#f59e0b;font-size:1rem;letter-spacing:.08em}
+@media(max-width:720px){.pc-preparation-project-grid{grid-template-columns:1fr}.pc-preparation-summary{flex-direction:column}}
+@media(max-width:720px){.pc-agenda-in-toolbar{flex-direction:column}.pc-meeting-finish-fields{grid-template-columns:1fr}.pc-meeting-finish>button{justify-self:stretch}}
+@media(max-width:1200px){.pc-office-point{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-office-point .is-wide{grid-column:1/-1}.pc-office-point button{grid-column:1/-1}}
+.pc-cost-details{display:grid;gap:.45rem}.pc-cost-detail{display:flex;align-items:center;gap:.75rem;border-radius:12px;background:#fff;padding:.75rem}.pc-cost-detail span{min-width:0;flex:1}.pc-cost-detail strong,.pc-cost-detail small{display:block}.pc-cost-detail small{color:#64748b}.pc-cost-detail b{color:#0f172a;font-size:.82rem}.pc-cost-detail:has(input:checked){background:#f0fdf4;text-decoration-color:#16a34a}.pc-cost-detail:has(input:checked) strong{text-decoration:line-through;color:#64748b}
+.pc-pilot-empty{display:grid;place-items:center;gap:.55rem;min-height:240px;padding:2rem;text-align:center;color:#64748b}.pc-pilot-empty i{font-size:2rem;color:#f59e0b}.pc-pilot-empty strong{color:#334155}.pc-pilot-note{border-radius:12px;background:#fff7ed;padding:.8rem;color:#9a3412;font-size:.8rem}.pc-pilot-toast{position:fixed;right:1.5rem;bottom:1.5rem;z-index:100;padding:1rem 1.2rem;border-radius:14px;color:#fff;font-weight:800;box-shadow:0 15px 40px rgba(15,23,42,.25)}.pc-pilot-toast.is-success{background:#166534}.pc-pilot-toast.is-error{background:#b91c1c}
+@media(max-width:900px){.pc-financial-toolbar{align-items:stretch;flex-direction:column}.pc-pilot-project-select{min-width:0}.pc-financial-summary{grid-template-columns:1fr}.pc-financial-layout{grid-template-columns:1fr;height:auto;max-height:none;overflow:visible}.pc-financial-lines{max-height:330px;border-right:0;border-bottom:1px solid #e2e8f0}.pc-financial-detail{max-height:none;overflow:visible}.pc-line-planning,.pc-inline-dates{align-items:stretch;flex-direction:column}.pc-line-planning>div{margin-right:0}.pc-line-detail-head{position:static;align-items:stretch;flex-direction:column;margin:-1.25rem -1.25rem 0}.pc-line-progress{min-width:0;text-align:left}.pc-debourse-comment{grid-template-columns:1fr}}
+
+.pc-table-line {
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15,23,42,.08);
+}
+
+.pc-table-line:hover {
+    box-shadow: 0 16px 35px rgba(15,23,42,.10);
+    transform: translateY(-1px);
+}
+
+.pc-badge-green,
+.pc-badge-blue,
+.pc-badge-red,
+.pc-badge-amber,
+.pc-badge-slate,
+.pc-badge-orange,
+.pc-badge-critical,
+.pc-badge-haute,
+.pc-badge-normale,
+.pc-badge-basse {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: .38rem .7rem;
+    font-size: .75rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.pc-badge-green { background: #dcfce7; color: #166534; }
+.pc-badge-blue { background: #dbeafe; color: #1d4ed8; }
+.pc-badge-red { background: #fee2e2; color: #b91c1c; }
+.pc-badge-amber { background: #fef3c7; color: #92400e; }
+.pc-badge-slate { background: #f1f5f9; color: #475569; }
+
+.pc-progress-track {
+    height: .55rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e2e8f0;
+}
+
+.pc-progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f97316, #fabd02);
+}
+
+.pc-progress-bar-blue {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1d2b57, #2563eb);
+}
+
+.pc-field label {
+    display: block;
+    margin-bottom: .45rem;
+    color: #334155;
+    font-weight: 800;
+    font-size: .86rem;
+}
+
+.pc-field input,
+.pc-field select,
+.pc-field textarea {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: .85rem .95rem;
+    outline: none;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.pc-field input:focus,
+.pc-field select:focus,
+.pc-field textarea:focus {
+    border-color: #fb923c;
+    box-shadow: 0 0 0 4px rgba(251,146,60,.14);
+    background: white;
+}
+
+.pc-field textarea {
+    min-height: 120px;
+}
+
+.pc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border-radius: 1rem;
+    padding: .78rem 1rem;
+    font-weight: 800;
+    font-size: .88rem;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.pc-btn:hover {
+    transform: translateY(-1px);
+}
+
+.pc-btn-primary {
+    background: #1d2b57;
+    color: white;
+    box-shadow: 0 12px 28px rgba(29,43,87,.18);
+}
+
+.pc-btn-yellow {
+    background: #fabd02;
+    color: #0f172a;
+}
+
+.pc-btn-soft {
+    background: white;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+}
+
+@media print {
+    nav, .no-print { display: none !important; }
+}
+
+
+/* ===== Formulaires modernes Planning Chantier ===== */
+.pc-form-modern {
+    display: grid;
+    gap: 1.15rem;
+}
+
+.pc-form-panel {
+    border: 1px solid rgba(226, 232, 240, .95);
+    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92));
+    border-radius: 26px;
+    padding: 1.15rem;
+}
+
+.pc-form-section-title {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.pc-form-section-title i {
+    display: inline-flex;
+    width: 2.3rem;
+    height: 2.3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    background: rgba(250, 189, 2, .18);
+    color: #b45309;
+}
+
+.pc-form-grid-2,
+.pc-form-grid-3 {
+    display: grid;
+    gap: 1rem;
+}
+
+.pc-form-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pc-form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.pc-field {
+    position: relative;
+}
+
+.pc-field label,
+.pc-label-row {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: .5rem !important;
+    color: #1e293b !important;
+    font-weight: 900 !important;
+    font-size: .9rem !important;
+    letter-spacing: .01em;
+}
+
+.pc-label-text {
+    display: inline-flex;
+    align-items: center;
+    gap: .38rem;
+}
+
+.pc-required {
+    color: #dc2626;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.pc-optional {
+    color: #94a3b8;
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.pc-help {
+    margin-top: .42rem;
+    color: #64748b;
+    font-size: .78rem;
+    line-height: 1.45;
+}
+
+.pc-field input,
+.pc-field select,
+.pc-field textarea,
+.pc-search-select-input {
+    width: 100%;
+    min-height: 3.25rem;
+    border: 1px solid #dbe3ef !important;
+    border-radius: 1.1rem !important;
+    padding: .95rem 1rem !important;
+    outline: none;
+    background: #ffffff !important;
+    color: #0f172a;
+    font-size: .95rem;
+    font-weight: 650;
+    box-shadow: 0 1px 0 rgba(15,23,42,.03), inset 0 1px 0 rgba(255,255,255,.9);
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease, transform .18s ease;
+}
+
+.pc-field input::placeholder,
+.pc-field textarea::placeholder,
+.pc-search-select-input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.pc-field input:focus,
+.pc-field select:focus,
+.pc-field textarea:focus,
+.pc-search-select-input:focus {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 4px rgba(250,189,2,.18), 0 10px 24px rgba(15,23,42,.06) !important;
+    background: white !important;
+}
+
+.pc-field textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.65;
+    font-weight: 600;
+}
+
+.pc-field textarea.pc-textarea-lg {
+    min-height: 190px;
+}
+
+.pc-field input[type="number"] {
+    text-align: left;
+}
+
+.pc-input-prefix {
+    position: relative;
+}
+
+.pc-input-prefix .pc-suffix {
+    position: absolute;
+    right: .9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: .8rem;
+    font-weight: 900;
+    pointer-events: none;
+}
+
+.pc-input-prefix input {
+    padding-right: 3rem !important;
+}
+
+.pc-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: .35rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.pc-form-required-note {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    color: #64748b;
+    font-size: .82rem;
+    font-weight: 750;
+}
+
+.pc-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    justify-content: flex-end;
+}
+
+.pc-btn-success {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    box-shadow: 0 12px 28px rgba(22,163,74,.18);
+}
+
+.pc-btn-danger {
+    background: linear-gradient(135deg, #dc2626, #f97316);
+    color: white;
+    box-shadow: 0 12px 28px rgba(220,38,38,.16);
+}
+
+.pc-btn-lg {
+    min-height: 3.2rem;
+    padding-inline: 1.25rem;
+    border-radius: 1.1rem;
+}
+
+.pc-search-select {
+    position: relative;
+}
+
+.pc-search-select-native {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 1px !important;
+    width: 1px !important;
+}
+
+.pc-search-select-input-wrap {
+    position: relative;
+}
+
+.pc-search-select-input {
+    padding-right: 3rem !important;
+}
+
+.pc-search-select-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+}
+
+.pc-search-select-menu {
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + .45rem);
+    left: 0;
+    right: 0;
+    max-height: 260px;
+    overflow: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.1rem;
+    background: white;
+    box-shadow: 0 22px 50px rgba(15,23,42,.18);
+    padding: .45rem;
+    display: none;
+}
+
+.pc-search-select.is-open .pc-search-select-menu {
+    display: block;
+}
+
+.pc-search-select-option {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    padding: .8rem .85rem;
+    border-radius: .9rem;
+    color: #334155;
+    font-weight: 750;
+    text-align: left;
+    cursor: pointer;
+}
+
+.pc-search-select-option:hover,
+.pc-search-select-option.is-active {
+    background: #fff7ed;
+    color: #9a3412;
+}
+
+.pc-search-select-empty {
+    padding: .85rem;
+    color: #94a3b8;
+    font-size: .86rem;
+    font-weight: 750;
+}
+
+.pc-inline-progress-form {
+    display: grid !important;
+    gap: .5rem !important;
+    justify-items: end;
+    min-width: 260px;
+}
+
+.pc-inline-progress-form .pc-mini-row {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.pc-inline-progress-form input[type="number"] {
+    width: 92px !important;
+    height: 44px !important;
+    border: 1px solid #dbe3ef !important;
+    border-radius: .95rem !important;
+    background: white !important;
+    padding: .5rem .65rem !important;
+    font-weight: 850;
+}
+
+.pc-inline-progress-form input[type="text"] {
+    width: 100% !important;
+    min-height: 42px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: .95rem !important;
+    background: #f8fafc !important;
+    padding: .55rem .75rem !important;
+    font-size: .82rem;
+}
+
+@media (max-width: 900px) {
+    .pc-form-grid-2,
+    .pc-form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .pc-form-footer {
+        align-items: stretch;
+    }
+
+    .pc-form-actions,
+    .pc-form-actions .pc-btn {
+        width: 100%;
+    }
+}
+
+/* Garde la dernière tâche et sa checklist entièrement manipulables à l'écran. */
+[data-financial-pilot][data-unified-render="1"] .pc-financial-detail {
+    scroll-padding-top: 5rem;
+    scroll-padding-bottom: clamp(140px, 22vh, 230px);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-detail::after {
+    display: block;
+    width: 100%;
+    height: clamp(110px, 18vh, 190px);
+    content: "";
+    pointer-events: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory[open] .pc-office-subcategory-body {
+    padding-bottom: 2.6rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory[open] .pc-office-task-row:has(+ .pc-office-point.is-new) {
+    margin-bottom: 1.4rem;
+    scroll-margin-top: 6rem;
+    scroll-margin-bottom: 11rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-task-checklist {
+    overflow: visible;
+    padding-bottom: .65rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick {
+    scroll-margin-top: 7rem;
+    scroll-margin-bottom: 12rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .28rem;
+    overflow: visible;
+    cursor: text;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-progress > .pc-progress-input {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    background: transparent;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-progress-input input {
+    width: 2.7rem;
+    min-width: 0;
+    border: 1px solid #cdd4df;
+    border-radius: 3px;
+    background: #fff;
+    padding: .18rem .12rem;
+    color: #172033;
+    font-size: .68rem;
+    font-weight: 800;
+    text-align: center;
+    appearance: textfield;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-progress-input input::-webkit-inner-spin-button,
+[data-financial-pilot][data-unified-render="1"] .pc-progress-input input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-progress-input input:focus {
+    border-color: #1d2b57;
+    outline: 2px solid rgba(29, 43, 87, .12);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-progress-input em {
+    margin-left: .12rem;
+    color: #667085;
+    font-size: .61rem;
+    font-style: normal;
+}
+[data-financial-pilot][data-unified-render="1"] .pc-progress-input b { font-size:.7rem;color:#344054; }
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-progress > .pc-progress-track {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: block;
+    width: 100%;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e4e8ee;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-progress-track i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #1d2b57;
+    transition: width .15s ease;
+}
+
+/* Présentation = salle complète, du bandeau jusqu'à la clôture de séance. */
+body.pc-presentation-open {
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #fff;
+}
+
+body.pc-presentation-open #appMenu,
+body.pc-presentation-open #mobileMenu,
+body.pc-presentation-open #mobileMenuOverlay,
+body.pc-presentation-open .pc-module-nav,
+body.pc-presentation-open .pc-page-hero {
+    display: none !important;
+}
+
+body.pc-presentation-open [data-financial-pilot].is-presentation {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    width: 100%;
+    margin-top: 1rem !important;
+    border: 1px solid #e4e8ee;
+}
+
+body.pc-presentation-open [data-financial-pilot].is-presentation .pc-financial-layout {
+    height: auto !important;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+}
+
+body.pc-presentation-open [data-financial-pilot].is-presentation .pc-financial-lines,
+body.pc-presentation-open [data-financial-pilot].is-presentation .pc-financial-detail {
+    max-height: none;
+    overflow: visible;
+}
+
+body.pc-presentation-open .pc-meeting-finish {
+    display: grid;
+    scroll-margin-top: 1.5rem;
+}
+
+body.pc-presentation-open .min-h-screen > .container {
+    padding-top: 1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-task-save-state {
+    display: grid;
+    place-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #98a2b3;
+    font-size: .62rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-task-save-state.is-pending,
+[data-financial-pilot][data-unified-render="1"] .pc-task-save-state.is-saving {
+    color: #667085;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-task-save-state.is-saved {
+    color: #18864b;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-task-save-state.is-error {
+    color: #b42318;
+}
+
+.pc-floating-save-success {
+    position:fixed;z-index:10050;display:grid;place-items:center;width:1.1rem;height:1.1rem;
+    border-radius:50%;background:#fff;color:#18864b;font-size:.75rem;opacity:0;transform:scale(.8);pointer-events:none;
+    transition:opacity .16s ease,transform .16s ease;box-shadow:0 0 0 2px rgba(255,255,255,.9);
+}
+.pc-floating-save-success.is-visible { opacity:1;transform:scale(1); }
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon {
+    width: 1rem;
+    font-size: .86rem;
+    text-align: center;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-pdf {
+    color: #d92d20;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-excel,
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-csv {
+    color: #18864b;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-word {
+    color: #175cd3;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-powerpoint {
+    color: #c2410c;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-image {
+    color: #7f56d9;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-text,
+[data-financial-pilot][data-unified-render="1"] .pc-file-type-icon.is-generic {
+    color: #667085;
+}
+
+.pc-dashboard-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+    align-items: start;
+    gap: 1.5rem;
+}
+
+.pc-dashboard-action-column {
+    display: grid !important;
+    grid-column: 2;
+    grid-row: 1;
+    visibility: visible !important;
+    opacity: 1 !important;
+    gap: 1.5rem;
+}
+
+.pc-dashboard-history {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+}
+
+@media (max-width: 1050px) {
+    .pc-dashboard-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pc-dashboard-action-column {
+        grid-template-columns: minmax(0, 1fr) minmax(260px, .55fr);
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .pc-dashboard-history {
+        grid-column: 1;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 700px) {
+    .pc-dashboard-action-column {
+        grid-template-columns: 1fr;
+    }
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-banner {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: .85rem;
+    min-width: 0;
+    border-top: 1px solid #e4e8ee;
+    padding-top: .72rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-banner[hidden] {
+    display: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-title {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding-right: .85rem;
+    border-right: 1px solid #e4e8ee;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-title > i {
+    color: #1d2b57;
+    font-size: .74rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-title span {
+    display: grid;
+    gap: .05rem;
+    margin: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-title small {
+    color: #667085;
+    font-size: .56rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-title strong {
+    color: #172033;
+    font-size: .68rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-people {
+    display: flex;
+    gap: .45rem;
+    min-width: 0;
+    overflow-x: auto;
+    padding-bottom: .1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-person {
+    display: grid;
+    grid-template-columns: minmax(95px, auto) auto auto;
+    align-items: center;
+    gap: .48rem;
+    flex: 0 0 auto;
+    min-height: 2.1rem;
+    border: 1px solid #e4e8ee;
+    border-radius: 3px;
+    background: #fff;
+    padding: .3rem .48rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-person > span:first-child {
+    display: grid;
+    gap: .02rem;
+    margin: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-person strong {
+    color: #172033;
+    font-size: .66rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-person small,
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-empty {
+    color: #667085;
+    font-size: .57rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-person .pc-stars {
+    font-size: .62rem;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-performance-person > b {
+    color: #1d2b57;
+    font-size: .62rem;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategories {
+    display: grid;
+    gap: .28rem;
+    padding: .4rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory {
+    margin: 0;
+    transition: opacity .18s ease, filter .18s ease, box-shadow .18s ease;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategories:has(.pc-office-subcategory[open]) .pc-office-subcategory:not([open]) {
+    opacity: .42;
+    filter: blur(.65px);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory[open] {
+    position: relative;
+    z-index: 1;
+    border-color: #1d2b57;
+    box-shadow: 0 0 0 2px rgba(29, 43, 87, .1), 0 5px 14px rgba(29, 43, 87, .07);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory:not([open]) > summary {
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory:not([open]):hover {
+    opacity: .78 !important;
+    filter: none !important;
+}
+
+@media (max-width: 900px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-office-performance-banner {
+        grid-template-columns: 1fr;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-office-performance-title {
+        border-right: 0;
+    }
+}
+
+/* Cadre de travail stable : les longues listes défilent sans agrandir la page. */
+@media (min-width: 901px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-layout,
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines,
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-detail {
+        height: 640px;
+        max-height: 640px;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-layout {
+        overflow: hidden;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines,
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-detail {
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+        overflow-x: hidden;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-office-category-head {
+        position: sticky;
+        top: -.55rem;
+        z-index: 5;
+        margin: -.55rem -.55rem .55rem;
+        border-bottom: 1px solid #d7dce1;
+        background: #fff;
+        padding: .7rem .55rem;
+    }
+}
+
+@media (max-width: 900px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+        height: 360px;
+        max-height: 360px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+    }
+}
+
+/* Correctifs lisibilité formulaires et points de réunion */
+.pc-form-modern,
+.pc-form-modern * {
+    box-sizing: border-box;
+}
+
+.pc-form-modern .pc-field {
+    display: block;
+    margin: 0;
+}
+
+.pc-form-modern .pc-field + .pc-field {
+    margin-top: 1rem;
+}
+
+.pc-field label,
+.pc-label-row {
+    min-height: 1.4rem;
+}
+
+.pc-field select:not(.pc-search-select-native) {
+    appearance: auto;
+}
+
+.pc-field input[type="date"] {
+    color-scheme: light;
+}
+
+.pc-search-select {
+    isolation: isolate;
+}
+
+.pc-search-select-menu {
+    font-size: .9rem;
+}
+
+.pc-search-select-option i {
+    color: #f97316;
+    flex: 0 0 auto;
+}
+
+.pc-search-select-option span {
+    display: block;
+    line-height: 1.35;
+}
+
+.pc-select-readonly-fallback {
+    border-radius: 1rem;
+    border: 1px dashed #f59e0b;
+    background: #fffbeb;
+    color: #92400e;
+    padding: .9rem 1rem;
+    font-weight: 750;
+    line-height: 1.5;
+}
+
+.pc-meeting-point-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.pc-meeting-point {
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 1.35rem;
+    padding: 1rem;
+    box-shadow: 0 10px 28px rgba(15,23,42,.05);
+}
+
+.pc-meeting-point-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pc-meeting-point-title {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    color: #1d2b57;
+    font-size: .95rem;
+    font-weight: 950;
+}
+
+.pc-meeting-point-title i {
+    color: #f97316;
+}
+
+.pc-btn-remove-point {
+    border: 0;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: .85rem;
+    padding: .55rem .75rem;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.pc-empty-help {
+    border: 1px dashed #cbd5e1;
+    border-radius: 1.25rem;
+    background: #f8fafc;
+    padding: 1.1rem;
+    color: #475569;
+    line-height: 1.7;
+    font-weight: 650;
+}
+
+.pc-form-modern .pc-form-panel > .pc-field:first-child,
+.pc-form-modern .pc-form-panel > .pc-form-grid-2:first-child,
+.pc-form-modern .pc-form-panel > .pc-form-grid-3:first-child {
+    margin-top: 0;
+}
+
+@media (max-width: 700px) {
+    .pc-meeting-point-head {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    .pc-btn-remove-point {
+        width: 100%;
+    }
+}
+
+
+/* ===== Correctifs V3 : réunion lisible, accordéons et dropdowns propres ===== */
+.pc-card-pro {
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,.72);
+    background: rgba(255,255,255,.96);
+    padding: 1.55rem;
+    box-shadow: 0 18px 55px rgba(15,23,42,.08);
+}
+
+.pc-section-kicker {
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-size: .74rem;
+    font-weight: 900;
+}
+
+.pc-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.15rem;
+}
+
+.pc-card-head h2 {
+    margin: .25rem 0;
+    font-size: 1.55rem;
+    font-weight: 950;
+    color: #020617;
+}
+
+.pc-card-head p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.pc-card-head-compact {
+    align-items: center;
+}
+
+.pc-reunion-form {
+    max-width: 1510px;
+    margin: 1.5rem auto 0;
+}
+
+.pc-reunion-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, .62fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.pc-meeting-editor,
+.pc-meeting-side,
+.pc-form-panel,
+.pc-meeting-point {
+    overflow: visible !important;
+}
+
+.pc-meeting-editor {
+    position: relative;
+    z-index: 2;
+}
+
+.pc-meeting-side {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto !important;
+    z-index: 1;
+}
+
+.pc-form-panel-flat {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: none !important;
+}
+
+.pc-meeting-point-list {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.pc-meeting-point {
+    border: 1px solid #dbe3ef;
+    border-radius: 26px;
+    background: linear-gradient(180deg, #ffffff, #f8fafc);
+    padding: 1.1rem;
+    box-shadow: 0 14px 38px rgba(15,23,42,.055);
+}
+
+.pc-meeting-point-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pc-meeting-point-title {
+    color: #0f172a;
+    font-weight: 950;
+    font-size: 1rem;
+}
+
+.pc-meeting-point-title i {
+    color: #ea580c;
+    margin-right: .45rem;
+}
+
+.pc-btn-remove-point {
+    border: 0;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 1rem;
+    padding: .78rem .95rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.pc-form-actions-sticky {
+    position: sticky;
+    bottom: .75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.1rem;
+    padding: .85rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.2rem;
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 16px 42px rgba(15,23,42,.12);
+    z-index: 30;
+}
+
+.pc-form-note {
+    color: #64748b;
+    font-size: .86rem;
+    font-weight: 700;
+}
+
+.pc-search-select {
+    position: relative !important;
+    z-index: 10;
+    isolation: auto !important;
+}
+
+.pc-search-select.is-open {
+    z-index: 99999 !important;
+}
+
+.pc-search-select-native {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.pc-search-select-menu {
+    z-index: 100000 !important;
+    max-height: 235px !important;
+    overflow-y: auto !important;
+    background: #ffffff !important;
+    border: 1px solid #f59e0b !important;
+    box-shadow: 0 24px 60px rgba(15,23,42,.24) !important;
+}
+
+.pc-search-select-option {
+    background: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.pc-search-select-option:last-child {
+    border-bottom: 0;
+}
+
+.pc-search-select-option:hover,
+.pc-search-select-option.is-active {
+    background: #fffbeb !important;
+    color: #92400e !important;
+}
+
+.pc-accordion-list {
+    display: grid;
+    gap: .75rem;
+}
+
+.pc-accordion-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 1.15rem;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.pc-accordion-item summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .9rem;
+}
+
+.pc-accordion-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.pc-accordion-item summary strong {
+    display: block;
+    color: #0f172a;
+    font-size: .92rem;
+}
+
+.pc-accordion-item summary small {
+    display: block;
+    color: #64748b;
+    margin-top: .25rem;
+    font-size: .78rem;
+}
+
+.pc-accordion-body {
+    border-top: 1px solid #f1f5f9;
+    padding: .9rem;
+    color: #64748b;
+    font-size: .86rem;
+    line-height: 1.55;
+}
+
+.pc-mini-actions {
+    display: flex;
+    gap: .45rem;
+    margin-top: .75rem;
+}
+
+.pc-icon-btn {
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #1d2b57;
+    width: 2.45rem;
+    height: 2.45rem;
+    border-radius: .9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.pc-icon-danger {
+    color: #b91c1c;
+    background: #fff1f2;
+    border-color: #fecdd3;
+}
+
+.pc-empty-side {
+    border: 1px dashed #cbd5e1;
+    border-radius: 1rem;
+    color: #64748b;
+    padding: 1rem;
+    text-align: center;
+}
+
+.pc-close-modal[hidden] {
+    display: none !important;
+}
+
+.pc-close-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.pc-close-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,23,42,.62);
+    backdrop-filter: blur(7px);
+}
+
+.pc-close-dialog {
+    position: relative;
+    width: min(1120px, 96vw);
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 28px;
+    background: #ffffff;
+    padding: 1.35rem;
+    box-shadow: 0 34px 90px rgba(0,0,0,.28);
+}
+
+.pc-close-head,
+.pc-close-actions {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pc-close-head h2 {
+    font-size: 1.55rem;
+    font-weight: 950;
+    color: #020617;
+}
+
+.pc-close-actions {
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.pc-participant-list {
+    display: grid;
+    gap: .85rem;
+}
+
+.pc-participant-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) minmax(170px, 1fr) 130px 105px auto;
+    gap: .75rem;
+    align-items: end;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: .85rem;
+    border-radius: 1.2rem;
+    overflow: visible;
+}
+
+.pc-checkline {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    min-height: 3.2rem;
+    font-weight: 850;
+    color: #334155;
+}
+
+.pc-checkline input {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.pc-textarea-sm {
+    min-height: 95px !important;
+}
+
+.pc-textarea-md {
+    min-height: 135px !important;
+}
+
+.pc-textarea-lg {
+    min-height: 165px !important;
+}
+
+.pc-subtitle {
+    color: #1d2b57;
+    font-size: 1rem;
+    font-weight: 950;
+}
+
+.pc-text-block {
+    color: #334155;
+    line-height: 1.75;
+}
+
+.pc-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.25rem;
+}
+
+.pc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pc-table th {
+    background: #f8fafc;
+    color: #475569;
+    text-align: left;
+    padding: .85rem;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+}
+
+.pc-table td {
+    border-top: 1px solid #f1f5f9;
+    padding: .85rem;
+    vertical-align: top;
+}
+
+.pc-participant-pills {
+    display: grid;
+    gap: .65rem;
+    margin-top: 1rem;
+}
+
+.pc-participant-pill {
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: .8rem;
+    background: #f8fafc;
+}
+
+.pc-participant-pill strong,
+.pc-participant-pill small {
+    display: block;
+}
+
+.pc-participant-pill small {
+    color: #64748b;
+    margin-top: .25rem;
+}
+
+@media (max-width: 1180px) {
+    .pc-reunion-workspace {
+        grid-template-columns: 1fr;
+    }
+    .pc-meeting-side {
+        position: static;
+        max-height: none;
+    }
+    .pc-participant-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .pc-card-head,
+    .pc-form-actions-sticky,
+    .pc-close-head,
+    .pc-close-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .pc-form-grid-2,
+    .pc-form-grid-3,
+    .pc-participant-row {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* V4 - Réunion : actions moins envahissantes et enregistrement de point visible */
+.pc-header-actions-light {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .7rem;
+    flex-wrap: wrap;
+}
+
+.pc-btn-save-light {
+    background: #ffffff;
+    color: #1d2b57;
+    border: 1px solid #dbe3f0;
+    box-shadow: 0 12px 30px rgba(15,23,42,.06);
+}
+
+.pc-btn-save-light:hover {
+    background: #f8fafc;
+    border-color: #b7c3d7;
+}
+
+.pc-point-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.pc-btn-save-point {
+    border: 1px solid rgba(22, 101, 52, .18);
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 1rem;
+    padding: .72rem .92rem;
+    font-weight: 950;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    box-shadow: 0 12px 28px rgba(22,101,52,.08);
+}
+
+.pc-btn-save-point:hover {
+    background: #bbf7d0;
+}
+
+.pc-form-hint-bar {
+    margin-top: 1rem;
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    border-radius: 1rem;
+    color: #64748b;
+    font-size: .88rem;
+    font-weight: 750;
+    padding: .9rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.pc-form-actions-sticky {
+    position: static !important;
+    box-shadow: none !important;
+    background: #f8fafc !important;
+}
+
+.pc-side-action-box {
+    border: 1px solid #dbe3f0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 1.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: grid;
+    gap: .8rem;
+    box-shadow: 0 14px 36px rgba(15,23,42,.06);
+}
+
+.pc-side-action-box h2 {
+    font-weight: 950;
+    color: #0f172a;
+    font-size: 1.05rem;
+    margin: .15rem 0;
+}
+
+.pc-side-action-box p {
+    color: #64748b;
+    font-size: .84rem;
+    line-height: 1.45;
+}
+
+.pc-btn-compact-full {
+    width: 100%;
+    padding: .78rem .95rem !important;
+    border-radius: 1rem !important;
+    font-size: .88rem !important;
+}
+
+.pc-history-head {
+    margin-top: .35rem;
+}
+
+.pc-meeting-point-head {
+    align-items: flex-start !important;
+}
+
+.pc-meeting-type-card {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    align-items: center;
+    gap: .3rem 1rem;
+    min-height: 165px;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.5rem;
+    background: #fff;
+    padding: 1.5rem;
+    box-shadow: 0 16px 45px rgba(15, 23, 42, .08);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.pc-meeting-type-card:hover {
+    transform: translateY(-3px);
+    border-color: #f59e0b;
+    box-shadow: 0 22px 55px rgba(15, 23, 42, .13);
+}
+
+.pc-meeting-type-card i {
+    grid-row: 1 / span 2;
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    background: #fff7ed;
+    color: #ea580c;
+    font-size: 1.4rem;
+}
+
+.pc-meeting-type-card strong {
+    color: #0f172a;
+    font-size: 1.2rem;
+}
+
+.pc-meeting-type-card span {
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.pc-office-service-card span {
+    position: relative;
+    min-height: 4.5rem;
+    padding-right: 2.7rem;
+}
+
+.pc-office-service-card .pc-service-check {
+    position: absolute;
+    right: 1rem;
+    color: #cbd5e1;
+    opacity: 0;
+    transform: scale(.7);
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+.pc-office-service-card > input:checked + span .pc-service-check {
+    color: #f59e0b;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.pc-office-service-card:focus-within span {
+    outline: 3px solid rgba(245, 158, 11, .2);
+    outline-offset: 2px;
+}
+
+.pc-office-category-head {
+    margin-bottom: .8rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding: .25rem .25rem .85rem;
+}
+
+.pc-office-category-head span,
+.pc-office-category-head strong {
+    display: block;
+}
+
+.pc-office-category-head span {
+    color: #64748b;
+    font-size: .72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.pc-office-category-head strong {
+    margin-top: .25rem;
+    color: #0f172a;
+}
+
+.pc-office-category {
+    display: grid;
+    grid-template-columns: auto 2.2rem 1fr auto;
+    align-items: center;
+    gap: .7rem;
+    width: 100%;
+    margin-bottom: .55rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    background: #fff;
+    padding: .8rem;
+    text-align: left;
+    transition: .16s ease;
+}
+
+.pc-office-category:hover,
+.pc-office-category.is-active {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    box-shadow: 0 8px 20px rgba(245, 158, 11, .12);
+}
+
+.pc-office-category > i.fa-folder {
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: .7rem;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.pc-office-category.is-active > i.fa-folder {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.pc-office-category span,
+.pc-office-category strong,
+.pc-office-category small {
+    display: block;
+}
+
+.pc-office-category strong {
+    color: #0f172a;
+}
+
+.pc-office-category small {
+    margin-top: .2rem;
+    color: #64748b;
+}
+
+.pc-quick-create {
+    margin-top: .85rem;
+    border: 1px dashed #f59e0b;
+    border-radius: 1rem;
+    background: #fffaf0;
+}
+
+.pc-quick-create > summary {
+    cursor: pointer;
+    padding: .9rem;
+    color: #92400e;
+    font-weight: 900;
+    list-style: none;
+}
+
+.pc-quick-create > summary::-webkit-details-marker {
+    display: none;
+}
+
+.pc-quick-create > form {
+    display: grid;
+    gap: .65rem;
+    border-top: 1px dashed #f59e0b;
+    padding: .85rem;
+}
+
+.pc-quick-create label {
+    color: #475569;
+    font-size: .72rem;
+    font-weight: 900;
+}
+
+.pc-quick-create input {
+    display: block;
+    width: 100%;
+    margin-top: .3rem;
+    border: 1px solid #cbd5e1;
+    border-radius: .7rem;
+    background: #fff;
+    padding: .65rem;
+}
+
+.pc-quick-create button {
+    border: 0;
+    border-radius: .75rem;
+    background: #d97706;
+    padding: .7rem;
+    color: #fff;
+    font-weight: 900;
+}
+
+.pc-office-subcategory {
+    margin-top: .8rem;
+    overflow: hidden;
+    border: 1px solid #dbeafe;
+    border-radius: 1.1rem;
+    background: #fff;
+}
+
+.pc-office-subcategory > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background: #eff6ff;
+    padding: .9rem 1rem;
+    list-style: none;
+}
+
+.pc-office-subcategory > summary > div {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+}
+
+.pc-office-summary-actions {
+    margin-left: auto;
+}
+
+.pc-office-summary-actions button {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    border-radius: 999px;
+    background: #2563eb;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, .25);
+}
+
+.pc-office-summary-actions button:hover {
+    background: #1d4ed8;
+    transform: scale(1.05);
+}
+
+.pc-office-subcategory > summary span,
+.pc-office-subcategory > summary strong,
+.pc-office-subcategory > summary small {
+    display: block;
+}
+
+.pc-office-subcategory > summary strong {
+    color: #0f172a;
+}
+
+.pc-office-subcategory > summary small {
+    margin-top: .15rem;
+    color: #64748b;
+}
+
+.pc-office-subcategory-body {
+    padding: .8rem;
+}
+
+.pc-office-point {
+    grid-template-columns: repeat(5, minmax(110px, 1fr));
+}
+
+.pc-office-point[hidden] {
+    display: none !important;
+}
+
+.pc-office-point .is-wide {
+    grid-column: 1 / -1;
+}
+
+.pc-point-completion {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: .5rem;
+    width: max-content;
+    border-radius: 999px;
+    background: #f0fdf4;
+    padding: .4rem .7rem;
+    color: #166534 !important;
+}
+
+.pc-point-completion input {
+    width: auto;
+    margin: 0;
+}
+
+.pc-office-subcategory > summary input[type="checkbox"],
+.pc-office-category > input[type="checkbox"] {
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: #16a34a;
+}
+
+.pc-office-subcategory > summary input[type="checkbox"]:disabled,
+.pc-office-category > input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: .35;
+}
+
+.pc-office-point .is-wide textarea {
+    min-height: 92px;
+}
+
+.pc-office-point > button {
+    grid-column: 1 / -1;
+    justify-self: end;
+}
+
+.pc-new-point-actions {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    gap: .6rem;
+    border-top: 1px solid #dbeafe;
+    padding-top: .75rem;
+}
+
+.pc-new-point-actions button {
+    min-width: 125px;
+}
+
+.pc-new-point-actions button.is-secondary {
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #334155;
+}
+
+.pc-new-point-actions button.is-cancel {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+.pc-quick-create-detail {
+    margin-bottom: 1rem;
+}
+
+.pc-office-category-title {
+    border-bottom-color: #fde68a;
+    background: #fffbeb;
+}
+
+.pc-office-service-banner {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-width: 260px;
+    border: 1px solid rgba(250, 189, 2, .45);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, .1);
+    padding: .9rem 1rem;
+    color: #fff;
+}
+
+.pc-office-service-banner i {
+    color: #fabd02;
+    font-size: 1.15rem;
+}
+
+.pc-task-head {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+}
+
+.pc-add-checklist-button {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 999px;
+    background: #e0e7ff !important;
+    padding: 0 !important;
+    color: #3730a3 !important;
+}
+
+.pc-task-checklist {
+    display: grid;
+    gap: .4rem;
+    border-radius: .8rem;
+    background: #f8fafc;
+    padding: .65rem;
+}
+
+.pc-task-checklist > small {
+    color: #94a3b8;
+}
+
+.pc-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    border-radius: .6rem;
+    background: #fff;
+    padding: .48rem .6rem;
+    font-size: .8rem !important;
+    font-weight: 600 !important;
+}
+.pc-checklist-item[draggable="true"]{cursor:grab}
+.pc-checklist-item[draggable="true"].is-dragging{opacity:.45;cursor:grabbing}
+.pc-checklist-item[draggable="true"].is-drag-over{box-shadow:0 -3px 0 #4f46e5}
+.pc-checklist-grip{color:#94a3b8;cursor:grab;padding:2px 5px 2px 0}
+
+.pc-checklist-item input {
+    width: auto;
+    margin: 0;
+    accent-color: #16a34a;
+}
+
+.pc-checklist-item:has(input:checked) span {
+    color: #64748b;
+    text-decoration: line-through;
+}
+
+.pc-checklist-quick {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin-top: .25rem;
+    border: 1px solid #a5b4fc;
+    border-radius: .65rem;
+    background: #fff;
+    padding: .25rem .55rem;
+}
+
+.pc-checklist-quick[hidden] {
+    display: none !important;
+}
+
+.pc-checklist-quick i {
+    color: #6366f1;
+}
+
+.pc-checklist-quick input {
+    margin: 0;
+    border: 0;
+    outline: 0;
+    padding: .5rem 0;
+}
+
+/* Feuille de réunion Bureau : densité proche d'un tableur, lecture grand écran. */
+[data-financial-pilot][data-unified-render="1"] {
+    border: 1px solid #cbd5e1;
+    border-radius: .75rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar {
+    padding: .85rem 1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar > div:first-child > p:first-child,
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar > div:first-child > h2,
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar > div:first-child > h2 + p {
+    display: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar {
+    margin-top: 0;
+    border-radius: .5rem;
+    padding: .65rem .8rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner {
+    min-width: 220px;
+    border-radius: .45rem;
+    padding: .55rem .7rem;
+}
+
+.pc-presentation-button {
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: .45rem;
+    background: rgba(255, 255, 255, .08);
+    padding: .5rem .7rem;
+    color: #fff;
+    font-size: .76rem;
+    font-weight: 800;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary {
+    grid-template-columns: minmax(220px, 1fr) minmax(260px, 1fr);
+    border-radius: 0;
+    padding: .55rem 1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-layout {
+    grid-template-columns: minmax(230px, .52fr) minmax(900px, 2.48fr);
+    height: clamp(560px, 72vh, 850px);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+    padding: .55rem;
+    background: #f8fafc;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-detail {
+    overflow: auto;
+    padding: 0;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category-head {
+    margin: 0 0 .35rem;
+    padding: .35rem .4rem .55rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category {
+    gap: .45rem;
+    margin-bottom: 2px;
+    border-radius: .3rem;
+    padding: .48rem .5rem;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category > i.fa-folder {
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: .25rem;
+    font-size: .75rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category strong {
+    font-size: .78rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category small {
+    font-size: .66rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head {
+    margin: 0;
+    border-radius: 0;
+    padding: .65rem .8rem;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head h3 {
+    font-size: 1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-staff-performance {
+    margin: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    padding: .45rem .7rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-points-head {
+    margin-bottom: .35rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-performance-badges > div {
+    min-width: 175px;
+    border-radius: .35rem;
+    padding: .4rem .55rem;
+    font-size: .72rem;
+}
+
+.pc-office-subcategories {
+    min-width: 1050px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory {
+    margin: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory > summary {
+    min-height: 38px;
+    background: #e9eef7;
+    padding: .4rem .65rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory > summary strong {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory > summary small {
+    font-size: .67rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory-body {
+    padding: 0;
+}
+
+.pc-sheet-columns,
+.pc-office-task-row {
+    display: grid;
+    grid-template-columns: 30px minmax(310px, 2.2fr) minmax(125px, .85fr) minmax(125px, .85fr) 118px 118px 65px 64px;
+    min-width: 1050px;
+}
+
+.pc-sheet-columns {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    border-bottom: 1px solid #94a3b8;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: .62rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .035em;
+}
+
+.pc-sheet-columns span {
+    border-right: 1px solid #cbd5e1;
+    padding: .3rem .4rem;
+}
+
+.pc-office-task-row {
+    align-items: stretch;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #e2e8f0;
+    background: #fff;
+}
+
+.pc-office-task-row:nth-of-type(even) {
+    background: #fbfdff;
+}
+
+.pc-office-task-row:focus-within {
+    background: #fffbeb;
+}
+
+.pc-point-drag-handle {
+    color: #64748b;
+    cursor: grab;
+}
+
+.pc-point-drag-handle:active {
+    cursor: grabbing;
+}
+
+.pc-office-task-row.is-point-dragging {
+    opacity: .45;
+}
+
+.pc-office-task-row.is-point-drag-over {
+    box-shadow: inset 0 3px 0 #2563eb;
+}
+
+.pc-sheet-check,
+.pc-sheet-task,
+.pc-sheet-cell,
+.pc-sheet-progress,
+.pc-sheet-actions {
+    min-width: 0;
+    border-right: 1px solid #e2e8f0;
+    padding: .32rem .4rem;
+}
+
+.pc-sheet-check {
+    display: grid;
+    place-items: start center;
+    padding-top: .65rem;
+}
+
+.pc-sheet-check input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #16a34a;
+}
+
+.pc-sheet-task textarea,
+.pc-sheet-cell input,
+.pc-sheet-cell select {
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: .2rem;
+    background: transparent;
+    padding: .28rem;
+    color: #0f172a;
+    font-size: .73rem;
+}
+
+.pc-sheet-task textarea {
+    min-height: 42px;
+    resize: vertical;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.pc-sheet-task textarea:focus,
+.pc-sheet-cell input:focus,
+.pc-sheet-cell select:focus {
+    border-color: #f59e0b;
+    background: #fff;
+    outline: 0;
+}
+
+.pc-sheet-cell {
+    display: flex;
+    align-items: center;
+}
+
+.pc-sheet-cell > span {
+    display: none;
+}
+
+.pc-sheet-progress {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.pc-sheet-progress strong {
+    position: relative;
+    z-index: 1;
+    font-size: .7rem;
+}
+
+.pc-sheet-progress > span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #22c55e;
+}
+
+.pc-sheet-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .25rem;
+}
+
+.pc-sheet-actions button {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: .25rem;
+    background: #fff;
+    color: #475569;
+}
+
+.pc-sheet-actions button:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.pc-office-task-row .pc-task-checklist {
+    gap: 1px;
+    margin-top: .2rem;
+    border-top: 1px dotted #cbd5e1;
+    border-radius: 0;
+    background: transparent;
+    padding: .2rem 0 0;
+}
+
+.pc-office-task-row .pc-checklist-item {
+    min-height: 24px;
+    border-radius: 0;
+    background: transparent;
+    padding: .15rem .25rem;
+    font-size: .68rem !important;
+}
+
+.pc-office-task-row .pc-checklist-quick {
+    margin: .2rem 0;
+    border-radius: .25rem;
+    padding: 0 .35rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create-detail {
+    min-width: 1050px;
+    margin: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+}
+
+.pc-presentation-open {
+    overflow: hidden;
+}
+
+[data-financial-pilot].is-presentation {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    margin: 0 !important;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+}
+
+[data-financial-pilot].is-presentation .pc-financial-layout {
+    height: calc(100vh - 170px) !important;
+}
+
+[data-financial-pilot].is-presentation .pc-financial-toolbar {
+    border-radius: 0;
+}
+
+@media (max-width: 1100px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-layout {
+        grid-template-columns: 210px minmax(900px, 1fr);
+        height: 70vh;
+        overflow: auto;
+    }
+}
+
+@media (max-width: 860px) {
+    .pc-header-actions-light,
+    .pc-point-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    .pc-header-actions-light .pc-btn,
+    .pc-btn-save-point,
+    .pc-btn-remove-point {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+
+    .pc-office-point {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pc-new-point-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .pc-new-point-actions button {
+        width: 100%;
+    }
+}
+
+/* Thème tableur sobre — réunions Bureau uniquement. */
+[data-financial-pilot][data-unified-render="1"] {
+    --pc-sheet-border: #d7dce1;
+    --pc-sheet-border-strong: #aeb6bf;
+    --pc-sheet-header: #f1f3f5;
+    --pc-sheet-soft: #f8f9fa;
+    --pc-sheet-text: #202428;
+    --pc-sheet-muted: #687078;
+    --pc-sheet-accent: #217346;
+    --pc-sheet-accent-soft: #eaf2ed;
+    border-color: var(--pc-sheet-border);
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar {
+    align-items: stretch;
+    border-bottom: 1px solid var(--pc-sheet-border-strong);
+    background: var(--pc-sheet-header);
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar {
+    border: 1px solid var(--pc-sheet-border);
+    border-radius: 2px;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > span,
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > strong,
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > p,
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-counts strong,
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-counts span,
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-project-select > span {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > span,
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-project-select > span {
+    color: var(--pc-sheet-muted);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner {
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner i {
+    color: var(--pc-sheet-muted);
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-office-toolbar-side {
+    gap: .65rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-project-prompt {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    color: var(--pc-sheet-text);
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-pilot-project-badges {
+    display: grid;
+    width: 100%;
+    max-width: none;
+    max-height: 190px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: .4rem;
+    overflow-y: auto;
+    padding: .1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-pilot-project-badges button {
+    width: 100%;
+    min-height: 2.45rem;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    padding: .5rem .65rem;
+    color: var(--pc-sheet-text);
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-pilot-project-badges button:hover {
+    border-color: var(--pc-sheet-accent);
+    background: var(--pc-sheet-accent-soft);
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-pilot-project-badges button.is-active {
+    border-color: var(--pc-sheet-accent);
+    background: var(--pc-sheet-accent);
+    color: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-presentation-button {
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-presentation-button:hover {
+    border-color: #737b83;
+    background: var(--pc-sheet-soft);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary {
+    gap: 0;
+    border-bottom-color: var(--pc-sheet-border);
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary > div {
+    border-right: 1px solid var(--pc-sheet-border);
+    padding: 0 .75rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary > div:last-child {
+    border-right: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary span,
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary strong {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-progress {
+    height: 3px;
+    border-radius: 0;
+    background: #e5e7eb;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-progress span {
+    border-radius: 0;
+    background: var(--pc-sheet-accent);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+    border-right-color: var(--pc-sheet-border-strong);
+    background: var(--pc-sheet-soft);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category-head {
+    border-bottom-color: var(--pc-sheet-border-strong);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category-head span,
+[data-financial-pilot][data-unified-render="1"] .pc-office-category-head strong {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category {
+    border-color: transparent;
+    border-bottom-color: var(--pc-sheet-border);
+    border-radius: 0;
+    background: transparent;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category:hover {
+    border-color: var(--pc-sheet-border-strong);
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category.is-active {
+    border-color: var(--pc-sheet-border-strong);
+    border-left: 3px solid var(--pc-sheet-accent);
+    background: var(--pc-sheet-accent-soft);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category > i.fa-folder,
+[data-financial-pilot][data-unified-render="1"] .pc-office-category.is-active > i.fa-folder {
+    border-radius: 0;
+    background: transparent;
+    color: var(--pc-sheet-muted);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category strong,
+[data-financial-pilot][data-unified-render="1"] .pc-office-category small {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] input[type="checkbox"] {
+    accent-color: var(--pc-sheet-accent);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create {
+    border-color: var(--pc-sheet-border-strong);
+    border-radius: 0;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create > summary {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create > form {
+    border-top-color: var(--pc-sheet-border);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create input,
+[data-financial-pilot][data-unified-render="1"] .pc-office-point input,
+[data-financial-pilot][data-unified-render="1"] .pc-office-point textarea,
+[data-financial-pilot][data-unified-render="1"] .pc-office-point select {
+    border-color: var(--pc-sheet-border-strong);
+    border-radius: 2px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create button,
+[data-financial-pilot][data-unified-render="1"] .pc-office-point button {
+    border: 1px solid #5d646b;
+    border-radius: 2px;
+    background: #5d646b;
+    color: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-point.is-new {
+    border-color: var(--pc-sheet-border-strong);
+    border-radius: 0;
+    background: var(--pc-sheet-soft);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-new-point-actions button.is-secondary,
+[data-financial-pilot][data-unified-render="1"] .pc-new-point-actions button.is-cancel {
+    border-color: var(--pc-sheet-border-strong);
+    background: #fff;
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head,
+[data-financial-pilot][data-unified-render="1"] .pc-office-category-title {
+    border-bottom-color: var(--pc-sheet-border-strong);
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head p,
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head h3,
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head span,
+[data-financial-pilot][data-unified-render="1"] .pc-line-progress strong {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-staff-performance {
+    border-color: var(--pc-sheet-border);
+    background: var(--pc-sheet-soft);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-performance-badges {
+    gap: 2px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-performance-badges > div {
+    border-color: var(--pc-sheet-border);
+    border-radius: 0;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-performance-badges b,
+[data-financial-pilot][data-unified-render="1"] .pc-stars {
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory {
+    border-color: var(--pc-sheet-border-strong);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory > summary {
+    border-radius: 0;
+    background: var(--pc-sheet-header);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-summary-actions button {
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--pc-sheet-text);
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-summary-actions button:hover {
+    border-color: var(--pc-sheet-accent);
+    background: var(--pc-sheet-accent-soft);
+    color: var(--pc-sheet-accent);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-columns {
+    border-bottom-color: var(--pc-sheet-border-strong);
+    background: #e9ecef;
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-columns span,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-check,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-task,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-cell,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-progress,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions {
+    border-color: var(--pc-sheet-border);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row,
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row:nth-of-type(even) {
+    border-bottom-color: var(--pc-sheet-border);
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row:focus-within {
+    background: #f4f7f5;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-task textarea:focus,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-cell input:focus,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-cell select:focus {
+    border-color: var(--pc-sheet-accent);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-progress > span {
+    background: var(--pc-sheet-accent);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions button {
+    border-color: var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    color: var(--pc-sheet-text);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions button:hover {
+    border-color: var(--pc-sheet-accent);
+    background: var(--pc-sheet-accent-soft);
+    color: var(--pc-sheet-accent);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-task-checklist,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item {
+    border-color: var(--pc-sheet-border);
+    background: transparent;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick {
+    border-color: var(--pc-sheet-border-strong);
+    border-radius: 2px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick i {
+    color: var(--pc-sheet-muted);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-note {
+    border: 1px solid var(--pc-sheet-border);
+    border-radius: 0;
+    background: var(--pc-sheet-soft);
+    color: var(--pc-sheet-muted);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-lines::-webkit-scrollbar-track,
+[data-financial-pilot][data-unified-render="1"] .pc-financial-detail::-webkit-scrollbar-track {
+    background: var(--pc-sheet-soft);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-lines::-webkit-scrollbar-thumb,
+[data-financial-pilot][data-unified-render="1"] .pc-financial-detail::-webkit-scrollbar-thumb {
+    border-color: var(--pc-sheet-soft);
+    background: #aeb6bf;
+}
+
+/* Rendu document Finéa : blanc dominant, structure bleu nuit, accents jaunes rares. */
+[data-financial-pilot][data-unified-render="1"] {
+    --pc-sheet-border: #e4e8ee;
+    --pc-sheet-border-strong: #cdd4df;
+    --pc-sheet-header: #f5f7fb;
+    --pc-sheet-soft: #fbfcfe;
+    --pc-sheet-text: #172033;
+    --pc-sheet-muted: #667085;
+    --pc-sheet-accent: #1d2b57;
+    --pc-sheet-accent-soft: #f3f6fb;
+    border-top: 3px solid #1d2b57;
+    font-family: Inter, Arial, sans-serif;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar {
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar {
+    border-left: 3px solid #fabd02;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > span {
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-counts strong {
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner {
+    border-color: #d8deea;
+    background: #f8faff;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-presentation-button {
+    border-color: #d8deea;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary {
+    background: #fbfcff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-summary > div {
+    padding-top: .15rem;
+    padding-bottom: .15rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category {
+    min-height: 38px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category.is-active {
+    border-left-color: #1d2b57;
+    background: #f5f7fc;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category.is-active::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: #fabd02;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category {
+    position: relative;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category > i.fa-folder {
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: .62rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-line-detail-head {
+    border-left: 3px solid #fabd02;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-staff-performance {
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-stars {
+    color: #c89400;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory > summary {
+    background: #f3f6fb;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory > summary > div:first-child > i {
+    color: #1d2b57;
+    font-size: .7rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-summary-actions button {
+    width: 1.65rem;
+    height: 1.65rem;
+    border-color: #d8deea;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-summary-actions button:hover {
+    border-color: #1d2b57;
+    background: #f5f7fc;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-columns {
+    background: #eef2f8;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row:focus-within {
+    background: #fffdf5;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-progress > span,
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-progress span {
+    background: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions {
+    gap: 2px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions button {
+    width: 1.45rem;
+    height: 1.45rem;
+    border-color: transparent;
+    background: transparent;
+    color: #667085;
+    font-size: .67rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions button:hover {
+    border-color: #d8deea;
+    background: #f5f7fc;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item {
+    min-height: 21px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item input,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-check input,
+[data-financial-pilot][data-unified-render="1"] .pc-office-subcategory input[type="checkbox"],
+[data-financial-pilot][data-unified-render="1"] .pc-office-category input[type="checkbox"] {
+    width: .9rem;
+    height: .9rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create button,
+[data-financial-pilot][data-unified-render="1"] .pc-office-point button {
+    border-color: #1d2b57;
+    background: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-quick-create > summary,
+[data-financial-pilot][data-unified-render="1"] .pc-presentation-button,
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner {
+    font-size: .72rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] button i {
+    font-size: .68rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-task textarea {
+    min-height: 46px;
+    color: #111827;
+    font-size: .82rem;
+    font-weight: 800;
+    line-height: 1.4;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-task-checklist {
+    margin-left: .55rem;
+    padding-left: .55rem;
+    border-top: 0;
+    border-left: 2px solid #e4e8ee;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item {
+    min-height: 20px;
+    color: #667085;
+    font-size: .65rem !important;
+    font-weight: 500 !important;
+    line-height: 1.3;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item input {
+    width: .78rem;
+    height: .78rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item.is-pending {
+    opacity: .65;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item.is-pending i {
+    width: .78rem;
+    color: #98a2b3;
+    font-size: .58rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick {
+    min-height: 27px;
+    padding-right: .2rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick input {
+    min-width: 0;
+    flex: 1;
+    color: #344054;
+    font-size: .69rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick button {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    color: #667085;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick button:hover {
+    background: #f2f4f7;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    opacity: .3;
+    transition: opacity .15s ease;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-category:hover .pc-tree-actions,
+[data-financial-pilot][data-unified-render="1"] .pc-office-category:focus-within .pc-tree-actions,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item:hover .pc-checklist-actions,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item:focus-within .pc-checklist-actions {
+    opacity: 1;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions button,
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions a,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-actions button {
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    color: #667085;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] button.is-danger,
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions button.is-danger,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-actions button.is-danger {
+    color: #b42318;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions button:hover,
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions a:hover,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-actions button:hover {
+    background: #f2f4f7;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-summary-gantt {
+    display:inline-grid;place-items:center;width:1.5rem;height:1.5rem;margin-left:.45rem;border:1px solid #d0d5dd;border-radius:3px;color:#b42318;text-decoration:none;vertical-align:middle;
+}
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions > a { color:#b42318;text-decoration:none; }
+
+[data-financial-pilot][data-unified-render="1"] .pc-tree-actions button.is-danger:hover,
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-actions button.is-danger:hover,
+[data-financial-pilot][data-unified-render="1"] .pc-sheet-actions button.is-danger:hover {
+    background: #fff1f0;
+    color: #b42318;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item > span:nth-child(2) {
+    min-width: 0;
+    flex: 1;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-files {
+    border-bottom: 1px solid var(--pc-sheet-border);
+    background: #fff;
+    font-size: .67rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-files > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .65rem;
+    color: #667085;
+    cursor: pointer;
+    list-style: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-files > summary::-webkit-details-marker {
+    display: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-file-list {
+    display: grid;
+    gap: 1px;
+    padding: 0 .65rem .5rem;
+    max-width: 42rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-file-list > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    border-bottom: 1px dotted #e4e8ee;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-file-list a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .4rem;
+    min-width: 0;
+    padding: .28rem 0;
+    color: #344054;
+    text-decoration: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-file-list a span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-file-list a small {
+    color: #98a2b3;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-subcategory-file-list button {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-add {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: .3rem;
+    margin-top: .25rem;
+    padding: .3rem .45rem;
+    border: 1px solid #d8deea;
+    border-radius: 3px;
+    color: #1d2b57;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-file-add:hover {
+    background: #f5f7fc;
+}
+
+/* Bannière de salle Bureau : identité du service et actions nettement séparées. */
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 310px);
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-pilot-heading {
+    min-width: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar .pc-pilot-heading > p:first-child {
+    display: block;
+    margin: 0 0 .18rem;
+    color: #667085;
+    font-size: .61rem;
+    letter-spacing: .12em;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar .pc-pilot-heading > h2 {
+    display: block;
+    margin: 0;
+    color: #172033;
+    font-size: 1.08rem;
+    line-height: 1.3;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar .pc-pilot-heading > h2 + p {
+    display: block;
+    margin: .2rem 0 0;
+    color: #667085;
+    font-size: .7rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar {
+    align-items: center;
+    margin-top: .75rem;
+    padding: .58rem .75rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > strong {
+    margin-top: .12rem;
+    font-size: .84rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-agenda-in-toolbar > div:first-child > p {
+    margin-top: .15rem;
+    color: #667085;
+    font-size: .67rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-toolbar-side {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .8rem;
+    border-left: 1px solid #e4e8ee;
+    padding-left: 1rem;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner {
+    min-width: 0;
+    gap: .65rem;
+    border: 0;
+    border-radius: 4px;
+    background: #f5f7fc;
+    padding: .7rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    border-radius: 4px;
+    background: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-icon i {
+    color: #fff;
+    font-size: .72rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner > span:last-child {
+    display: grid;
+    min-width: 0;
+    gap: .08rem;
+    margin: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner small {
+    color: #667085;
+    font-size: .58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-service-banner strong {
+    overflow: hidden;
+    color: #1d2b57;
+    font-size: .88rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-toolbar-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+    padding-top: .1rem;
+    border-top: 1px solid #eef1f5;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-presentation-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    min-height: 2rem;
+    padding: .38rem .65rem;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-presentation-button span {
+    display: inline;
+    margin: 0;
+    color: inherit;
+}
+
+@media (max-width: 900px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-office-toolbar-side {
+        border-top: 1px solid #e4e8ee;
+        border-left: 0;
+        padding-top: .75rem;
+        padding-left: 0;
+    }
+}
+
+/* Limites finales placées après tous les thèmes pour garantir le cadre fixe. */
+@media (min-width: 901px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-layout,
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines,
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-detail {
+        height: 640px;
+        max-height: 640px;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-layout {
+        overflow: hidden;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines,
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-detail {
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+    }
+
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 900px) {
+    [data-financial-pilot][data-unified-render="1"] .pc-financial-lines {
+        height: 360px;
+        max-height: 360px;
+        overflow-y: auto;
+    }
+}
+
+/* En présentation, le cadre reste borné au viewport et chaque colonne défile. */
+body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-presentation .pc-financial-layout {
+    height: calc(100dvh - 170px) !important;
+    max-height: calc(100dvh - 170px);
+    min-height: 0;
+    overflow: hidden;
+}
+
+body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-presentation .pc-financial-lines,
+body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-presentation .pc-financial-detail {
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+/* Réunion chantier : même langage visuel tableur que la réunion Bureau. */
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-financial-lines {
+    background: #fff;
+    padding: .55rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-financial-detail {
+    background: #fff;
+    padding: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-line-head {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .55rem;
+    margin-bottom: .35rem;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-line-head > span {
+    display: grid;
+    min-width: 0;
+    gap: .1rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-line-head > .pc-tree-actions {
+    display: flex;
+    margin-left: auto;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-line-head:hover {
+    border-left-color: #94a3b8;
+    background: #f8fafc;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-line-head.is-active {
+    border-left-color: #1d2b57;
+    background: #f5f7fc;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-selected-line {
+    margin: 0;
+    border-radius: 0;
+    background: #f1f3f5;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-debourse-list {
+    gap: .55rem;
+    padding: .55rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-debourse-card {
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-debourse-head {
+    background: #f5f7fc;
+    padding: .55rem .65rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-site-debourse-card .pc-office-subcategory {
+    margin: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+[data-financial-pilot] .pc-custom-task-list {
+    display: grid;
+    gap: .55rem;
+    padding: .65rem;
+}
+
+[data-financial-pilot] .pc-custom-task {
+    margin: 0;
+}
+
+[data-financial-pilot] .pc-custom-task .pc-task-checklist {
+    grid-column: 1 / -1;
+}
+
+[data-financial-pilot] .pc-custom-checklist-add {
+    display: flex;
+    gap: .35rem;
+    margin-top: .35rem;
+}
+
+[data-financial-pilot] .pc-custom-checklist-add input {
+    min-width: 0;
+    flex: 1;
+}
+
+[data-financial-pilot] .pc-add-custom-task {
+    margin: 0 .65rem .65rem;
+    border: 1px dashed #217346;
+    border-radius: 3px;
+    background: #f3faf6;
+    padding: .5rem .7rem;
+    color: #17633d;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-group + .pc-site-line-group {
+    margin-top: .85rem;
+    border-top: 1px solid #d7dce1;
+    padding-top: .55rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-group .pc-office-category {
+    width: 100%;
+    margin-top: .35rem;
+    text-align: left;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-select {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr auto;
+    gap: .25rem .5rem;
+    margin-top: .35rem;
+    border: 1px solid #d7dce1;
+    border-left: 3px solid transparent;
+    border-radius: 2px;
+    background: #fff;
+    padding: .55rem;
+    color: #202428;
+    text-align: left;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-select.is-active {
+    border-left-color: #1d2b57;
+    background: #f5f7fc;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-select span,
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-select strong,
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-select em {
+    color: inherit;
+    font-size: .65rem;
+    font-style: normal;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-select .pc-pilot-progress {
+    grid-column: 1;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-list {
+    display: grid;
+    gap: .75rem;
+    padding: .75rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-card {
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    border-radius: 3px;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: .65rem;
+    border-bottom: 1px solid #d7dce1;
+    background: #f1f3f5;
+    padding: .65rem .75rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-head > span {
+    display: grid;
+    min-width: 0;
+    gap: .08rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-head small,
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-head em {
+    color: #687078;
+    font-size: .58rem;
+    font-style: normal;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-head strong {
+    overflow: hidden;
+    color: #202428;
+    font-size: .82rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-debourse-head > b {
+    color: #1d2b57;
+    font-size: .75rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-hide-meeting-debourse {
+    display: inline-grid;
+    width: 1.45rem;
+    height: 1.45rem;
+    flex: 0 0 auto;
+    place-items: center;
+    margin-left: auto;
+    border: 1px solid #e4b9b9;
+    border-radius: 3px;
+    background: #fff;
+    color: #b42318;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-hide-meeting-debourse:hover {
+    background: #fff1f0;
+}
+
+[data-financial-pilot] .pc-bulk-choice {
+    display: none;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+[data-financial-pilot].is-bulk-selecting .pc-bulk-choice {
+    display: inline-flex;
+}
+
+[data-financial-pilot] .pc-bulk-choice > input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    accent-color: #1d2b57;
+}
+
+[data-financial-pilot].is-bulk-selecting .pc-hide-meeting-debourse,
+[data-financial-pilot].is-bulk-selecting .pc-add-site-line-task {
+    display: none;
+}
+
+[data-financial-pilot] .pc-bulk-selection-bar {
+    display: grid;
+    grid-template-columns: auto minmax(220px, 1fr) auto auto;
+    align-items: center;
+    gap: .75rem;
+    border-bottom: 1px solid #aeb6bf;
+    background: #fff8e6;
+    padding: .65rem 1rem;
+    color: #3b4350;
+    font-size: .72rem;
+}
+
+[data-financial-pilot] .pc-bulk-selection-bar[hidden] {
+    display: none;
+}
+
+[data-financial-pilot] .pc-bulk-selection-bar button {
+    border: 1px solid #aeb6bf;
+    border-radius: 3px;
+    background: #fff;
+    padding: .42rem .65rem;
+    color: #1d2b57;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+[data-financial-pilot] .pc-bulk-selection-bar [data-bulk-selection-apply] {
+    border-color: #b42318;
+    background: #b42318;
+    color: #fff;
+}
+
+[data-financial-pilot] .pc-bulk-selection-bar button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    [data-financial-pilot] .pc-bulk-selection-bar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    [data-financial-pilot] .pc-bulk-selection-bar > span {
+        grid-column: 1 / -1;
+    }
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-add-site-line-task {
+    display: inline-flex;
+    width: 1.8rem;
+    height: 1.8rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    border: 1px solid #217346;
+    border-radius: 3px;
+    background: #f3faf6;
+    padding: 0;
+    color: #17633d;
+    font-size: .72rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-add-site-line-task:hover {
+    border-style: solid;
+    background: #e7f4ec;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-add-site-line-task:disabled {
+    border-color: #d7dce1;
+    background: #f8f9fa;
+    color: #98a2b3;
+    cursor: not-allowed;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-head:hover {
+    border-left-color: #94a3b8;
+    background: #f8fafc;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-head.is-active {
+    border-left-color: #1d2b57;
+    background: #eef2ff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-head > span {
+    display: grid;
+    min-width: 0;
+    gap: .12rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-head > span small {
+    color: #667085;
+    font-size: .56rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-site-line-head > span em {
+    color: #667085;
+    font-size: .58rem;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-presentation .pc-financial-layout {
+        grid-template-columns: minmax(210px, 34%) minmax(560px, 1fr);
+        overflow-x: auto;
+    }
+}
+
+/* Parité visuelle Bureau pour les points propres aux réunions chantier. */
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section {
+    margin: 0;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section .pc-site-debourse-head {
+    min-height: 38px;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: .45rem;
+    border-bottom: 1px solid var(--pc-sheet-border-strong);
+    background: #f5f7fc;
+    padding: .4rem .55rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section .pc-site-debourse-head > span {
+    gap: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section .pc-site-debourse-head > .pc-office-summary-actions {
+    display: inline-flex;
+    grid-auto-flow: column;
+    align-items: center;
+    gap: 1px;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section .pc-site-debourse-head small,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section .pc-site-debourse-head em {
+    font-size: .58rem;
+    line-height: 1.15;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-meeting-section .pc-site-debourse-head strong {
+    font-size: .78rem;
+    line-height: 1.2;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task-list {
+    gap: 0;
+    padding: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task {
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid var(--pc-sheet-border);
+    border-radius: 0;
+    background: #fff;
+    padding: .45rem .55rem;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task label {
+    color: var(--pc-sheet-muted);
+    font-size: .6rem;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task input,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task select,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task textarea {
+    min-height: 30px;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    padding: .3rem .4rem;
+    color: var(--pc-sheet-text);
+    font-size: .7rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task .is-wide textarea {
+    min-height: 48px;
+    resize: vertical;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-task .pc-task-checklist {
+    margin: 0;
+    border: 1px solid var(--pc-sheet-border);
+    border-radius: 0;
+    background: var(--pc-sheet-soft);
+    padding: .35rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-checklist-add {
+    margin-top: .2rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-checklist-add button,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-add-custom-task,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-new-point-actions button {
+    min-width: 0;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    padding: .32rem .5rem;
+    color: var(--pc-sheet-text);
+    font-size: .65rem;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-add-custom-task {
+    display: inline-flex;
+    width: auto;
+    align-items: center;
+    gap: .3rem;
+    margin: .4rem .55rem;
+    border-style: solid;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-custom-checklist-add button:hover,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-add-custom-task:hover,
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-new-point-actions button:hover {
+    border-color: #98a2b3;
+    background: #f2f4f7;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-new-point-actions {
+    gap: .3rem;
+    border-top-color: var(--pc-sheet-border);
+    padding-top: .4rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-new-point-actions [data-custom-save-state] {
+    margin-right: auto;
+    align-self: center;
+    color: var(--pc-sheet-muted);
+    font-size: .62rem;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-quick-create > button {
+    width: 100%;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    padding: .45rem .55rem;
+    color: var(--pc-sheet-text);
+    font-size: .68rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+[data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-quick-create > button:hover {
+    background: #f2f4f7;
+}
+
+/* Navigation chantier lisible : libellé à gauche, actions toujours alignées à droite. */
+@media (min-width: 901px) {
+    [data-financial-pilot][data-unified-render="1"][data-office-meeting="0"] .pc-financial-layout {
+        grid-template-columns: minmax(330px, .72fr) minmax(900px, 2.28fr);
+    }
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-meeting-only-line {
+    grid-template-columns: 1.2rem minmax(0, 1fr) auto;
+    gap: .45rem;
+    width: 100%;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-meeting-only-line > span:not(.pc-tree-actions) {
+    min-width: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-meeting-only-line > span:not(.pc-tree-actions) strong {
+    overflow: hidden;
+    font-size: .72rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-meeting-only-line > .pc-tree-actions {
+    display: inline-flex;
+    justify-self: end;
+    margin-left: .35rem;
+    opacity: 1;
+}
+
+/* Cellules de tâche : aspect document au repos, édition visible seulement au focus. */
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-task textarea,
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-cell input,
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-cell select {
+    min-height: 30px;
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-task textarea {
+    height: 34px;
+    min-height: 34px;
+    overflow: hidden;
+    padding: .38rem .4rem;
+    resize: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-task textarea:focus {
+    height: auto;
+    min-height: 64px;
+    overflow: auto;
+    resize: vertical;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-task textarea:focus,
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-cell input:focus,
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-cell select:focus {
+    border: 1px solid #217346;
+    background: #fff;
+    outline: 0;
+}
+
+/* Aucun bloc ou faux input quand une tâche ne possède aucune checklist. */
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-task-checklist:not(:has(.pc-checklist-item)):has(.pc-checklist-quick[hidden]) {
+    display: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-files {
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid var(--pc-sheet-border);
+    border-radius: 0;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-files > summary {
+    width: max-content;
+    padding: .3rem .55rem;
+    color: var(--pc-sheet-muted);
+    font-size: .62rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-files .pc-subcategory-file-list {
+    padding: .35rem .55rem .5rem;
+}
+
+/* Point chantier présenté avec la même hiérarchie qu’une catégorie Bureau. */
+[data-financial-pilot][data-unified-render="1"] .pc-office-custom-section {
+    overflow: hidden;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 0;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-custom-section .pc-custom-point-head {
+    position: static;
+    margin: 0;
+    padding: .55rem .7rem;
+    background: #fff;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-custom-section .pc-custom-point-head h3 {
+    max-width: 720px;
+    overflow: hidden;
+    font-size: .9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-status {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-status .pc-line-progress {
+    width: 165px;
+    min-width: 165px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-status .pc-office-summary-actions {
+    display: inline-flex;
+    gap: 2px;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-status .pc-office-summary-actions button {
+    display: grid;
+    place-items: center;
+    width: 1.55rem;
+    height: 1.55rem;
+    border: 1px solid var(--pc-sheet-border-strong);
+    border-radius: 2px;
+    background: #fff;
+    color: #1d2b57;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-custom-point-status .pc-office-summary-actions button.is-danger {
+    color: #b42318;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-custom-section .pc-sheet-columns {
+    min-width: 1050px;
+    border-top: 1px solid var(--pc-sheet-border);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-custom-section .pc-custom-task-list {
+    overflow-x: auto;
+}
+
+/* Les libellés multilignes agrandissent naturellement toute la ligne du tableau. */
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-task textarea {
+    height: auto;
+    min-height: 34px;
+    overflow: hidden;
+    white-space: pre-wrap;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-office-task-row .pc-sheet-task textarea:focus {
+    overflow: hidden;
+    resize: none;
+}
+
+/* Champ unique de recherche et sélection du personnel. */
+[data-financial-pilot][data-unified-render="1"] .pc-person-search {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search > select[hidden] {
+    display: none !important;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search > input {
+    width: 100%;
+    min-height: 30px;
+    border: 1px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    padding: .3rem .4rem;
+    color: var(--pc-sheet-text);
+    font-size: .68rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search > input:focus {
+    border-color: #217346;
+    background: #fff;
+    outline: 0;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search-list {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    left: 0;
+    z-index: 40;
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid #98a2b3;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(16, 24, 40, .12);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search-list[hidden] {
+    display: none;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search-list button {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #eef0f2;
+    border-radius: 0;
+    background: #fff;
+    padding: .45rem .55rem;
+    color: #172033;
+    font-size: .68rem;
+    text-align: left;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-person-search-list button:hover,
+[data-financial-pilot][data-unified-render="1"] .pc-person-search-list button:focus {
+    background: #f2f4f7;
+    outline: 0;
+}
+
+/* Saisie Trello : le champ reste prêt, l'annulation est intégrée à droite. */
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick {
+    position: relative;
+    padding-right: 1.7rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick > input {
+    width: 100%;
+    padding-right: 1.5rem;
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-quick > button {
+    position: absolute;
+    top: 50%;
+    right: .15rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    transform: translateY(-50%);
+}
+
+[data-financial-pilot][data-unified-render="1"] .pc-checklist-item.is-pending {
+    opacity: .65;
+}

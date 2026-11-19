@@ -1,0 +1,9 @@
+<?php require_once __DIR__ . '/_logistics_common.php';
+$q = logi_query_value();
+$allRows=$pdo->query('SELECT i.*, a.designation asset_name, d.full_name driver_name FROM logistics_incidents i LEFT JOIN logistics_assets a ON a.id=i.asset_id LEFT JOIN logistics_drivers d ON d.id=i.driver_id ORDER BY i.id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
+$rows = logi_filter_rows($allRows, ['incident_type','asset_name','driver_name','site_label','severity','status','incident_at'], $q);
+logi_page_start('Incidents & anomalies','Remontees terrain, pannes, accidents, usages incorrects et actions correctives.');
+logi_listing_toolbar('incidents_form.php', 'incidents', $q, 'Rechercher incident, ressource, chantier, statut...');
+logi_card_open('Journal des incidents', ($q !== '' ? count($rows) . ' resultat(s)' : 'Suivi des anomalies et resolutions')); ?>
+<div class="overflow-x-auto"><table class="w-full border-separate border-spacing-y-3"><thead><tr class="text-left text-xs uppercase tracking-[0.18em] text-slate-500"><th class="px-4">Incident</th><th>Ressource</th><th>Chauffeur</th><th>Chantier</th><th>Gravite</th><th>Statut</th></tr></thead><tbody><?php foreach($rows as $r): ?><tr class="bg-white shadow-sm"><td class="px-4 py-4 rounded-l-2xl"><div class="font-semibold"><?= logi_h($r['incident_type']) ?></div><div class="text-sm text-slate-500"><?= logi_h($r['incident_at']) ?></div></td><td><?= logi_h($r['asset_name']) ?></td><td><?= logi_h($r['driver_name']) ?></td><td><?= logi_h($r['site_label']) ?></td><td><?= logi_badge($r['severity']) ?></td><td class="rounded-r-2xl"><?= logi_badge($r['status']) ?></td></tr><?php endforeach; ?><?php if(empty($rows)): ?><tr><td colspan="6" class="py-8 text-center text-slate-400">Aucun incident trouve.</td></tr><?php endif; ?></tbody></table></div>
+<?php logi_card_close(); logi_page_end();

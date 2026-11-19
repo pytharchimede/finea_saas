@@ -1,0 +1,35 @@
+<?php
+declare(strict_types=1);
+function assertTsFeature(bool $condition,string $message):void{if(!$condition)throw new RuntimeException($message);}
+$migration=(string)file_get_contents(__DIR__.'/../services/DevisOfferProjectMigrationService.php');
+assertTsFeature(str_contains($migration,'devis_chantier_links'),'Le rattachement automatique TS vers chantier doit être migré.');
+assertTsFeature(str_contains($migration,"WHERE ts.devis_type='TS' GROUP BY ts.devis_id"),'Le rattrapage doit parcourir individuellement tous les devis TS historiques.');
+assertTsFeature(str_contains($migration,'ON DUPLICATE KEY UPDATE chantier_id=VALUES(chantier_id)'),'Le rattrapage doit aussi corriger une ancienne liaison TS devenue incorrecte.');
+assertTsFeature(str_contains($migration,'INSERT IGNORE INTO devis_chantier_links'),'Les offres historiques sans principal paramétré doivent disposer d’un chemin de repli.');
+$creation=(string)file_get_contents(__DIR__.'/../request/creer_chantier.php');
+assertTsFeature(str_contains($creation,"devis_type='TS'"),'Un devis TS doit être refusé comme origine d’un nouveau chantier.');
+assertTsFeature(str_contains($creation,"link_type='TS'"),'La création du chantier principal doit rattacher ses TS existants.');
+$feb=(string)file_get_contents(__DIR__.'/../employe/nouvelle_demande_employe.php');
+assertTsFeature(str_contains($feb,'devis_chantier_links'),'Les lignes TS doivent être proposées lors de l’édition d’une FEB.');
+assertTsFeature(str_contains($feb,"\$type === 'recrutement'"),'Le formulaire employé doit traiter les demandes de recrutement.');
+$requests=(string)file_get_contents(__DIR__.'/../model/EmployeeLegalRequestManager.php');
+assertTsFeature(str_contains($requests,"'recrutement' =>"),'La demande de recrutement doit suivre le circuit RH.');
+$recruitmentForm=(string)file_get_contents(__DIR__.'/../employe/nouvelle_demande_employe.php');
+assertTsFeature(str_contains($recruitmentForm,'$canRequestRecruitment'),'Le recrutement doit être réservé aux responsables et directeurs.');
+assertTsFeature(str_contains($recruitmentForm,"'impact_financier_entrant'"),'Le recrutement doit chiffrer son impact financier entrant et sortant.');
+assertTsFeature(str_contains($requests,"? self::CLAIM_STAGE_DG_PENDING"),'Après les RH, le recrutement doit être transmis directement au DG.');
+$rhValidation=(string)file_get_contents(__DIR__.'/../rh/validation_demandes_rh.php');
+assertTsFeature(str_contains($rhValidation,'data-passkey-signature'),'Les signatures RH et DG doivent être protégées par Passkey.');
+$exports=(string)file_get_contents(__DIR__.'/../exports/finea_module_export.php');
+assertTsFeature(str_contains($exports,"'fournisseurs'"),'Les fournisseurs doivent être exportables en PDF et Excel.');
+assertTsFeature(str_contains($exports,'DOCUMENT MAÎTRISÉ · ISO 9001'),'Les exports doivent utiliser le gabarit qualité ISO 9001 Finéa.');
+$planning=(string)file_get_contents(__DIR__.'/../planning_chantier/task_form.php');
+assertTsFeature(str_contains($planning,'name="parent_id"'),'Le planning technique doit permettre la création de sous-tâches.');
+$meetingPlanning=(string)file_get_contents(__DIR__.'/../planning_chantier/assets/js/planning.js');
+assertTsFeature(str_contains($meetingPlanning,'fa-hourglass-half'),'Les sous-tâches de réunion doivent proposer l’action sablier.');
+assertTsFeature(str_contains($meetingPlanning,"action:'checklist_progress'"),'Le pourcentage d’une sous-tâche en cours doit être enregistré.');
+$planningMigration=(string)file_get_contents(__DIR__.'/../planning_chantier/database/PlanningChantierMigrator.php');
+assertTsFeature(str_contains($planningMigration,'progress_percent'),'Le pourcentage des sous-tâches doit être migré automatiquement.');
+$contract=(string)file_get_contents(__DIR__.'/../contrats/workflow.php');
+assertTsFeature(str_contains($contract,'condition_reglement_taches'),'Le contrat doit demander les trois conditions de règlement.');
+echo "TsChantierRecruitmentTest: OK\n";

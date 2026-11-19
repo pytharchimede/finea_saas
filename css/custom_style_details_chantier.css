@@ -1,0 +1,36 @@
+        body {
+            background: #fffbe6;
+        }
+
+        .navbar {
+            background: #111;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: #ffc107 !important;
+        }
+
+        .section-title {
+            color: #111;
+            background: #ffe066;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .card {
+            border: 1px solid #ffe066;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            background: #ffe066;
+            color: #111;
+            font-weight: bold;
+        }
+
+        .table thead {
+            background: #ffe066;
+        }

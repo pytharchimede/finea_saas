@@ -1,0 +1,51 @@
+php_value upload_max_filesize 256M
+php_value post_max_size 280M
+php_value max_file_uploads 50
+php_value max_input_time 300
+php_value max_execution_time 300
+
+RewriteEngine On
+
+# URL du bouton WhatsApp : variable finale dans le chemin.
+RewriteRule ^finance/signature-point/([a-f0-9]{64})$ decaissement/signature_point_jour.php?token=$1 [L]
+
+# Compatibilite anciennes URLs racine apres modularisation devis.
+RewriteRule ^dashboard\.php$ devis/dashboard.php [L,QSA]
+RewriteRule ^generer_devis\.php$ devis/generer.php [L,QSA]
+RewriteRule ^liste_devis\.php$ devis/liste.php [L,QSA]
+RewriteRule ^modifier_devis\.php$ devis/modifier.php [L,QSA]
+RewriteRule ^liste_client\.php$ clients/liste.php [L,QSA]
+RewriteRule ^modifier_client\.php$ clients/modifier.php [L,QSA]
+RewriteRule ^liste_offre\.php$ offres/liste.php [L,QSA]
+RewriteRule ^modifier_offre\.php$ offres/modifier.php [L,QSA]
+RewriteRule ^liste_unite\.php$ unites/liste.php [L,QSA]
+RewriteRule ^liste_debourse\.php$ debourse/liste.php [L,QSA]
+RewriteRule ^gerer_debourse\.php$ debourse/gerer.php [L,QSA]
+RewriteRule ^voir_debourse\.php$ debourse/voir.php [L,QSA]
+RewriteRule ^debourses/(.*)$ debourse/$1 [L,QSA]
+RewriteRule ^liste_chantier\.php$ chantiers/liste.php [L,QSA]
+RewriteRule ^choisir_devis_pour_chantier\.php$ chantiers/choisir_devis.php [L,QSA]
+RewriteRule ^debuter_chantier\.php$ chantiers/debuter.php [L,QSA]
+RewriteRule ^details_chantier\.php$ chantiers/details.php [L,QSA]
+
+# Compatibilite anciennes URLs racine apres modularisation documentation.
+RewriteRule ^documentation\.php$ documentation/index.php [L,QSA]
+RewriteRule ^documentation_acl_api\.php$ documentation/documentation_acl_api.php [L,QSA]
+RewriteRule ^documentation_acl_preview_api\.php$ documentation/documentation_acl_preview_api.php [L,QSA]
+RewriteRule ^documentation_action_api\.php$ documentation/documentation_action_api.php [L,QSA]
+RewriteRule ^documentation_archive_api\.php$ documentation/documentation_archive_api.php [L,QSA]
+RewriteRule ^documentation_bulk_download\.php$ documentation/documentation_bulk_download.php [L,QSA]
+RewriteRule ^documentation_conflict_api\.php$ documentation/documentation_conflict_api.php [L,QSA]
+RewriteRule ^documentation_download\.php$ documentation/documentation_download.php [L,QSA]
+RewriteRule ^documentation_folder_share\.php$ documentation/documentation_folder_share.php [L,QSA]
+RewriteRule ^documentation_history_api\.php$ documentation/documentation_history_api.php [L,QSA]
+RewriteRule ^documentation_share\.php$ documentation/documentation_share.php [L,QSA]
+RewriteRule ^documentation_share_api\.php$ documentation/documentation_share_api.php [L,QSA]
+RewriteRule ^documentation_upload\.php$ documentation/documentation_upload.php [L,QSA]
+
+# Compatibilite ancienne URL racine apres modularisation emploi du temps.
+RewriteRule ^emploi_du_temps\.php$ emploi_du_temps/index.php [L,QSA]
+
+# Compatibilite ancienne URL racine apres modularisation formation.
+RewriteRule ^formation\.php$ formation/index.php [L,QSA]
+

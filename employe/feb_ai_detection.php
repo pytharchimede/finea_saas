@@ -1,0 +1,4 @@
+<?php
+require_once __DIR__.'/../auth_check.php';require_once __DIR__.'/../model/Database.php';require_once __DIR__.'/../services/FebAiDetectionService.php';
+header('Content-Type: application/json; charset=UTF-8');
+try{if(($_SERVER['REQUEST_METHOD']??'')!=='POST')throw new RuntimeException('Méthode refusée.');$token=(string)($_POST['csrf_token']??'');if($token===''||empty($_SESSION['feb_ai_detection_csrf'])||!hash_equals((string)$_SESSION['feb_ai_detection_csrf'],$token))throw new RuntimeException('Session expirée.');$result=(new FebAiDetectionService(Database::getConnection()))->detect((string)($_POST['text']??''),(string)($_POST['field']??''),(int)($_POST['feb_id']??0)?:null,(int)($_SESSION['user_id']??0)?:null);echo json_encode(['success'=>true]+$result,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);}catch(Throwable $e){http_response_code(400);echo json_encode(['success'=>false,'message'=>$e->getMessage()],JSON_UNESCAPED_UNICODE);}

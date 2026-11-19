@@ -1,0 +1,197 @@
+<?php
+session_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+require_once("../model/Utils.php");
+require_once("../model/Database.php");
+require_once("../model/Devis.php");
+require_once("../model/Client.php");
+require_once("../model/Offre.php");
+require_once("../model/UniteMesure.php");
+require_once("../model/AuditTrail.php");
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+
+// --- Récupération des données ---
+$pdo = Database::getConnection();
+$devisObj = new Devis($pdo);
+$clientObj = new Client($pdo);
+$offreObj = new Offre($pdo);
+
+if (!isset($_SESSION['devisId']) && !isset($_GET['devisId'])) {
+    die('ID de devis non défini.');
+}
+$devisId = $_GET['devisId'] ?? $_SESSION['devisId'];
+$devis = $devisObj->getDevisById($devisId);
+if (!$devis) die('Devis non trouvé.');
+$lignes = $devisObj->getLignesDevis($devisId);
+$client = $clientObj->getClientById($devis['client_id']);
+if (!$client) die('Client non trouvé.');
+$offre = $offreObj->getOffreById($devis['offre_id']);
+if (!$offre) die('Projet non trouvé.');
+
+$uniteModel = new UniteMesure($pdo);
+$unitesArray = [];
+foreach ($uniteModel->getAll() as $u) {
+    $unitesArray[$u['id']] = $u;
+}
+
+// --- Création du fichier Excel ---
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setTitle('Devis');
+
+// --- Ajout du logo (plus grand, bien positionné) ---
+$logoPath = '../logo/' . ($devis['logo'] ?: 'default_logo.jpg');
+if (file_exists($logoPath)) {
+    $drawing = new Drawing();
+    $drawing->setName('Logo');
+    $drawing->setPath($logoPath);
+    $drawing->setHeight(100); // plus grand
+    $drawing->setCoordinates('A1');
+    $drawing->setOffsetX(10);
+    $drawing->setOffsetY(5);
+    $drawing->setWorksheet($sheet);
+}
+
+// --- Ajout du QR Code à droite ---
+$qrcodePath = '../qrcodes/qrcode_' . $devis['id'] . '.png';
+if (file_exists($qrcodePath)) {
+    $drawingQR = new Drawing();
+    $drawingQR->setName('QR Code');
+    $drawingQR->setPath($qrcodePath);
+    $drawingQR->setHeight(80);
+    $drawingQR->setCoordinates('F1');
+    $drawingQR->setOffsetX(30);
+    $drawingQR->setOffsetY(5);
+    $drawingQR->setWorksheet($sheet);
+}
+
+// --- Numéro de devis centré, grand et gras ---
+$sheet->mergeCells('B2:E3');
+$sheet->setCellValue('B2', 'DEVIS N° ' . $devis['numero_devis']);
+$sheet->getStyle('B2')->getFont()->setSize(20)->setBold(true);
+$sheet->getStyle('B2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+
+// --- Expéditeur et destinataire sur la même ligne ---
+$row = 5;
+$sheet->mergeCells("A$row:C$row");
+$sheet->mergeCells("D$row:F$row");
+$sheet->setCellValue("A$row", "Expéditeur : BANAMUR BTP");
+$sheet->setCellValue("D$row", "Destinataire : " . $client['nom_client']);
+$sheet->getStyle("A$row:F$row")->getFont()->setBold(true);
+$row += 2;
+
+// --- Infos client et devis (bien espacés) ---
+$sheet->setCellValue("A$row", "Adresse : " . $client['localisation_client']);
+$sheet->setCellValue("D$row", "Date émission : " . $devis['date_emission']);
+$row++;
+$sheet->setCellValue("A$row", "Commune : " . $client['commune_client']);
+$sheet->setCellValue("D$row", "Date expiration : " . $devis['date_expiration']);
+$row++;
+$sheet->setCellValue("A$row", "BP : " . $client['bp_client']);
+$sheet->setCellValue("D$row", "Offre : " . $offre['num_offre']);
+$row++;
+$sheet->setCellValue("A$row", "Pays : " . $client['pays_client']);
+$sheet->setCellValue("D$row", "Référence : " . $offre['reference_offre']);
+$row++;
+$sheet->setCellValue("D$row", "Interlocuteur : " . $offre['commercial_dedie']);
+$row += 2;
+
+// --- En-tête du tableau ---
+$headerRow = $row;
+$headers = ['N°', 'Désignation', 'Quantité', 'Unité', 'Prix unitaire', 'Prix total'];
+foreach ($headers as $col => $title) {
+    $colLetter = Coordinate::stringFromColumnIndex($col + 1);
+    $sheet->setCellValue($colLetter . $headerRow, $title);
+}
+$sheet->getStyle("A$headerRow:F$headerRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FF000000');
+$sheet->getStyle("A$headerRow:F$headerRow")->getFont()->getColor()->setARGB('FFFFFFFF');
+$sheet->getStyle("A$headerRow:F$headerRow")->getFont()->setBold(true);
+$sheet->getStyle("A$headerRow:F$headerRow")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+$row++;
+
+// --- Lignes du devis avec formules ---
+$startDataRow = $row;
+$pos = 1;
+foreach ($lignes as $index => $ligne) {
+    $unite = isset($unitesArray[$ligne['unite_id']]) ? $unitesArray[$ligne['unite_id']]['symbole'] : '';
+    $sheet->setCellValue("A$row", $pos++);
+    $sheet->setCellValue("B$row", $ligne['designation']);
+    $sheet->setCellValue("C$row", $ligne['quantite']);
+    $sheet->setCellValue("D$row", $unite);
+    $sheet->setCellValue("E$row", $ligne['prix']);
+    $sheet->setCellValue("F$row", "=C$row*E$row");
+    $row++;
+}
+
+// --- Totaux (avec formules) ---
+$sheet->setCellValue("E$row", "MONTANT HT");
+$sheet->setCellValue("F$row", "=SUM(F$startDataRow:F" . ($row - 1) . ")");
+$sheet->getStyle("E$row:F$row")->getFont()->setBold(true);
+$row++;
+
+if ($devis['tva_facturable'] == 1) {
+    $sheet->setCellValue("E$row", "TVA 18%");
+    $sheet->setCellValue("F$row", "=F" . ($row - 1) . "*0.18");
+    $sheet->getStyle("E$row:F$row")->getFont()->setBold(true);
+    $row++;
+}
+
+$sheet->setCellValue("E$row", "MONTANT TTC");
+if ($devis['tva_facturable'] == 1) {
+    $sheet->setCellValue("F$row", "=F" . ($row - 2) . "+F" . ($row - 1));
+} else {
+    $sheet->setCellValue("F$row", "=F" . ($row - 1));
+}
+$sheet->getStyle("E$row:F$row")->getFont()->setBold(true);
+
+// --- Mise en forme rapide ---
+foreach (range('A', 'F') as $col) {
+    $sheet->getColumnDimension($col)->setAutoSize(true);
+}
+$sheet->getStyle("A$headerRow:F$row")->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+// --- Pied de page ---
+$row += 2;
+$sheet->mergeCells("A$row:F$row");
+$sheet->setCellValue("A$row", "FOURNITURES INDUSTRIELLES, DEPANNAGE ET TRAVAUX PUBLIQUES - Au capital de 10 000 000 F CFA - Siège Social : Abidjan, Koumassi, Zone industrielle");
+$row++;
+$sheet->mergeCells("A$row:F$row");
+$sheet->setCellValue("A$row", "01 BP 1642 Abidjan 01 - Téléphone : (+225) 27-21-36-27-27  -  Email : info@fidest.org - RCCM : CI-ABJ-2017-B-20163  -  N° CC : 010274200088");
+$sheet->getStyle("A" . ($row - 1) . ":A$row")->getFont()->setSize(8);
+$sheet->getStyle("A" . ($row - 1) . ":A$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+// --- Téléchargement ---
+$filename = 'devis_' . $devis['id'] . '.xlsx';
+\AuditTrail::logFileEvent('export', [
+    'module' => 'request',
+    'action' => 'export_devis_excel',
+    'entity_type' => 'devis',
+    'entity_id' => (string) $devis['id'],
+    'entity_label' => (string) ($devis['numero_devis'] ?? $filename),
+    'format' => 'xlsx',
+    'user_id' => $_SESSION['user_id'] ?? null,
+    'user_name' => $_SESSION['user_name'] ?? $_SESSION['username'] ?? null,
+    'details' => [
+        'client_id' => $devis['client_id'] ?? null,
+        'offre_id' => $devis['offre_id'] ?? null,
+        'line_count' => count($lignes),
+        'filename' => $filename,
+    ],
+], $pdo);
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header("Content-Disposition: attachment; filename=\"$filename\"");
+header('Cache-Control: max-age=0');
+
+$writer = new Xlsx($spreadsheet);
+$writer->save('php://output');
+exit;

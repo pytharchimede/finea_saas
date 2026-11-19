@@ -1,0 +1,86 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#F8FAFC"/>
+  <text x="60" y="70" font-family="Inter, Arial" font-size="36" font-weight="700" fill="#0F172A">BANAMUR Mobile V1 — Vue visuelle pour validation DG</text>
+  <text x="60" y="108" font-family="Inter, Arial" font-size="18" fill="#334155">Focus: Indicateurs, Validations FEB, Notifications Push</text>
+
+  <!-- Phone 1 -->
+  <rect x="60" y="160" width="340" height="740" rx="36" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+  <text x="160" y="200" font-family="Inter, Arial" font-size="20" font-weight="700" fill="#4F46E5">Accueil</text>
+  <rect x="85" y="225" width="290" height="90" rx="16" fill="#EEF2FF"/>
+  <text x="100" y="255" font-family="Inter, Arial" font-size="15" fill="#312E81">KPI En attente: 18</text>
+  <text x="100" y="280" font-family="Inter, Arial" font-size="15" fill="#312E81">Montant: 42 500 000 FCFA</text>
+  <rect x="85" y="330" width="138" height="92" rx="14" fill="#ECFDF5"/>
+  <rect x="237" y="330" width="138" height="92" rx="14" fill="#FFF1F2"/>
+  <text x="98" y="364" font-family="Inter, Arial" font-size="13" fill="#065F46">Validées 7j</text>
+  <text x="250" y="364" font-family="Inter, Arial" font-size="13" fill="#9F1239">Refusées 7j</text>
+  <rect x="85" y="440" width="290" height="170" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="100" y="470" font-family="Inter, Arial" font-size="14" font-weight="600" fill="#0F172A">Alertes prioritaires</text>
+  <text x="100" y="500" font-family="Inter, Arial" font-size="13" fill="#475569">• 6 demandes > 48h non traitées</text>
+  <text x="100" y="525" font-family="Inter, Arial" font-size="13" fill="#475569">• Service Chantier C17 en surcharge</text>
+  <rect x="85" y="625" width="290" height="58" rx="14" fill="#4F46E5"/>
+  <text x="132" y="660" font-family="Inter, Arial" font-size="16" font-weight="700" fill="#FFFFFF">Aller aux validations</text>
+
+  <!-- Phone 2 -->
+  <rect x="440" y="160" width="340" height="740" rx="36" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+  <text x="505" y="200" font-family="Inter, Arial" font-size="20" font-weight="700" fill="#4F46E5">Validations</text>
+  <rect x="465" y="225" width="100" height="36" rx="18" fill="#EEF2FF"/>
+  <text x="487" y="248" font-family="Inter, Arial" font-size="12" fill="#3730A3">Mes services</text>
+  <rect x="575" y="225" width="90" height="36" rx="18" fill="#F1F5F9"/>
+  <text x="595" y="248" font-family="Inter, Arial" font-size="12" fill="#475569">Validées</text>
+  <rect x="465" y="275" width="290" height="130" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="480" y="302" font-family="Inter, Arial" font-size="13" font-weight="700" fill="#0F172A">#1428  CHANTIER C17</text>
+  <text x="480" y="325" font-family="Inter, Arial" font-size="13" fill="#475569">Demandeur: K. Yao</text>
+  <text x="480" y="348" font-family="Inter, Arial" font-size="13" fill="#475569">Montant: 1 250 000 FCFA</text>
+  <rect x="665" y="372" width="80" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="684" y="388" font-family="Inter, Arial" font-size="11" fill="#92400E">En attente</text>
+  <rect x="465" y="418" width="290" height="130" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="480" y="445" font-family="Inter, Arial" font-size="13" font-weight="700" fill="#0F172A">#1427  DEPOT NORD</text>
+  <text x="480" y="468" font-family="Inter, Arial" font-size="13" fill="#475569">Demandeur: S. Konan</text>
+  <text x="480" y="491" font-family="Inter, Arial" font-size="13" fill="#475569">Montant: 740 000 FCFA</text>
+  <rect x="665" y="515" width="80" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="684" y="531" font-family="Inter, Arial" font-size="11" fill="#92400E">En attente</text>
+
+  <!-- Phone 3 -->
+  <rect x="820" y="160" width="340" height="740" rx="36" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+  <text x="865" y="200" font-family="Inter, Arial" font-size="20" font-weight="700" fill="#4F46E5">Détail validation</text>
+  <text x="845" y="240" font-family="Inter, Arial" font-size="14" fill="#0F172A">Réf #1428 · CHANTIER C17</text>
+  <rect x="845" y="260" width="290" height="210" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="860" y="292" font-family="Inter, Arial" font-size="13" fill="#334155">Demandeur: K. Yao</text>
+  <text x="860" y="318" font-family="Inter, Arial" font-size="13" fill="#334155">Service: Génie Civil</text>
+  <text x="860" y="344" font-family="Inter, Arial" font-size="13" fill="#334155">Montant: 1 250 000 FCFA</text>
+  <text x="860" y="370" font-family="Inter, Arial" font-size="13" fill="#334155">Objet: Achat matériaux urgents</text>
+  <text x="860" y="396" font-family="Inter, Arial" font-size="13" fill="#334155">Historique: Soumise il y a 2h</text>
+  <rect x="845" y="490" width="290" height="90" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="860" y="520" font-family="Inter, Arial" font-size="13" fill="#64748B">Commentaire validation...</text>
+  <rect x="845" y="600" width="138" height="58" rx="14" fill="#FFF1F2"/>
+  <text x="892" y="635" font-family="Inter, Arial" font-size="16" font-weight="700" fill="#BE123C">Refuser</text>
+  <rect x="997" y="600" width="138" height="58" rx="14" fill="#4F46E5"/>
+  <text x="1036" y="635" font-family="Inter, Arial" font-size="16" font-weight="700" fill="#FFFFFF">Approuver</text>
+
+  <!-- Phone 4 -->
+  <rect x="1200" y="160" width="340" height="740" rx="36" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+  <text x="1250" y="200" font-family="Inter, Arial" font-size="20" font-weight="700" fill="#4F46E5">Notifications</text>
+  <rect x="1225" y="235" width="290" height="90" rx="14" fill="#EEF2FF"/>
+  <text x="1240" y="263" font-family="Inter, Arial" font-size="12" font-weight="700" fill="#312E81">Nouvelle FEB à valider</text>
+  <text x="1240" y="284" font-family="Inter, Arial" font-size="12" fill="#334155">#1428 · 1 250 000 FCFA</text>
+  <text x="1240" y="304" font-family="Inter, Arial" font-size="11" fill="#64748B">Il y a 2 min</text>
+  <rect x="1225" y="337" width="290" height="90" rx="14" fill="#F1F5F9"/>
+  <text x="1240" y="365" font-family="Inter, Arial" font-size="12" font-weight="700" fill="#0F172A">Demande approuvée</text>
+  <text x="1240" y="386" font-family="Inter, Arial" font-size="12" fill="#334155">#1419 · CHANTIER B4</text>
+  <text x="1240" y="406" font-family="Inter, Arial" font-size="11" fill="#64748B">Il y a 45 min</text>
+
+  <!-- Flow arrows -->
+  <path d="M400 530 C420 530,420 530,440 530" stroke="#6366F1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M780 530 C800 530,800 530,820 530" stroke="#6366F1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1160 530 C1180 530,1180 530,1200 530" stroke="#6366F1" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <text x="520" y="500" font-family="Inter, Arial" font-size="12" fill="#4338CA">1. Ouvrir file de validation</text>
+  <text x="900" y="500" font-family="Inter, Arial" font-size="12" fill="#4338CA">2. Décider (approve/reject)</text>
+  <text x="1260" y="500" font-family="Inter, Arial" font-size="12" fill="#4338CA">3. Suivi par push</text>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6366F1"/>
+    </marker>
+  </defs>
+</svg>

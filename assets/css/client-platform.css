@@ -1,0 +1,24 @@
+.client-platform { border: 0; margin: 0 0 22px; padding: 0; }
+.client-platform legend { margin-bottom: 10px; color: #34425a; font-size: 12px; font-weight: 900; }
+.client-platform-options { display: flex; flex-wrap: wrap; gap: 12px; }
+.client-platform-choice { position: relative; cursor: pointer; }
+.client-platform-choice input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.client-platform-choice span { display: flex; align-items: center; gap: 12px; min-width: 195px; min-height: 80px; border: 2px solid #dce5ef; border-radius: 13px; background: #fff; padding: 9px 14px; color: #26334d; font-size: 13px; font-weight: 800; transition: border-color .15s, background .15s, box-shadow .15s; }
+.client-platform-choice img { width: 60px; height: 60px; object-fit: contain; }
+.client-platform-choice input:checked + span { border-color: #0f766e; background: #ecfdf5; box-shadow: 0 0 0 2px #ccfbf1; }
+.client-platform-choice input:focus-visible + span { outline: 3px solid #2563eb; outline-offset: 3px; }
+.client-platform-notice { display: none; max-width: 650px; margin: 11px 0 0; border-radius: 9px; background: #fff1f2; padding: 10px 12px; color: #9f1239; font-size: 12px; }
+.client-platform[data-selected="impots"] .client-platform-notice { display: block; }
+.cf-load, .cm-verify { display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
+.client-load-reload { flex: none; font-size: 13px; }
+.client-load-logo { flex: none; width: 23px; height: 23px; border-radius: 4px; background: #fff; object-fit: contain; }
+.cf-card[data-platform="impots"], .cm-card[data-platform="impots"] { border-color: #efb16a; }
+.cf-card[data-platform="impots"] .cf-icon { background: #fff0db; color: #c95808; }
+.cm-card[data-platform="impots"] .cm-top { background: linear-gradient(135deg, #19442f, #126333); }
+.cm-card[data-platform="impots"] .cm-top-icon { background: #f68716; color: #fff; }
+.cf-card[data-platform="impots"] .cf-load, .cm-card[data-platform="impots"] .cm-verify { background: #d36a0c; color: #fff; }
+.cf-card[data-platform="impots"] .cf-load:hover, .cm-card[data-platform="impots"] .cm-verify:hover { background: #ae5104; }
+.cf-card[data-platform="impots"] .cf-actions button, .cm-card[data-platform="impots"] .cm-save { background: #f68716; color: #172348; }
+.cf-card[data-platform="impots"] .cf-field input:focus, .cm-card[data-platform="impots"] .cm-field input:focus { border-color: #e47c16; box-shadow: 0 0 0 4px #ffedd5; }
+.cf-card[data-platform="impots"] .client-platform-choice input:checked + span, .cm-card[data-platform="impots"] .client-platform-choice input:checked + span { border-color: #d36a0c; background: #fff7ed; box-shadow: 0 0 0 2px #ffedd5; }
+.cf-card .cf-load:disabled, .cm-card .cm-verify:disabled { cursor: not-allowed; opacity: .55; }

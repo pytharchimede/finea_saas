@@ -1,0 +1,29 @@
+/* Styles additionnels pour un rendu plus premium */
+.badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:9999px; font-size:12px; font-weight:700; letter-spacing:.2px }
+.badge-blue { background:#DBEAFE; color:#1D4ED8 }
+.badge-purple { background:#EDE9FE; color:#6D28D9 }
+.badge-gray { background:#F3F4F6; color:#111827; border:1px solid #E5E7EB }
+.badge-green { background:#DCFCE7; color:#166534 }
+.badge-red { background:#FEE2E2; color:#991B1B }
+.badge-orange { background:#FFEDD5; color:#9A3412 }
+.badge-indigo { background:#E0E7FF; color:#3730A3 }
+
+.card { border-radius: 16px; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); box-shadow: 0 8px 30px rgba(0,0,0,.06); transition: box-shadow .25s ease, transform .12s ease }
+.card:hover { box-shadow: 0 16px 40px rgba(0,0,0,.10); transform: translateY(-3px) }
+.card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:.5rem }
+.card-title { font-weight:700; color:#111827 }
+.card-subtitle { color:#6B7280; font-size:.85rem }
+
+.btn { display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border-radius:.75rem; font-weight:700; transition: transform .08s ease, box-shadow .2s ease }
+.btn:active { transform: translateY(1px) }
+.btn-primary { background:#4F46E5; color:white; box-shadow: 0 6px 20px rgba(79,70,229,.25) }
+.btn-primary:hover { background:#4338CA }
+.btn-danger { background:#DC2626; color:white; box-shadow: 0 6px 20px rgba(220,38,38,.25) }
+.btn-danger:hover { background:#B91C1C }
+.btn-ghost { background:#ffffff; border:1px solid #E5E7EB; color:#374151 }
+.btn-ghost:hover { background:#F9FAFB }
+
+/* Skeleton loader */
+.skeleton { position:relative; overflow:hidden; background: #E5E7EB }
+.skeleton::after { content:""; position:absolute; inset:0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent); animation: shimmer 1.2s infinite }
+@keyframes shimmer { 100% { transform: translateX(100%) } }

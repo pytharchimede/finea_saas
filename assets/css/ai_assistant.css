@@ -1,0 +1,14 @@
+.ai-assistant-page textarea {
+    resize: vertical;
+}
+
+.ai-assistant-page button:disabled {
+    cursor: wait;
+}
+
+.ai-assistant-page .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

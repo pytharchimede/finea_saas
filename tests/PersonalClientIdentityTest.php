@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__.'/InternationalBusinessIdentityTest.php';
+require_once __DIR__.'/../services/ClientBusinessPolicy.php';
+$person=['client_type'=>'physique','fiscal_country'=>'CI','nom_client'=>'Client particulier','localisation_client'=>'Abidjan','telephone_client'=>'0102030405','email_client'=>'client@example.test','identity_evidence'=>'Coordonnées et justificatif vérifiés au dossier'];
+$id=$service->save($person+['documentary_approve'=>1],null,7,false);
+$row=$service->find($id);
+ensure($row['ncc']===null&&$row['identity_method']==='personal','Private clients have no NCC and never use the company API');
+ensure($row['identity_status']==='documentary_pending'&&!ClientBusinessPolicy::usable($row),'Posted approval never grants rights');
+$service->save($person+['documentary_approve'=>1],$id,7,true);$row=$service->find($id);
+ensure(ClientBusinessPolicy::usable($row),'Documentary validation enables the private client');
+$bill=ClientBusinessPolicy::billing($row,['client_ncc'=>'FALSE','template'=>'B2B']);
+ensure($bill['template']==='B2C'&&$bill['client_ncc']===null&&$bill['client_identity_number']===null,'CI private customer billed B2C without a fake tax ID');
+ensure((int)$db->query('SELECT COUNT(*) FROM client_banamur WHERE id_client='.$id.' AND '.ClientBusinessPolicy::sqlUsable())->fetchColumn()===1,'SQL filter agrees for a validated individual');
+$service->save(array_replace($person,['nom_client'=>'Autre nom']),$id,7,false);
+ensure($service->find($id)['identity_status']==='documentary_pending','Changed private identity revokes approval');
+$foreignPerson=array_replace($person,['fiscal_country'=>'FR']);$other=$service->save($foreignPerson+['documentary_approve'=>1],null,7,true);
+ensure(ClientBusinessPolicy::billing($service->find($other))['template']==='B2F','Foreign private customer remains international');
+rejects(fn()=>PersonalClientIdentity::resolve(array_replace($person,['email_client'=>'','documentary_approve'=>1]),[],true,7),'email valide');
+echo "PersonalClientIdentityTest: OK (no NCC/API, permissions, SQL, revocation and B2C/B2F)\n";

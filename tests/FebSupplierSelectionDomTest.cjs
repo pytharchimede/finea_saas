@@ -1,0 +1,15 @@
+const {parseHTML}=require('linkedom'),fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const src=fs.readFileSync(__dirname+'/../validation_demandes_finances.php','utf8');
+const field=kind=>`<div data-smart-select="${kind}"><input data-smart-value data-feb-edit-${kind==='supplier'?'fournisseur':'personnel'}-id value="${kind==='personnel'?'9':''}"><input data-smart-search><div data-smart-results></div><div data-smart-preview></div></div>`;
+const {document}=parseHTML('<html><body><div id="modal"><div id="content"><input data-feb-edit-beneficiary-mode value="personnel"><p data-popup-supplier-selection></p>'+field('supplier')+field('personnel')+'</div></div></body></html>').window;
+const content=document.querySelector('#content');
+const start=src.indexOf('        const smartSelectorConfig =');const end=src.indexOf('        const setupIntegrationModeSelectors=',start);
+assert.ok(start>0&&end>start);
+vm.runInNewContext(src.slice(start,end)+'initializeApprovalSmartSelectors();',{document,approvalContent:content,approvalModal:document.querySelector('#modal'),approvalSelectors:{suppliers:[{id:2,nom:'Depfu',nom_commercial:'Depfu',telephone:'222',email:'hi@example.test',adresse:'Hamburg',logo_path:'logo.png'}],personnel:[{id:9,nom:'Employé'}]},esc:s=>String(s??''),setTimeout:()=>{},supplierUnblockCsrf:'fixture'});
+const search=content.querySelector('[data-smart-select="supplier"] [data-smart-search]');search.focus();
+const option=content.querySelector('[data-smart-option="2"]');assert.ok(option,'Supplier suggestion missing');option.click();
+assert.equal(content.querySelector('[data-feb-edit-beneficiary-mode]').value,'supplier','Personnel mode remained selected');
+assert.equal(content.querySelector('[data-feb-edit-fournisseur-id]').value,'2');assert.equal(content.querySelector('[data-feb-edit-personnel-id]').value,'','Employee reference not cleared');
+assert.match(content.querySelector('[data-popup-supplier-selection]').textContent,/Depfu/);
+assert.match(content.querySelector('[data-popup-supplier-selection]').textContent,/Enregistrer les modifications/);
+console.log('FebSupplierSelectionDomTest: OK (real suggestion click switches personnel to supplier, clears employee and announces selected supplier)');
