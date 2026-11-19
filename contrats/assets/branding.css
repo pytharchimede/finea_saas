@@ -1,0 +1,52 @@
+/* Charte Contrats : noir institutionnel et jaune Banamur. */
+body header[class*="bg-"] {
+    position: relative;
+    background: #050505 !important;
+}
+
+body header[class*="bg-"]::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: #e0a800;
+}
+
+body thead,
+body thead[class*="bg-"] {
+    background: #050505 !important;
+    color: #fff !important;
+}
+
+body section > h2,
+body form section > h2 {
+    border-left: 5px solid #e0a800;
+    padding-left: .75rem;
+    color: #050505;
+}
+
+body .bg-indigo-700,
+body .bg-emerald-700 {
+    background-color: #050505 !important;
+    color: #fff !important;
+}
+
+body .bg-amber-400 {
+    background-color: #e0a800 !important;
+    color: #050505 !important;
+}
+
+body .text-indigo-700,
+body .text-amber-700 {
+    color: #8a6500 !important;
+}
+
+body input:focus,
+body select:focus,
+body textarea:focus {
+    border-color: #e0a800 !important;
+    box-shadow: 0 0 0 3px rgb(224 168 0 / 18%);
+    outline: none;
+}

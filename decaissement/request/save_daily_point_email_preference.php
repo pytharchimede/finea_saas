@@ -1,0 +1,2 @@
+<?php
+require_once __DIR__.'/../../auth_check.php';require_once __DIR__.'/../model/Database.php';require_once __DIR__.'/../../services/DailyDisbursementPointService.php';$uid=(int)($_SESSION['user_id']??0);if($uid<=0||($_SERVER['REQUEST_METHOD']??'')!=='POST'){http_response_code(403);exit;}$service=new DailyDisbursementPointService(Database::getConnection());$service->saveEmailPreference($uid,!empty($_POST['email_enabled']));header('Location: ../profil.php?status=ok&message='.rawurlencode('Préférence e-mail du point quotidien enregistrée.').'#parametres');

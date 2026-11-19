@@ -1,0 +1,13 @@
+# Basic hardening for Apache (WAMP)
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "no-referrer"
+</IfModule>
+
+# Deny direct access to local config
+<Files "config.local.php">
+  Require all denied
+</Files>

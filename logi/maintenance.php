@@ -1,0 +1,9 @@
+<?php require_once __DIR__ . '/_logistics_common.php';
+$q = logi_query_value();
+$allRows=$pdo->query('SELECT m.*, a.designation asset_name FROM logistics_maintenance m LEFT JOIN logistics_assets a ON a.id=m.asset_id ORDER BY m.id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
+$rows = logi_filter_rows($allRows, ['title','asset_name','maintenance_type','planned_at','intervention_at','intervenant_name','status'], $q);
+logi_page_start('Maintenance & reparations','Fiches de maintenance preventive, curative, pannes et interventions mecaniques.');
+logi_listing_toolbar('maintenance_form.php', 'maintenance', $q, 'Rechercher intervention, ressource, intervenant, statut...');
+logi_card_open('Historique maintenance', ($q !== '' ? count($rows) . ' resultat(s)' : 'Interventions et couts')); ?>
+<div class="overflow-x-auto"><table class="w-full border-separate border-spacing-y-3"><thead><tr class="text-left text-xs uppercase tracking-[0.18em] text-slate-500"><th class="px-4">Intervention</th><th>Ressource</th><th>Type</th><th>Dates</th><th>Cout</th><th>Statut</th></tr></thead><tbody><?php foreach($rows as $r): ?><tr class="bg-white shadow-sm"><td class="px-4 py-4 rounded-l-2xl font-semibold"><?= logi_h($r['title']) ?><div class="text-sm text-slate-500"><?= logi_h($r['intervenant_name']) ?></div></td><td><?= logi_h($r['asset_name']) ?></td><td><?= logi_h($r['maintenance_type']) ?></td><td><div class="text-sm">Prevue: <?= logi_h($r['planned_at']) ?></div><div class="text-sm text-slate-500">Reelle: <?= logi_h($r['intervention_at']) ?></div></td><td><?= logi_money($r['cost_amount']) ?></td><td class="rounded-r-2xl"><?= logi_badge($r['status']) ?></td></tr><?php endforeach; ?><?php if(empty($rows)): ?><tr><td colspan="6" class="py-8 text-center text-slate-400">Aucune maintenance trouvee.</td></tr><?php endif; ?></tbody></table></div>
+<?php logi_card_close(); logi_page_end();

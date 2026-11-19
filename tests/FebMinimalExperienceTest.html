@@ -1,0 +1,19 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><title>FEB minimal experience</title>
+<div id="febFormPage"><form id="febMainForm">
+  <section id="febRouteStep" hidden></section>
+  <nav class="feb-step-navigation"><div></div><div><div id="febProgress"></div></div></nav>
+  <section class="feb-step" data-step="0"><label>Titre<input id="febQuoteTitle"></label></section>
+  <section class="feb-step hidden" data-step="1">
+    <div id="febDocumentZone"><div class="mt-4 grid">
+      <label>Fournisseur<select id="febGlobalSupplier" required><option value="">Choisir</option><option value="7">IONOS CI</option><option value="8">Orange CI</option></select><input id="febGlobalSupplierId" type="hidden"></label>
+      <label>Justificatif<input id="febQuoteDocument" name="feb_global_justificatif" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp" required></label>
+    </div><div id="febFidestIaCheck"></div><details class="feb-import-tools"></details></div>
+    <div id="febNeedsBlock"><div id="febBesoinContainer"><div></div></div></div>
+  </section>
+  <section class="feb-step hidden" data-step="2"><label>Paiement<select id="draftFdModePaiement"><option value="">Choisir</option><option>Espèces</option><option>Mobile Money</option><option>Virement</option><option>Chèque</option></select></label></section>
+  <section class="feb-step hidden" data-step="3" id="febReviewStep"><strong id="febReviewRequest"></strong><small id="febReviewDepartment"></small><strong id="febReviewNeeds"></strong><small id="febReviewNeedsDetail"></small><strong id="febReviewSupplier"></strong><strong id="febReviewDocument"></strong><strong id="febReviewAmount"></strong><small id="febReviewPayment"></small></section>
+  <div class="feb-form-actions"><button id="febPrev" type="button">Précédent</button><button id="febNext" type="button" disabled aria-disabled="true">Continuer</button></div>
+</form></div><pre id="result">RUNNING</pre>
+<script>document.querySelector('#febNext').addEventListener('click',()=>{document.querySelector('[data-step="0"]').classList.add('hidden');document.querySelector('[data-step="1"]').classList.remove('hidden')})</script>
+<script src="../assets/js/feb-form-experience.js"></script>
+<script>addEventListener('load',()=>{try{const ok=(v,m)=>{if(!v)throw Error(m)};ok(document.querySelectorAll('.feb-virtual-stage').length===3,'focused stages');ok(document.querySelectorAll('.feb-modern-dropzone').length===1,'dropzone');ok(!document.querySelector('[name="feb_compliance_document"]'),'single document');ok(document.querySelector('#febFormPage').febWizardState?.currentStage==='needs','explicit wizard state');ok(document.querySelector('.feb-request-fields #febQuoteTitle'),'request fields merged into disbursement');const search=document.querySelector('#febSupplierSearchInput');search.value='IONOS';search.dispatchEvent(new Event('input',{bubbles:true}));ok(document.querySelectorAll('.feb-supplier-results button').length===1,'supplier filtering');document.querySelector('.feb-supplier-results button').click();ok(document.querySelector('#febGlobalSupplierId').value==='7','supplier synchronization');ok(document.querySelector('.feb-selected-supplier button')?.textContent==='Modifier','supplier change action');ok(document.querySelectorAll('.feb-payment-choices button').length===4,'payment choices');document.querySelector('.feb-payment-choices [data-value="Virement"]').click();ok(document.querySelector('#draftFdModePaiement').value==='Virement','payment backend value');result.textContent='PASS';}catch(e){result.textContent='FAIL: '+e.message;throw e;}})</script>

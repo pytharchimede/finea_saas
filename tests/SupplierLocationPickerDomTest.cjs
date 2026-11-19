@@ -1,0 +1,31 @@
+const {parseHTML}=require('linkedom');
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
+const {window}=parseHTML(`<html><head></head><body><form><input name="fiscal_country" value="FR"><input name="adresse"><input name="ville"><input name="pays" value="CI"><input name="location_latitude"><input name="location_longitude"><input name="location_source"><input name="location_label"><div data-supplier-location-root><label><input data-location-search></label><div data-location-results></div><div data-location-map></div><div data-location-status></div><div data-location-selection-label></div></div></form></body></html>`);
+const document=window.document;Object.defineProperty(document,'readyState',{value:'complete'});
+const map={setView(){return this},on(){},invalidateSize(){},removeLayer(){}};
+window.L={map:()=>map,tileLayer:()=>({addTo(){}}),marker:()=>({addTo(){return this},on(){},bindPopup(){},setLatLng(){}})};
+window.setTimeout=setTimeout;
+const requests=[],pending=[];
+const context={window,document,console,setTimeout,clearTimeout,requestAnimationFrame:f=>f(),navigator:{},fetch:url=>{requests.push(url);return new Promise(resolve=>pending.push(resolve));}};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../js/supplier-location-picker.js'),'utf8'),context);
+window.initSupplierLocationPicker({apiUrl:'/api/location_lookup.php'});
+const get=n=>document.querySelector(`[name="${n}"]`),search=document.querySelector('[data-location-search]');
+const tick=()=>new Promise(r=>setTimeout(r,720));const flush=()=>new Promise(r=>setTimeout(r,0));
+const answer=items=>pending.shift()({ok:true,json:async()=>({items})});
+const item={display_name:'7 place de la Gare, Sarreguemines, France',lat:49.1,lon:7.07,address:{city:'Sarreguemines',country_code:'fr'},source:'remote'};
+(async()=>{
+ await flush();search.value='Sarreguemines';search.dispatchEvent(new window.Event('input'));await tick();
+ assert.match(requests.at(-1),/country=FR/);answer([item]);await flush();
+ assert.equal(get('location_latitude').value,'','Suggestion must not silently confirm coordinates');
+ document.querySelector('[data-location-result-index="0"]').click();await flush();
+ assert.equal(get('location_latitude').value,'49.1');assert.equal(get('pays').value,'FR');assert.equal(get('ville').value,'Sarreguemines');
+ get('fiscal_country').value='DE';get('fiscal_country').dispatchEvent(new window.Event('change'));
+ assert.equal(get('location_latitude').value,'','Country change retains obsolete position');
+ search.value='Berlin';search.dispatchEvent(new window.Event('input'));await tick();assert.match(requests.at(-1),/country=DE/);
+ // Invalidate a pending request before a replacement search has completed.
+ get('fiscal_country').value='US';get('fiscal_country').dispatchEvent(new window.Event('change'));answer([item]);await flush();
+ assert.equal(document.querySelector('[data-location-result-index]'),null,'Stale country reply displayed');
+ const scope=document.querySelector('select');Object.defineProperty(scope,'value',{writable:true,value:'all'});scope.dispatchEvent(new window.Event('change'));
+ search.value='New York';search.dispatchEvent(new window.Event('input'));await tick();assert.match(requests.at(-1),/country=all/);answer([]);await flush();
+ console.log('SupplierLocationPickerDomTest: OK (fiscal country, worldwide, explicit selection and stale requests)');
+})().catch(e=>{console.error(e);process.exitCode=1});

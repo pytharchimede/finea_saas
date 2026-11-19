@@ -1,0 +1,114 @@
+# Fichiers de configuration locaux (ne pas commiter les secrets)
+# decaissement/config/twilio.local.php
+# decaissement/config/*.local.php
+
+# Dossiers sensibles (ne jamais versionner)
+uploads/
+storage/
+.env
+# model/Database.php
+# decaissement/model/Database.php
+# decaissement/model/DatabaseApp.php
+banamur_project_app.zip
+
+# Données et configurations propres à chaque serveur
+*.local.php
+decaissement/uploads/
+ticketing/private/attachments/
+photo/
+signatures/
+qrCodeFile/*.png
+phpqrcode/-errors.txt
+
+
+# FINEA SaaS - configurations locales
+.env.*
+!.env.example
+*.local.php
+
+# Secrets et sauvegardes
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12
+*.pfx
+*.bak
+*.log
+*.zip
+
+# Dépendances et données générées
+/vendor/
+/node_modules/
+/exports/
+/planning_chantier/exports/
+/phpqrcode/cache/
+
+# Scripts temporaires
+/__tmp_*
+
+# Migrations SQL versionnées du noyau SaaS
+!/saas/
+!/saas/database/
+!/saas/database/migrations/
+!/saas/database/migrations/*.sql
+
+# FINEA SaaS - exclusions de livraison
+*.pre_tenant
+*.pre_dedicated
+*.pre_*
+*.orig
+*.rej
+*.swp
+*.swo
+*.tmp
+*.temp
+*.cache
+*.pid
+
+# Sauvegardes et archives locales
+*.tar
+*.tgz
+*.7z
+*.rar
+*.old
+*.backup
+
+# Environnements et caches
+/.idea/
+/.vscode/
+/.pytest_cache/
+/__pycache__/
+**/__pycache__/
+
+# Données d'exploitation
+/session/
+/sessions/
+/tmp/
+/temp/
+/runtime/
+
+# Audit de sécurité avant première publication
+/decaissement/model/EmailFetcher.php
+/decaissement/phpmailer/README.md
+/model/AttendanceApiClient.php
+/scripts/deploy_identity_release.php
+
+# Données clients, documents personnels et fichiers temporaires
+/img_demande/
+/logi/img/
+/saas/admin/assets/tenant-media/
+admin/error_log
+attendance_api/tmp_login.json
+request/devis_*.docx
+/ressources/*.mpp
+/tmp_compare_*.php
+
+# Configurations locales sensibles
+/.user.ini
+/decaissement/config/mail_config.php
+/decaissement/config/mail_password_config.php
+/decaissement/config/smtp_config.php
+/ticketing/config/database.php

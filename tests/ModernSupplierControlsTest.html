@@ -1,0 +1,13 @@
+<!doctype html><html><body><form><label>Ville<select name="ville" required><option value="">Choisir</option><option value="abidjan">Abidjan</option><option value="bouake">Bouaké</option></select></label><input type="file"><input type="radio" name="supplier_type" value="morale" checked><input name="ncc" value="AB1234"><input name="nom_commercial" value="Manuel"></form><pre id="result">WAIT</pre>
+<script>window.fetch=async()=>({ok:true,json:async()=>({ok:true,supplier:{ncc:'AB1234',name:'OFFICIEL',taxRegime:'Réel'}})});window.onerror=(message)=>document.getElementById('result').textContent='FAIL '+message;</script>
+<script src="../assets/js/modern-form-controls.js"></script>
+<script src="../assets/js/supplier-fne.js"></script>
+<script>
+setTimeout(async()=>{try{
+const check=(v,m)=>{if(!v)throw Error(m);};
+const input=document.querySelector('[role=combobox]');check(input,'Combobox missing');input.focus();input.value='bou';input.dispatchEvent(new Event('input'));check(document.querySelectorAll('[role=option]').length===1,'Filtering failed');input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));check(document.querySelector('select').value==='bouake','Keyboard selection failed');
+const transfer=new DataTransfer();transfer.items.add(new File(['hello'],'document.pdf',{type:'application/pdf'}));document.querySelector('.modern-drop').dispatchEvent(new DragEvent('drop',{dataTransfer:transfer,bubbles:true,cancelable:true}));check(document.querySelector('input[type=file]').files[0].name==='document.pdf','Drop failed');
+check(document.querySelector('[name=nom_commercial]').readOnly,'FNE name editable');document.querySelector('.supplier-fne-box button').click();await new Promise(r=>setTimeout(r,50));check(document.querySelector('[name=nom_commercial]').value==='OFFICIEL','FNE preview failed');
+const dynamic=document.createElement('select');dynamic.innerHTML='<option>Dynamic</option>';document.body.append(dynamic);await new Promise(r=>setTimeout(r,50));check(dynamic.dataset.searchEnhanced==='1','Dynamic select failed');document.getElementById('result').textContent='PASS: search, keyboard, file drop, FNE preview, readonly, dynamic controls';
+}catch(e){document.getElementById('result').textContent='FAIL '+e.message;}},50);
+</script></body></html>

@@ -1,0 +1,21 @@
+// Development-only DOM test: provide jsdom through NODE_PATH; no production dependency.
+const {JSDOM}=require('jsdom');
+const {readFileSync}=require('node:fs');
+const assert=require('node:assert/strict');
+const dom=new JSDOM(`<form><label for="rh-dg">Compte DG</label><select id="rh-dg" name="dg_user_id" required data-rh-search-select><option value="">Sélectionner</option><option value="2">Paul-Alex BRAUD · dg@example.test</option><option value="3">Élodie RH · elodie@example.test</option></select><button>Enregistrer</button></form>`,{runScripts:'outside-only'});
+const {window}=dom;window.HTMLElement.prototype.scrollIntoView=function(){};
+window.eval(readFileSync(require('node:path').join(__dirname,'../js/rh-financial.js'),'utf8'));
+const doc=window.document,input=doc.querySelector('[role=combobox]'),select=doc.querySelector('select'),form=doc.querySelector('form');
+assert.ok(input && select.hidden);assert.equal(select.dataset.searchEnhanced,'rh');assert.equal(doc.querySelector('label').htmlFor,input.id);
+input.focus();assert.equal(doc.querySelectorAll('[role=option]').length,2);
+input.value='elodie';input.dispatchEvent(new window.Event('input'));assert.equal(doc.querySelectorAll('[role=option]').length,1);
+assert.ok(!input.checkValidity());assert.equal(select.value,'');
+input.dispatchEvent(new window.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));input.dispatchEvent(new window.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+assert.equal(select.value,'3');assert.ok(input.checkValidity());assert.equal(input.getAttribute('aria-expanded'),'false');
+assert.equal(new window.FormData(form).get('dg_user_id'),'3');
+input.blur();input.focus();assert.equal(doc.querySelectorAll('[role=option]').length,2);
+input.value='BRAUD';input.dispatchEvent(new window.Event('input'));doc.querySelector('[role=option]').click();assert.equal(select.value,'2');
+input.value='inexistant';input.dispatchEvent(new window.Event('input'));assert.equal(doc.querySelectorAll('[role=option]').length,0);assert.ok(doc.querySelector('[role=status]').textContent.includes('Aucun compte'));assert.equal(select.value,'');assert.ok(!input.checkValidity());
+input.dispatchEvent(new window.KeyboardEvent('keydown',{key:'Escape'}));assert.equal(input.getAttribute('aria-expanded'),'false');
+window.eval(readFileSync(require('node:path').join(__dirname,'../assets/js/modern-form-controls.js'),'utf8'));doc.dispatchEvent(new window.Event('DOMContentLoaded'));assert.equal(doc.querySelectorAll('[role=combobox]').length,1);
+console.log('PASS DG search: name/email filtering, accents, keyboard and mouse selection, submitted ID, invalid free text and empty results.');

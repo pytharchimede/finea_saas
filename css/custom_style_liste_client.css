@@ -1,0 +1,325 @@
+/* Aligner Liste Clients sur le style portail (comme liste_devis) */
+body {
+  background-color: #f5f7fb !important;
+  background-image:
+    radial-gradient(
+      24rem 24rem at 0% 0%,
+      rgba(199, 210, 254, 0.55) 0%,
+      rgba(199, 210, 254, 0) 60%
+    ),
+    radial-gradient(
+      28rem 28rem at 100% 100%,
+      rgba(221, 214, 254, 0.55) 0%,
+      rgba(221, 214, 254, 0) 62%
+    );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.navbar .navbar-brand img {
+  height: 40px;
+  width: auto;
+}
+
+.navbar .navbar-nav .nav-link {
+  color: #374151 !important;
+  font-weight: 600;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.9rem;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+  background: rgba(238, 242, 255, 0.75) !important;
+  border-color: rgba(199, 210, 254, 0.9) !important;
+}
+
+.navbar .navbar-nav .nav-link.active {
+  background: #111827 !important;
+  border-color: #111827 !important;
+  color: #ffffff !important;
+}
+
+.container {
+  margin-top: 2rem;
+}
+
+.client-page-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 1.7rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+}
+
+.client-kicker {
+  color: #0f766e;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.client-page-heading h1 {
+  margin: 0.3rem 0;
+  color: #172348;
+  font-size: 1.65rem;
+  font-weight: 900;
+}
+.client-page-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.82rem;
+}
+.client-count {
+  display: inline-grid;
+  min-width: 2rem;
+  height: 2rem;
+  place-items: center;
+  margin-left: 0.35rem;
+  border-radius: 8px;
+  background: #fabd02;
+  color: #172348;
+  font-size: 0.85rem;
+  vertical-align: middle;
+}
+.client-view-switcher {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  border: 1px solid #dbe3ed;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+.client-view-switcher a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  color: #475569;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+.client-view-switcher a:hover,
+.client-view-switcher .client-view-active {
+  background: #172348;
+  color: #fff;
+}
+
+/* Boutons Bootstrap : alignement portail */
+.btn-primary {
+  background-color: #111827 !important;
+  border-color: #111827 !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover {
+  background-color: #1f2937 !important;
+  border-color: #1f2937 !important;
+  color: #ffffff !important;
+}
+
+.btn {
+  border-radius: 1rem;
+  font-weight: 700;
+}
+
+.btn-sm {
+  border-radius: 0.9rem;
+}
+
+/* Grid de cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Card style (reprend le style devis, sans header) */
+.client-card {
+  position: relative;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.07);
+  border-left: 6px solid rgba(79, 70, 229, 0.55);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.client-card .card-body {
+  padding: 1.5rem;
+}
+
+.client-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  min-height: 76px;
+}
+.client-logo-frame {
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  border: 1px solid #dbe3ed;
+  border-radius: 15px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+.client-logo-placeholder {
+  color: #94a3b8;
+  font-size: 1.4rem;
+}
+.client-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.38rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+.client-state-ok {
+  background: #dcfce7;
+  color: #166534;
+}
+.client-state-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.client-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px -5px rgba(0, 0, 0, 0.15);
+  border-left-color: rgba(79, 70, 229, 0.85);
+}
+
+.client-logo {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  max-width: 90px;
+  max-height: 90px;
+}
+
+.client-name {
+  width: 100%;
+  text-align: left;
+  font-weight: 900;
+  color: #172348;
+  letter-spacing: 0.01em;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.client-ncc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.7rem;
+}
+.client-ncc strong {
+  color: #172348;
+  font-family: monospace;
+  letter-spacing: 0.06em;
+}
+.client-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #edf1f6;
+}
+.client-card-actions .btn {
+  border-radius: 8px;
+  font-size: 0.72rem;
+}
+
+.info-grid p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  color: rgba(17, 24, 39, 0.75);
+}
+
+.info-grid p strong {
+  color: rgba(17, 24, 39, 0.9);
+}
+
+/* Select-search (Select2) */
+.select2-container--default .select2-selection--single {
+  height: 38px;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(229, 231, 235, 0.95);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  line-height: 36px;
+  padding-left: 0.85rem;
+  padding-right: 2.2rem;
+  color: #111827;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: 36px;
+  right: 10px;
+}
+
+.select2-dropdown {
+  border-radius: 0.9rem;
+  border-color: rgba(229, 231, 235, 1);
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .client-page-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .client-view-switcher {
+    width: 100%;
+  }
+  .client-view-switcher a {
+    flex: 1;
+    justify-content: center;
+  }
+}

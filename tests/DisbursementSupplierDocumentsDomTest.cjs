@@ -1,0 +1,24 @@
+const fs = require('node:fs');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const elements = new Map();
+const field = (id) => {
+  if (!elements.has(id)) elements.set(id, {dataset:{},style:{},files:[],value:'',disabled:false,textContent:'',innerHTML:''});
+  return elements.get(id);
+};
+const context = vm.createContext({document:{getElementById:field,addEventListener(){}},window:{}});
+vm.runInContext(fs.readFileSync(__dirname+'/../decaissement/js_form/form_control.js','utf8'),context);
+field('approved-supplier-documents').dataset={approved:'1',company:'1'};
+assert.equal(context.validateCNI(),true);
+assert.equal(context.validatePhoto(),true);
+assert.match(field('cni_demandeur-succes-message').textContent,/non requise/);
+assert.equal(field('first_next_button_4').disabled,false);
+field('telephone').value='+49301234567';
+assert.equal(context.validatePhoneNumber(),true);
+field('approved-supplier-documents').dataset={approved:'0'};
+field('personnel_has_cni').value='0';
+field('personnel_has_photo').value='0';
+assert.equal(context.validateCNI(),false);
+assert.equal(context.validatePhoto(),false);
+assert.equal(field('first_next_button_4').disabled,true);
+console.log('DisbursementSupplierDocumentsDomTest: OK (company CNI exemption, master documents, foreign phone, natural recipient still requires documents)');

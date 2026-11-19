@@ -1,0 +1,20 @@
+(() => {
+  const repeatableNames = new Set([
+    'pieces_manquantes','planning_description','methodologie','besoins_techniques',
+    'vehicules_engins','materiaux','materiel_outillage','epis','exigences_qhse','formations_habilitations'
+  ]);
+  document.querySelectorAll('main textarea[name^="data["]').forEach(textarea => {
+    const match = textarea.name.match(/^data\[([^\]]+)\]$/);if(!match||!repeatableNames.has(match[1]))return;
+    const name=match[1],editable=!textarea.disabled,values=textarea.value.split(/\r?\n/).map(value=>value.trim()).filter(Boolean);
+    let stageData={};try{stageData=JSON.parse(document.getElementById('workflowStageData')?.textContent||'{}');}catch(_){}
+    const asList=value=>Array.isArray(value)?value.map(String):String(value||'').split(/\r?\n/).map(item=>item.trim()).filter(Boolean);
+    const planningStarts=asList(stageData.planning_start),planningEnds=asList(stageData.planning_end),planningProgress=asList(stageData.planning_avancement);
+    textarea.removeAttribute('name');textarea.classList.add('hidden');
+    const shell=document.createElement('div');shell.className='mt-2 rounded-2xl border border-slate-200 bg-slate-50 p-3';
+    const list=document.createElement('div');list.className='space-y-2';shell.appendChild(list);
+    const addRow=(value='',start='',end='',progress='')=>{const row=document.createElement('div');row.className=name==='planning_description'?'grid items-center gap-2 rounded-xl border border-slate-200 bg-white p-2 md:grid-cols-[minmax(220px,1fr)_150px_150px_130px_44px]':'flex items-center gap-2';const input=document.createElement('input');input.type='text';input.name=`data[${name}][]`;input.value=value;input.disabled=!editable;input.placeholder=name==='planning_description'?'Tâche ou phase d’exécution…':'Saisir un élément…';input.className='min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 font-medium outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-100';row.appendChild(input);if(name==='planning_description'){[['planning_start',start,'Début'],['planning_end',end,'Fin']].forEach(([field,date,placeholder])=>{const dateInput=document.createElement('input');dateInput.type='date';dateInput.name=`data[${field}][]`;dateInput.value=date;dateInput.disabled=!editable;dateInput.title=placeholder;dateInput.className='rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm font-bold outline-none focus:border-amber-500';row.appendChild(dateInput);});const progressInput=document.createElement('input');progressInput.type='number';progressInput.min='0';progressInput.max='100';progressInput.step='0.01';progressInput.name='data[planning_avancement][]';progressInput.value=progress;progressInput.disabled=!editable;progressInput.title='Taux d’avancement technique (%)';progressInput.placeholder='Avancement %';progressInput.className='min-w-0 rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm font-bold outline-none focus:border-amber-500';row.appendChild(progressInput);}if(editable){const remove=document.createElement('button');remove.type='button';remove.title='Retirer cet élément';remove.className='flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-200 bg-white text-rose-600 hover:bg-rose-50';remove.innerHTML='<i class="fas fa-trash"></i>';remove.onclick=()=>{if(list.children.length>1)row.remove();else row.querySelectorAll('input').forEach(field=>field.value='');};row.appendChild(remove);}list.appendChild(row);};
+    (values.length?values:['']).forEach((value,index)=>addRow(value,planningStarts[index]||'',planningEnds[index]||'',planningProgress[index]||''));
+    if(editable){const add=document.createElement('button');add.type='button';add.className='mt-3 rounded-xl bg-black px-4 py-2.5 text-sm font-black text-white hover:bg-slate-800';add.innerHTML='<i class="fas fa-plus mr-2 text-amber-300"></i>Ajouter un élément';add.onclick=()=>{addRow();list.lastElementChild.querySelector('input').focus();};shell.appendChild(add);}
+    textarea.insertAdjacentElement('afterend',shell);
+  });
+})();

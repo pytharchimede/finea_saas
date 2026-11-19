@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Boutons Budget</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">🧪 Test des Boutons Budgétaires</h1>
+        
+        <!-- Test des boutons du dashboard -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Boutons Dashboard (Style Tableau)</h2>
+            <div class="flex space-x-2">
+                <a href="#" class="inline-flex items-center px-2 py-1 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors text-xs">
+                    <i class="fas fa-list mr-1"></i>
+                    Fiches
+                </a>
+                <a href="#" class="inline-flex items-center px-2 py-1 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-xs">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    Budget
+                </a>
+                <button class="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-xs">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Détails
+                </button>
+            </div>
+        </div>
+
+        <!-- Test du bouton principal -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Bouton Principal Dashboard</h2>
+            <button class="inline-flex items-center px-6 py-3 bg-yellow-600 text-white rounded-xl hover:bg-yellow-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-chart-pie mr-2"></i>
+                Budgets Détaillés
+            </button>
+        </div>
+
+        <!-- Test des boutons de détails chantiers -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Boutons Détails Chantiers</h2>
+            <div class="flex space-x-2">
+                <button class="inline-flex items-center px-2 py-1 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors text-xs">
+                    <i class="fas fa-eye mr-1"></i>
+                    Détails
+                </button>
+                <button class="inline-flex items-center px-2 py-1 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition-colors text-xs">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    Budget
+                </button>
+                <button class="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-xs">
+                    <i class="fas fa-list mr-1"></i>
+                    Fiches
+                </button>
+                <button class="inline-flex items-center px-2 py-1 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-xs">
+                    <i class="fas fa-download mr-1"></i>
+                    Export
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation navbar -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">Lien Navigation</h2>
+            <nav class="bg-white/80 backdrop-blur shadow-sm border-b border-indigo-50">
+                <div class="flex gap-4 p-4">
+                    <a href="#" class="px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50">📊 Dashboard</a>
+                    <a href="#" class="px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50">🏗️ Chantiers</a>
+                    <a href="#" class="px-3 py-2 rounded-lg font-medium text-indigo-700 bg-indigo-100">💰 Budgets</a>
+                    <a href="#" class="px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50">Approbation</a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-blue-800 mb-2">📋 Comment accéder aux détails budgétaires :</h3>
+            <ol class="list-decimal list-inside space-y-2 text-blue-700">
+                <li><strong>Via Dashboard :</strong> Bouton jaune "Budgets Détaillés" dans l'en-tête</li>
+                <li><strong>Via Tableau Dashboard :</strong> Bouton violet "Budget" dans chaque ligne de chantier</li>
+                <li><strong>Via Navigation :</strong> Lien "💰 Budgets" dans la barre de navigation</li>
+                <li><strong>Via Détails Chantiers :</strong> Bouton orange "Budget" dans chaque ligne</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

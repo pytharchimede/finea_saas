@@ -1,0 +1,1 @@
+Patch de préparation : script CLI pour une base tenant vierge déjà installée, et suppression du doublon de classe Database. Ne pas exécuter sur la base de test non enregistrée dans saas_tenants. Ne change pas la sélection de base de model/Database.php ni le login. Faire une sauvegarde avant installation.

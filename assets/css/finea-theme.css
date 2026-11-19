@@ -1,0 +1,311 @@
+:root {
+  color-scheme: light;
+  --finea-page: #f7f8fc;
+  --finea-surface: #fffefa;
+  --finea-surface-raised: #ffffff;
+  --finea-surface-soft: #f1f5f9;
+  --finea-text: #172033;
+  --finea-muted: #5b687c;
+  --finea-border: #dce3ec;
+  --finea-card-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+html.finea-dark-mode {
+  color-scheme: dark;
+  --finea-page: #08111f;
+  --finea-surface: #111c2d;
+  --finea-surface-raised: #172337;
+  --finea-surface-soft: #1e2c42;
+  --finea-text: #f5f8fc;
+  --finea-muted: #c6d0de;
+  --finea-border: #34445c;
+  --finea-card-shadow: 0 16px 38px rgba(0, 0, 0, 0.32);
+}
+
+body {
+  background-color: var(--finea-page) !important;
+  color: var(--finea-text);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+body:not(.finea-dark-mode) {
+  background:
+    radial-gradient(
+      900px 500px at 0 0,
+      rgba(250, 204, 21, 0.08),
+      transparent 65%
+    ),
+    linear-gradient(180deg, #fffefa 0%, #f7f8fc 100%) !important;
+}
+
+body:not(.finea-dark-mode) .finea-brand-nav {
+  background: rgba(255, 255, 252, 0.96) !important;
+  border-color: var(--brand-accent, #facc15) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
+}
+
+body:not(.finea-dark-mode) .finea-brand-home {
+  background: #fff !important;
+  border-color: var(--finea-border) !important;
+  color: #172033 !important;
+}
+
+body:not(.finea-dark-mode) .finea-brand-home .text-white\/80,
+body:not(.finea-dark-mode) #userMenuBtn .text-white {
+  color: #172033 !important;
+}
+
+body:not(.finea-dark-mode) .finea-brand-action,
+body:not(.finea-dark-mode) .finea-brand-action :where(i, svg),
+body:not(.finea-dark-mode) .finea-brand-category {
+  color: #334155 !important;
+}
+
+body:not(.finea-dark-mode) .finea-brand-action:hover,
+body:not(.finea-dark-mode) .finea-brand-category:hover,
+body:not(.finea-dark-mode) .finea-mega.is-open .finea-brand-category {
+  background: #f1f5f9 !important;
+  color: #111827 !important;
+}
+
+body:not(.finea-dark-mode) #userMenuBtn .text-slate-300,
+body:not(.finea-dark-mode) #userMenuBtn svg {
+  color: #64748b !important;
+}
+
+body :where(.card, .treasury-card, .feb-card, .dashboard-card, .stat-card),
+body :where(article, section, aside, form)[class*="bg-white"],
+body :where(div)[class*="bg-white"][class*="rounded"] {
+  border-color: var(--finea-border) !important;
+  box-shadow: var(--finea-card-shadow);
+}
+
+body:not(.finea-dark-mode) :where(.bg-white, .bg-gray-50, .bg-slate-50) {
+  background-color: var(--finea-surface-raised) !important;
+}
+
+body:not(.finea-dark-mode) :where(.bg-slate-100, .bg-gray-100) {
+  background-color: var(--finea-surface-soft) !important;
+}
+
+html.finea-dark-mode
+  body
+  :where(.bg-white, .bg-gray-50, .bg-slate-50, .bg-slate-100, .bg-gray-100) {
+  background-color: var(--finea-surface) !important;
+}
+
+html.finea-dark-mode
+  body
+  :where(.card, .treasury-card, .feb-card, .dashboard-card, .stat-card),
+html.finea-dark-mode
+  body
+  :where(article, section, aside, form, div)[class*="bg-white"] {
+  background-color: var(--finea-surface-raised) !important;
+  border: 1px solid var(--finea-border) !important;
+  box-shadow: var(--finea-card-shadow) !important;
+}
+
+html.finea-dark-mode
+  body
+  :where(
+    .text-black,
+    .text-gray-950,
+    .text-gray-900,
+    .text-gray-800,
+    .text-slate-950,
+    .text-slate-900,
+    .text-slate-800
+  ) {
+  color: var(--finea-text) !important;
+}
+
+html.finea-dark-mode
+  body
+  :where(
+    .text-gray-700,
+    .text-gray-600,
+    .text-gray-500,
+    .text-slate-700,
+    .text-slate-600,
+    .text-slate-500,
+    .text-slate-400
+  ) {
+  color: var(--finea-muted) !important;
+}
+
+html.finea-dark-mode body :where(input, select, textarea) {
+  background-color: #0d1727 !important;
+  border-color: var(--finea-border) !important;
+  color: var(--finea-text) !important;
+}
+
+html.finea-dark-mode body :where(input, textarea)::placeholder {
+  color: #91a0b5 !important;
+  opacity: 1;
+}
+
+html.finea-dark-mode body :where(table, thead, tbody, tr, th, td) {
+  border-color: var(--finea-border) !important;
+}
+
+html.finea-dark-mode body :where(thead, th) {
+  background-color: #1d2b40 !important;
+  color: #f8fafc !important;
+}
+
+html.finea-dark-mode body :where(tbody tr):hover {
+  background-color: #1b2940 !important;
+}
+
+html.finea-dark-mode
+  body
+  :where(.border, [class*="border-slate-"], [class*="border-gray-"]) {
+  border-color: var(--finea-border) !important;
+}
+
+html.finea-dark-mode
+  body
+  :where(.shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl) {
+  box-shadow: var(--finea-card-shadow) !important;
+}
+
+/* L'espace Employé conserve une identité bleue lumineuse, y compris en sombre. */
+.employee-navbar {
+  background: rgba(255, 255, 252, 0.96) !important;
+  border-bottom: 3px solid #6366f1 !important;
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.1) !important;
+}
+
+.employee-nav-action {
+  border: 1px solid transparent;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.06);
+}
+.employee-nav-action--mail {
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  color: #1d4ed8 !important;
+}
+.employee-nav-action--notification {
+  background: #fffbeb !important;
+  border-color: #fde68a !important;
+  color: #b45309 !important;
+}
+.employee-nav-action--help {
+  background: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+  color: #6d28d9 !important;
+}
+.employee-nav-action:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.15);
+}
+.employee-user-button:hover {
+  border-color: #a5b4fc !important;
+  background: #eef2ff !important;
+}
+
+body.employee-space.finea-dark-mode {
+  background:
+    radial-gradient(
+      900px 520px at 0 0,
+      rgba(59, 130, 246, 0.22),
+      transparent 65%
+    ),
+    radial-gradient(
+      800px 500px at 100% 0,
+      rgba(139, 92, 246, 0.16),
+      transparent 65%
+    ),
+    linear-gradient(180deg, #173052 0%, #1a3558 48%, #162c4b 100%) !important;
+}
+
+body.employee-space.finea-dark-mode .employee-navbar {
+  background: linear-gradient(
+    100deg,
+    rgba(30, 64, 105, 0.98),
+    rgba(49, 46, 129, 0.96),
+    rgba(15, 92, 112, 0.96)
+  ) !important;
+  border-color: #67e8f9 !important;
+  box-shadow: 0 14px 34px rgba(8, 24, 48, 0.3) !important;
+}
+
+body.employee-space.finea-dark-mode
+  .employee-navbar
+  :where(.text-slate-900, .text-slate-800) {
+  color: #fff !important;
+}
+body.employee-space.finea-dark-mode
+  .employee-navbar
+  :where(.text-slate-500, .text-slate-400) {
+  color: #dbeafe !important;
+}
+body.employee-space.finea-dark-mode .employee-user-button {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+}
+body.employee-space.finea-dark-mode .employee-user-button:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+body.employee-space.finea-dark-mode .employee-navbar #employeeThemeToggle {
+  background: #31578a !important;
+  border-color: #7898bf !important;
+  color: #fff !important;
+}
+body.employee-space.finea-dark-mode
+  :where(#employeeNotifMenu, #employeeUserMenu) {
+  background: #23466f !important;
+  border-color: #6688b4 !important;
+  color: #f8fafc !important;
+  box-shadow: 0 20px 48px rgba(8, 24, 48, 0.38) !important;
+}
+body.employee-space.finea-dark-mode
+  :where(#employeeNotifMenu, #employeeUserMenu)
+  :where(.bg-slate-50, .bg-white) {
+  background: #2b527f !important;
+}
+body.employee-space.finea-dark-mode
+  :where(#employeeNotifMenu, #employeeUserMenu)
+  a:hover {
+  background: #356292 !important;
+}
+
+body.employee-space.finea-dark-mode
+  :where(
+    .employee-pointage-page article,
+    .employee-pointage-page section,
+    .employee-pointage-page .rounded-2xl,
+    .employee-pointage-page .rounded-3xl
+  )[class*="bg-white"] {
+  background-color: #23466f !important;
+  border-color: #4f6f98 !important;
+  box-shadow: 0 13px 30px rgba(8, 24, 48, 0.22) !important;
+}
+
+body.employee-space.finea-dark-mode
+  .employee-pointage-page
+  > div
+  > div:first-child {
+  background: linear-gradient(145deg, #244b78, #293f78) !important;
+  border-color: #6688b4 !important;
+}
+
+body.employee-space.finea-dark-mode
+  .employee-pointage-page
+  :where(table, tbody, tr, td) {
+  background-color: transparent !important;
+}
+body.employee-space.finea-dark-mode .employee-pointage-page thead {
+  background: #2e5686 !important;
+}
+body.employee-space.finea-dark-mode .employee-pointage-page tbody tr:hover {
+  background: #2a527f !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}

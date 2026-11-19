@@ -1,0 +1,24 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><title>FEB form regression</title>
+<link rel="stylesheet" href="../assets/css/modern-form-controls.css"><link rel="stylesheet" href="../assets/css/feb-form-experience.css">
+<div id="febFormPage"><form id="febMainForm"><label>Titre du devis<input name="feb_quote_title" value="Devis initial"></label><label>Détails<input name="draft_fd_details_demande"></label><label>Service<select name="service"><option value="">Choisir</option><option value="1">Direction technique</option><option value="2">Comptabilité</option></select></label><input type="file" name="proof" accept=".pdf"></form></div><pre id="result">En cours…</pre>
+<script src="../assets/js/modern-form-controls.js"></script><script src="../assets/js/feb-form-experience.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded',()=>{
+ const check=(ok,msg)=>{if(!ok)throw Error(msg)};
+ const form=document.querySelector('form'),title=form.elements.feb_quote_title,details=form.elements.draft_fd_details_demande;
+ const set=(field,value)=>{field.value=value;field.dispatchEvent(new Event('input',{bubbles:true}));};
+ try{
+  check(details.value==='Devis initial','Initial title not copied');
+  set(title,'Devis corrigé');check(details.value==='Devis corrigé','Live title synchronization lost');
+  set(details,'Travaux personnalisés');set(title,'Dernier titre');check(details.value==='Travaux personnalisés','Custom details overwritten');
+  form.querySelector('.feb-autofill-reset').click();check(details.value==='Dernier titre','Reset failed');
+  const search=form.querySelector('[role=combobox]');search.focus();set(search,'technique');
+  check(form.querySelectorAll('.modern-options [role=option]').length===1,'Search not filtered in same field');
+  form.querySelector('.modern-options [role=option]').click();check(form.elements.service.value==='1','Search selection not submitted');
+  const transfer=new DataTransfer();transfer.items.add(new File(['%PDF-1.4 test'],'devis.pdf',{type:'application/pdf'}));
+  form.querySelector('.modern-drop').dispatchEvent(new DragEvent('drop',{bubbles:true,dataTransfer:transfer}));
+  check(form.elements.proof.files[0].name==='devis.pdf','Drop file not submitted');
+  document.querySelector('#result').textContent='PASS: title, custom details, restore, searchable select, file drop';
+ }catch(e){document.querySelector('#result').textContent='FAIL: '+e.message;throw e;}
+});
+</script></html>
