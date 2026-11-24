@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/Database.php';
 
 require_once __DIR__ . '/../twilio/src/Twilio/autoload.php';
 
@@ -400,7 +401,7 @@ class WhatsAppSMS
     private function getBotResponseFromDB($question)
     {
         // 1. Préparer la connexion à la base de données (vous devez remplacer cela par votre propre connexion)
-        $pdo = new PDO("mysql:host=localhost;dbname=fidestci_app_db", "fidestci_ulrich", "@Succes2019"); // Remplacez par vos infos
+        $pdo = \Database::getConnection();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // 2. Requête SQL pour récupérer la réponse à la question
