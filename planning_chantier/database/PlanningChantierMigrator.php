@@ -30,17 +30,6 @@ final class PlanningChantierMigrator
         $this->createFinancialPilotFields();
         $this->restoreAutomaticallyMaterializedMeetingPoints();
         $this->createIndexesBestEffort();
-        $this->seedOfficeItMeeting();
-    }
-
-    private function seedOfficeItMeeting():void
-    {
-        try{
-            require_once __DIR__.'/OfficeItMeeting20260707Seeder.php';
-            (new OfficeItMeeting20260707Seeder($this->pdo))->seed();
-        }catch(Throwable $e){
-            error_log('[planning_chantier:office_it_seed] '.$e->getMessage());
-        }
     }
 
     /**
@@ -155,24 +144,6 @@ final class PlanningChantierMigrator
         $this->ensureColumn('planning_chantier_meetings', 'performance_json', 'LONGTEXT NULL');
         $this->ensureColumn('planning_chantier_meeting_preparations', 'archived_at', 'DATETIME NULL');
         $this->ensureColumn('planning_chantier_meeting_preparations', 'archived_by', 'INT NULL');
-
-        try {
-            $configured=(int)$this->pdo->query("SELECT COUNT(*) FROM chantier_banamur WHERE planning_is_office_hub=1")->fetchColumn();
-            if($configured===0){
-                $matches=$this->pdo->query("SELECT id FROM chantier_banamur
-                    WHERE archived_at IS NULL AND closed_date IS NULL AND (
-                        REPLACE(UPPER(code),'0','') IN ('CH66','CH066')
-                        OR (
-                            UPPER(titre) LIKE '%BUREAU%'
-                            AND (UPPER(titre) LIKE '%BANAMUR%' OR UPPER(titre) LIKE '%FIDEST%' OR UPPER(titre) LIKE '%FDEST%')
-                        )
-                    )")->fetchAll(PDO::FETCH_COLUMN)?:[];
-                if(count($matches)===1){
-                    $officeId=(int)$matches[0];
-                    $this->pdo->exec("UPDATE chantier_banamur SET planning_is_office_hub=(id=$officeId)");
-                }
-            }
-        } catch(Throwable $e) {}
 
         $this->ensureFinancialWeightCapacity();
 
