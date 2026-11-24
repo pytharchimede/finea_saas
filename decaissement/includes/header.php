@@ -45,13 +45,10 @@ $layoutAssetBase = $layoutAssetBase ?? $layoutModuleBase . 'assets/';
 $layoutProjectRoot = dirname(__DIR__, 2);
 $layoutIsPublicAuthPage = in_array(basename((string)($_SERVER['SCRIPT_NAME'] ?? '')), ['login.php', 'reset_password.php'], true);
 require_once $layoutProjectRoot . '/model/CompanyBranding.php';
-// La page de connexion doit rester disponible et rapide même si MariaDB est lent.
-// Son branding peut utiliser les valeurs par défaut sans ouvrir de connexion DB.
-$layoutCompanyBranding = $layoutIsPublicAuthPage
-    ? CompanyBranding::defaults()
-    : CompanyBranding::get();
-$layoutBrandIconUrl = $layoutIsPublicAuthPage ? $layoutRootBase . 'logo/default_logo.jpg' : $layoutRootBase . 'branding_asset.php?type=icon';
-$layoutBrandLogoUrl = $layoutIsPublicAuthPage ? $layoutRootBase . 'logo/default_logo.jpg' : $layoutRootBase . 'branding_asset.php?type=logo';
+// Branding de l'instance, également sur les pages publiques d'authentification.
+$layoutCompanyBranding = CompanyBranding::get();
+$layoutBrandIconUrl = !empty($layoutCompanyBranding['icon_path']) || !empty($layoutCompanyBranding['logo_path']) ? $layoutRootBase . 'branding_asset.php?type=icon' : '';
+$layoutBrandLogoUrl = !empty($layoutCompanyBranding['logo_path']) ? $layoutRootBase . 'branding_asset.php?type=logo' : '';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -161,7 +158,7 @@ $layoutBrandLogoUrl = $layoutIsPublicAuthPage ? $layoutRootBase . 'logo/default_
     <link rel="stylesheet" href="<?= htmlspecialchars($layoutAssetBase, ENT_QUOTES, 'UTF-8') ?>css/app.css" />
     <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>assets/css/finea-ui.css" />
     <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>assets/css/finea-theme.css?v=20260827" />
-    <?php if (!$layoutIsPublicAuthPage): ?><link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>branding_theme.php?v=<?= rawurlencode((string)($layoutCompanyBranding['updated_at'] ?? '1')) ?>" /><?php endif; ?>
+    <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>branding_theme.php?v=<?= rawurlencode((string)($layoutCompanyBranding['updated_at'] ?? '1')) ?>" />
 <script src="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>assets/js/financial-workflow-progress.js?v=<?= filemtime(__DIR__.'/../../assets/js/financial-workflow-progress.js') ?>" defer></script>
 </head>
 

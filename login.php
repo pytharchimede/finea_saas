@@ -3,21 +3,33 @@ $pageTitle = 'Connexion';
 $activeMenu = '';
 require_once __DIR__ . '/decaissement/includes/header.php';
 require_once __DIR__ . '/partials/auth_finea_mark.php';
-// Le GET /login.php ne doit effectuer aucune requête SQL : la base n'est
-// sollicitée qu'au moment où l'utilisateur soumet réellement ses identifiants.
-$loginCompanyBranding = CompanyBranding::defaults();
+$loginCompanyBranding = $layoutCompanyBranding;
+$loginName = htmlspecialchars((string)$loginCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8');
 ?>
 
-<div class="min-h-screen bg-[#f5f7fb] py-20 px-6 relative overflow-hidden">
+<style>
+.tenant-login {background:linear-gradient(135deg,#f4f6fa 40%,color-mix(in srgb,var(--brand-primary,#081c65) 12%,white));}
+.tenant-login .login-card {border-top:5px solid var(--brand-primary,#081c65)!important;border-bottom:3px solid var(--brand-accent,#d71920)!important;}
+.tenant-login .login-logo {background:white;border:1px solid #e2e8f0;border-radius:14px;padding:14px;display:flex;justify-content:center;align-items:center;}
+.tenant-login .login-logo img {width:100%;height:90px;object-fit:contain;}
+.tenant-login #login-state-icon,.tenant-login button[type=submit],.tenant-login #mobile-qr-login-button {background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;}
+.tenant-login #login-state-title {color:var(--brand-primary,#081c65);}
+.tenant-login .login-rule {background:var(--brand-accent,#d71920)!important;}
+.tenant-login #passkey-login-button {background:#fff!important;color:var(--brand-primary,#081c65)!important;border:1px solid var(--brand-primary,#081c65)!important;}
+.tenant-login input:focus-visible,.tenant-login button:focus-visible,.tenant-login a:focus-visible {outline:2px solid var(--brand-primary,#081c65);outline-offset:3px;}
+</style>
+<div class="tenant-login min-h-screen py-12 px-6 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-200 rounded-full blur-3xl opacity-20"></div>
-        <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-purple-200 rounded-full blur-3xl opacity-20"></div>
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-slate-200 rounded-full blur-3xl opacity-20"></div>
+        <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-slate-200 rounded-full blur-3xl opacity-20"></div>
     </div>
     <div class="min-h-[calc(100vh-10rem)] flex items-center justify-center">
         <div class="w-full max-w-md">
-            <div class="relative p-8" style="background:#fff;border:1px solid #eef;border-radius:18px;box-shadow:0 4px 12px -2px rgba(0,0,0,.07);">
-                <div class="flex items-center justify-center gap-4 mb-6">
-                    <img src="logo/default_logo.jpg" alt="<?= htmlspecialchars((string)$loginCompanyBranding['company_name']) ?>" class="h-16 max-w-[260px] object-contain" loading="eager" />
+            <div class="login-card relative p-8" style="background:#fff;border:1px solid #eef;border-radius:18px;box-shadow:0 4px 12px -2px rgba(0,0,0,.07);">
+                <div class="login-logo mb-6">
+                    <?php if (!empty($loginCompanyBranding['logo_path'])): ?>
+                    <img src="<?= htmlspecialchars($layoutBrandLogoUrl, ENT_QUOTES, 'UTF-8') ?>" alt="<?= $loginName ?>" loading="eager" />
+                    <?php else: ?><strong><?= $loginName ?></strong><?php endif; ?>
                 </div>
                 <?php renderAuthFineaMark(['subtitle' => 'Espace sécurisé propulsé par Finéa']); ?>
                 <div id="login-state-icon" class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-md"
@@ -26,8 +38,8 @@ $loginCompanyBranding = CompanyBranding::defaults();
                 </div>
 
                 <div class="text-center">
-                    <h2 id="login-state-title" class="text-2xl font-semibold tracking-tight text-gray-800">Connexion à votre Espace</h2>
-                    <div class="mt-3 h-1 w-24 mx-auto rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                    <h2 id="login-state-title" class="text-2xl font-semibold tracking-tight text-gray-800">Connexion à votre espace professionnel</h2>
+                    <div class="login-rule mt-3 h-1 w-24 mx-auto rounded-full"></div>
                     <p id="login-state-subtitle" class="mt-3 text-sm text-gray-600">Veuillez saisir vos identifiants professionnels</p>
                 </div>
 
@@ -83,7 +95,7 @@ $loginCompanyBranding = CompanyBranding::defaults();
                     <a href="reset_password.php" class="text-sm font-semibold text-gray-700 hover:text-indigo-600 transition"><i class="fa-solid fa-key mr-1"></i>Mot de passe oublié ?</a>
                 </div>
 
-                <div class="mt-8 text-center text-xs text-gray-500">© 2024 Logiciel de Devis - BANAMUR INDUSTRIES & TECH</div>
+                <div class="mt-8 text-center text-xs text-gray-500">© <?= date('Y') ?> <?= $loginName ?> · Propulsé par Finéa</div>
             </div>
         </div>
     </div>
