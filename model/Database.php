@@ -40,7 +40,7 @@ if (!class_exists('Database')) {
                                 $tenantUuid
                             )
                             || $allowedDatabase === ''
-                            || !preg_match('/^[a-zA-Z0-9_]+$/D', $allowedDatabase)
+                            || !preg_match('/^finea_tenant_[a-zA-Z0-9_]+$/D', $allowedDatabase)
                             || !hash_equals($allowedDatabase, $name)
                             || $name === 'finea_saas_dev'
                             || $name === 'finea_saas_platform'
@@ -63,7 +63,7 @@ if (!class_exists('Database')) {
                         ]
                     );
                 } catch (PDOException $e) {
-                    die('Database connection failed: ' . $e->getMessage());
+                    throw new \RuntimeException('Connexion à la base de données indisponible.');
                 }
             }
             return self::$pdo;

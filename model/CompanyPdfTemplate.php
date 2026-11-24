@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/CompanyBranding.php';
+require_once __DIR__ . '/EnvConfig.php';
 
 /** Gabarit institutionnel commun aux PDF métier. */
 trait CompanyPdfTemplate
@@ -38,8 +39,11 @@ trait CompanyPdfTemplate
 
     public function companyPdfUrl(string $path): string
     {
-        $base=rtrim((string)(getenv('APP_BASE_URL') ?: 'https://projet.fidest.ci'),'/');
-        if(!preg_match('#^https?://[^\s]+$#D',$base))$base='https://projet.fidest.ci';
+        EnvConfig::loadFromDirectory(__DIR__);
+        $base=rtrim((string)EnvConfig::get('APP_BASE_URL', ''),'/');
+        if(!filter_var($base, FILTER_VALIDATE_URL) || !in_array(parse_url($base, PHP_URL_SCHEME), ['http','https'], true)) {
+            throw new RuntimeException('APP_BASE_URL doit être configurée pour cette instance.');
+        }
         return $base.'/'.ltrim($path,'/');
     }
 
