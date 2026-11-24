@@ -4982,6 +4982,10 @@ require_once __DIR__ . '/decaissement/includes/header.php';
     .portal-search-result-icon :is(i, svg) {
         color: #ffffff !important;
     }
+    .portal-user-actions .portal-chip-action,
+    .portal-user-actions .portal-chip-action :is(i, svg, span) {
+        color: #fff !important;
+    }
 </style>
 
 <script>

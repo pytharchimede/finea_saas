@@ -51,6 +51,7 @@ class AccessManager
 
         // Centre de services / Ticketing
         'ticketing/index.php' => ['acces_ticketing', 'acces_admin'],
+        'website/index.php' => ['acces_admin'],
         'parc_informatique/index.php' => ['acces_parc_informatique', 'acces_admin'],
         'parc_informatique/export.php' => ['acces_parc_informatique', 'acces_admin'],
         'parc_informatique/labels.php' => ['acces_parc_informatique', 'acces_admin'],

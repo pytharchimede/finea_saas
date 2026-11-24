@@ -32,6 +32,13 @@ class PortalModuleManager
         $this->migrateItAssetsModule();
         $this->hideLegacyAccountingModule();
         $this->initializeAccountingModule();
+        $this->registerWebsiteModule();
+    }
+
+    private function registerWebsiteModule(): void
+    {
+        $stmt=$this->pdo->prepare("INSERT IGNORE INTO portal_modules (module_key,label,icon,color,target,slug,subtitle,required_permissions_json,sort_order,is_active) VALUES (?,?,?,?,?,?,?,?,?,1)");
+        $stmt->execute(['module_website','Site web','fa-globe','#081c65','website/index.php','website','Gestion des contenus du site institutionnel','["acces_admin"]',180]);
     }
 
     private function initializeAccountingModule(): void
