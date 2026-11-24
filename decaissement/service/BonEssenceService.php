@@ -47,44 +47,7 @@ class BonEssenceService
                 $demande = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
             }
         }
-        if (!$demande) {
-            \EnvConfig::loadFromDirectory(__DIR__);
-            $host = \EnvConfig::get('APP_DB_HOST', 'localhost');
-            $user = \EnvConfig::get('APP_DB_USER', 'fidestci_ulrich');
-            $pass = \EnvConfig::get('APP_DB_PASS', '@Succes2019');
-            $candidates = array_unique([
-                \EnvConfig::get('APP_DB_NAME', 'fidestci_app_db'),
-                'fidest_app_db',
-                'fidestci_app_db'
-            ]);
-            foreach ($candidates as $dbName) {
-                $debug['tried_dbs'][] = $dbName;
-                try {
-                    $pdoAlt = new PDO("mysql:host={$host};dbname={$dbName};charset=utf8mb4", $user, $pass);
-                    $pdoAlt->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $pdoAlt->exec('SET NAMES utf8mb4');
-                    $stmt = $pdoAlt->prepare('SELECT * FROM demande_essence WHERE TRIM(code_bon)=?');
-                    $stmt->execute([trim($idBon)]);
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if (!$row) {
-                        $idBase = preg_replace('/-\d+$/', '', $idBon);
-                        if ($idBase) {
-                            $stmt = $pdoAlt->prepare('SELECT * FROM demande_essence WHERE TRIM(code_bon)=?');
-                            $stmt->execute([$idBase]);
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                        }
-                    }
-                    if ($row) {
-                        $demande = $row;
-                        $debug['demande_db'] = $dbName;
-                        break;
-                    }
-                } catch (\Throwable $e) {
-                    // try next
-                }
-            }
-        }
-        if (!$demande) {
+        if (!$demande && $this->pdoProj !== $this->pdoApp) {
             // essayer en base PROJET si table existe
             try {
                 $stmt = $this->pdoProj->prepare('SELECT * FROM demande_essence WHERE TRIM(code_bon)=?');
@@ -167,7 +130,7 @@ class BonEssenceService
         $montant = $demande['montant'] ?? ($fiche['montant_fiche'] ?? 0);
         $dateDem = $demande['date_demande'] ?? ($fiche['date_creat_fiche'] ?? date('Y-m-d'));
         $motif  = $demande['motif'] ?? ($fiche['designation_fiche'] ?? '');
-        $dgNom  = $demande['dg_nom'] ?? 'M. Alex Braud';
+        $dgNom  = $demande['dg_nom'] ?? '';
         $codeAff = $demande['code_bon'] ?? ($num_fiche ?? (string)$idBon);
         $date = new DateTime($dateDem);
         $codeBon = $demande['code_bon'] ?? ('BE-' . $date->format('ym') . '-' . substr(str_pad($num_fiche ?? '0', 5, '0', STR_PAD_LEFT), -5));
