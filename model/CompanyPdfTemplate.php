@@ -56,14 +56,14 @@ trait CompanyPdfTemplate
         $right = 11.0;
         $headerHeight = 34.0;
         $qrSize = 20.0;
-        $logoWidth = 22.0;
+        $logoWidth = 36.0;
         $qrX = $pageWidth - $right - $qrSize;
         $boxWidth = $pageWidth > 230 ? 48.0 : 41.0;
         $boxX = $qrX - $boxWidth - 4.0;
         $titleX = $left + $logoWidth + 5.0;
         $titleWidth = max(55.0, $boxX - $titleX - 4.0);
 
-        // Branding configured in FINEA; default is black and gold.
+        // Branding configured for the current tenant.
         $this->SetFillColor(...$this->companyPdfRgb($colors['primary']));
         $this->Rect(0, 0, $pageWidth, $headerHeight, 'F');
         $this->SetFillColor(...$this->companyPdfRgb($colors['accent']));
@@ -71,9 +71,18 @@ trait CompanyPdfTemplate
 
         $logo = CompanyBranding::logoFile();
         if ($logo !== '' && is_file($logo)) {
-            // Le logo source est carre : une seule dimension forcee evite toute deformation.
-            if(strtolower(pathinfo($logo,PATHINFO_EXTENSION))==='svg')$this->ImageSVG($logo,$left,5.5,$logoWidth,0);
-            else $this->Image($logo, $left, 5.5, $logoWidth, 0, '', '', '', false, 300, '', false, false, 0, true);
+            $this->SetFillColor(255,255,255);
+            $this->RoundedRect($left,4,$logoWidth,25,2,'1111','F');
+            if(strtolower(pathinfo($logo,PATHINFO_EXTENSION))==='svg') {
+                $this->ImageSVG($logo,$left+2,6,$logoWidth-4,21,'','','',0,false);
+            } else {
+                $size=@getimagesize($logo);
+                if ($size && $size[0]>0 && $size[1]>0) {
+                    $scale=min(($logoWidth-4)/$size[0],21/$size[1]);
+                    $w=$size[0]*$scale; $h=$size[1]*$scale;
+                    $this->Image($logo,$left+($logoWidth-$w)/2,4+(25-$h)/2,$w,$h);
+                }
+            }
         }
 
         $this->SetXY($titleX, 7.5);
@@ -82,7 +91,7 @@ trait CompanyPdfTemplate
         $this->MultiCell($titleWidth, 10, mb_strtoupper($this->companyPdfTitle), 0, 'C', false, 1, '', '', true, 0, false, true, 10, 'M');
         $this->SetX($titleX);
         $this->SetFont('dejavusans', '', 6.5);
-        $this->SetTextColor(...$this->companyPdfRgb($colors['accent']));
+        $this->SetTextColor(...$this->companyPdfContrast($colors['primary']));
         $this->Cell($titleWidth, 4, 'DOCUMENT MAÎTRISÉ · ISO 9001', 0, 1, 'C');
 
         $this->SetDrawColor(...$this->companyPdfRgb($colors['accent']));
@@ -90,7 +99,7 @@ trait CompanyPdfTemplate
         $this->RoundedRect($boxX, 5, $boxWidth, 23, 2, '1111', 'DF');
         $this->SetXY($boxX + 2.5, 7);
         $this->SetFont('dejavusans', 'B', 6);
-        $this->SetTextColor(...$this->companyPdfRgb($colors['accent']));
+        $this->SetTextColor(...$this->companyPdfContrast($colors['primary']));
         $this->Cell($boxWidth - 5, 3.5, 'TYPE DE DOCUMENT', 0, 1);
         $this->SetX($boxX + 2.5);
         $this->SetTextColor(...$this->companyPdfContrast($colors['primary']));

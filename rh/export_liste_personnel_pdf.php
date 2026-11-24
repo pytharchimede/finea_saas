@@ -81,10 +81,10 @@ foreach ($rows as $index => $row) {
         <td width="10%" class="code">' . rh_personnel_pdf_h($row['matricule'] ?? '-') . '</td>
         <td width="20%" class="name">' . rh_personnel_pdf_h($row['full_name'] ?? '-') . '</td>
         <td width="16%">' . rh_personnel_pdf_h($row['service_label'] ?? '-') . '</td>
-        <td width="17%">' . rh_personnel_pdf_h($row['fonction_label'] ?? '-') . '</td>
+        <td width="15%">' . rh_personnel_pdf_h($row['fonction_label'] ?? '-') . '</td>
         <td width="13%">' . rh_personnel_pdf_h($row['statut_label'] ?? '-') . '</td>
         <td width="10%">' . rh_personnel_pdf_h($row['site_label'] ?? '-') . '</td>
-        <td width="8%" class="center">' . rh_personnel_pdf_h(rh_personnel_pdf_date($row['hire_date'] ?? '')) . '</td>
+        <td width="10%" class="center">' . rh_personnel_pdf_h(rh_personnel_pdf_date($row['hire_date'] ?? '')) . '</td>
         <td width="6%" class="center" style="' . $stateStyle . '">' . ($isActive ? 'ACTIF' : 'SORTI') . '</td>
     </tr>';
 }
@@ -94,7 +94,9 @@ function rh_personnel_draw_kpi_card(TCPDF $pdf, float $x, string $icon, string $
     $y = 40.5;
     $width = 65.5;
     $height = 20;
-    $accent = $yellow ? [250, 189, 2] : [23, 23, 23];
+    $colors=$pdf->companyPdfColors();
+    $accentHex=$yellow ? $colors['accent'] : $colors['primary'];
+    $accent=$pdf->companyPdfRgb($accentHex);
 
     $pdf->SetFillColor(250, 250, 250);
     $pdf->SetDrawColor(212, 212, 212);
@@ -105,7 +107,7 @@ function rh_personnel_draw_kpi_card(TCPDF $pdf, float $x, string $icon, string $
     $cx = $x + 10.3;
     $cy = $y + 10;
     $pdf->RoundedRect($cx - 5.8, $cy - 5.8, 11.6, 11.6, 2.8, '1111', 'F');
-    $pdf->SetDrawColor($yellow ? 0 : 255, $yellow ? 0 : 255, $yellow ? 0 : 255);
+    $pdf->SetDrawColor(...$pdf->companyPdfContrast($accentHex));
     $pdf->SetLineWidth(.7);
 
     if ($icon === 'people') {
@@ -136,20 +138,23 @@ function rh_personnel_draw_kpi_card(TCPDF $pdf, float $x, string $icon, string $
         $pdf->SetFont('dejavusans', 'B', $fontSize);
     }
     $pdf->SetXY($textX, $y + 8.6);
-    $pdf->SetTextColor(23, 23, 23);
+    $pdf->SetTextColor(...$pdf->companyPdfRgb($colors['text']));
     $pdf->Cell($textWidth, 6, $value, 0, 1, 'L', false, '', 1);
 }
 $rowsHtml = $rowsHtml ?: '<tr><td colspan="8" class="center muted">Aucun collaborateur trouve.</td></tr>';
 
+$palette=(new RhPersonnelDirectoryPdf())->companyPdfColors();
+$headerInk=(new RhPersonnelDirectoryPdf())->companyPdfContrast($palette['primary']);
+$headerInkHex=sprintf('#%02x%02x%02x', ...$headerInk);
 $html = '
 <style>
     body { font-family: dejavusans; color:#171717; font-size:7.5px; }
     .kpi { border:1px solid #d4d4d4; background-color:#fafafa; padding:7px; }
     .kpi-value { color:#171717; font-size:10px; font-weight:bold; }
     .kpi-label { color:#737373; font-size:6.5px; text-transform:uppercase; }
-    .section-title { color:#171717; font-size:11px; font-weight:bold; border-bottom:2px solid #fabd02; padding-bottom:4px; }
+    .section-title { color:#171717; font-size:11px; font-weight:bold; border-bottom:2px solid ' . $palette['accent'] . '; padding-bottom:4px; }
     table { border-collapse:collapse; width:100%; }
-    th { background-color:#fabd02; border:1px solid #171717; color:#000000; padding:6px 4px; font-size:7px; font-weight:bold; text-transform:uppercase; }
+    th { background-color:' . $palette['primary'] . '; border:1px solid ' . $palette['primary'] . '; color:' . $headerInkHex . '; padding:6px 4px; font-size:7px; font-weight:bold; text-transform:uppercase; }
     td { border:1px solid #d4d4d4; padding:4px; vertical-align:middle; }
     .name { font-weight:bold; color:#171717; }
     .code { font-weight:bold; color:#525252; }
@@ -163,10 +168,10 @@ $html = '
             <th width="10%">Matricule</th>
             <th width="20%">Collaborateur</th>
             <th width="16%">Service</th>
-            <th width="17%">Fonction</th>
+            <th width="15%">Fonction</th>
             <th width="13%">Statut RH</th>
             <th width="10%">Site</th>
-            <th width="8%">Entree</th>
+            <th width="10%">Entree</th>
             <th width="6%">Etat</th>
         </tr>
     </thead>
@@ -175,7 +180,7 @@ $html = '
 
 $pdf = new RhPersonnelDirectoryPdf('L', 'mm', 'A4', true, 'UTF-8', false);
 $pdf->SetCreator('FINEA');
-$pdf->SetAuthor('BANAMUR INDUSTRIES ET TECHNOLOGIES');
+$pdf->SetAuthor(CompanyBranding::get()['company_name']);
 $pdf->SetTitle('Liste du personnel RH');
 $pdf->companyPdfTitle = 'Liste du personnel RH';
 $pdf->companyPdfType = 'Registre du personnel';
