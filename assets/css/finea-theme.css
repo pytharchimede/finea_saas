@@ -34,15 +34,15 @@ body:not(.finea-dark-mode) {
   background:
     radial-gradient(
       900px 500px at 0 0,
-      rgba(250, 204, 21, 0.08),
+      rgb(var(--brand-primary-rgb, 8 28 101) / .08),
       transparent 65%
     ),
-    linear-gradient(180deg, #fffefa 0%, #f7f8fc 100%) !important;
+    linear-gradient(180deg, #ffffff 0%, #f7f8fc 100%) !important;
 }
 
 body:not(.finea-dark-mode) .finea-brand-nav {
   background: rgba(255, 255, 252, 0.96) !important;
-  border-color: var(--brand-accent, #facc15) !important;
+  border-color: var(--brand-accent, #1746b0) !important;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
 }
 
@@ -174,7 +174,7 @@ html.finea-dark-mode
 /* L'espace Employé conserve une identité bleue lumineuse, y compris en sombre. */
 .employee-navbar {
   background: rgba(255, 255, 252, 0.96) !important;
-  border-bottom: 3px solid #6366f1 !important;
+  border-bottom: 3px solid var(--brand-accent, #1746b0) !important;
   box-shadow: 0 12px 30px rgba(79, 70, 229, 0.1) !important;
 }
 
