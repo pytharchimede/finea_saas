@@ -4971,6 +4971,17 @@ require_once __DIR__ . '/decaissement/includes/header.php';
             flex: 1;
         }
     }
+    /* Contrast: icons on dark portal tiles must remain white in every theme. */
+    .portal-module-icon,
+    .portal-favorite-icon,
+    .portal-module-launcher-icon,
+    .portal-search-result-icon,
+    .portal-module-icon :is(i, svg),
+    .portal-favorite-icon :is(i, svg),
+    .portal-module-launcher-icon :is(i, svg),
+    .portal-search-result-icon :is(i, svg) {
+        color: #ffffff !important;
+    }
 </style>
 
 <script>
