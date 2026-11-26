@@ -285,6 +285,48 @@ ob_start();
     }
     .ao-decision-panel { margin-top:22px; padding:20px; border:1px solid #dce4ef; border-radius:12px; background:#f8fafc; }
     .ao-decision-panel textarea { width:100%; min-height:92px; margin-top:12px; padding:11px; border:1px solid #cbd5e1; border-radius:8px; resize:vertical; }
+    /* Decision DG: follow the shared FINEA theme, including early HTML theme initialization. */
+    .devis-page .ao-decision-panel {
+        background: var(--dv-card, #fff) !important;
+        border-color: var(--devis-border, #dce4ef) !important;
+        color: var(--dv-text, #17243d) !important;
+    }
+    .devis-page .ao-decision-panel textarea {
+        background: var(--dv-field, #fff) !important;
+        color: var(--dv-text, #17243d) !important;
+        border-color: var(--devis-border, #cbd5e1) !important;
+    }
+    .devis-page .ao-decision-panel textarea::placeholder {
+        color: var(--dv-muted, #64748b) !important;
+        opacity: 1;
+    }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-decision-panel {
+        background: #172337 !important;
+        border-color: #52647e !important;
+        color: #f5f8fc !important;
+    }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-decision-panel textarea {
+        background: #0d1727 !important;
+        color: #f5f8fc !important;
+        border-color: #52647e !important;
+    }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-decision-panel textarea::placeholder {
+        color: #c6d0de !important;
+    }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-decision-buttons button[value="interested"] {
+        background: #123c32 !important;
+        color: #a7f3d0 !important;
+        border-color: #38866d !important;
+    }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-decision-buttons button[value="not_interested"] {
+        background: #481f2b !important;
+        color: #fecdd3 !important;
+        border-color: #a65365 !important;
+    }
+    .devis-page .ao-decision-panel :is(textarea,button):focus-visible {
+        outline: 2px solid var(--dv-focus, #31589c);
+        outline-offset: 2px;
+    }
     .ao-decision-buttons { display:flex; flex-wrap:wrap; gap:9px; margin-top:11px; }
     .ao-decision-buttons button { min-height:40px; padding:9px 13px; border-radius:8px; font-size:12px; font-weight:800; }
     .ao-compatibility { display:grid; grid-template-columns:130px minmax(0,1fr); gap:18px; align-items:center; }
