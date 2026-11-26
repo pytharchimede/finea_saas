@@ -10,8 +10,7 @@ require_once __DIR__ . '/../decaissement/model/EmailFetcher.php';
 
 $pageTitle = 'Emails - Lecture';
 $activeMenu = 'Portail';
-require_once __DIR__ . '/../decaissement/includes/header.php';
-require_once __DIR__ . '/../decaissement/includes/navbar.php';
+$embedded = ($_GET['pane'] ?? '') === '1';
 
 $username = trim((string)($_SESSION['mail_pro'] ?? ''));
 $userId = (int)($_SESSION['user_id'] ?? 0);
@@ -60,6 +59,16 @@ if (!$fetcher->isConnected()) {
 $fetcher->closeConnection();
 
 ?>
+<?php if (!$embedded) {
+require_once __DIR__ . '/../decaissement/includes/header.php';
+require_once __DIR__ . '/../decaissement/includes/navbar.php';
+} else { ?>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<?php require_once __DIR__.'/../model/CompanyBranding.php'; $mailPalette=CompanyBranding::palette(); ?>
+<style>:root{--brand-primary:<?= htmlspecialchars($mailPalette['primary']) ?>;--brand-on-primary:<?= CompanyBranding::contrastColor($mailPalette['primary']) ?>}body{margin:0;font:14px system-ui}a{color:inherit} .finea-mail a{display:inline-block;margin:4px;padding:5px} .finea-mail>div{margin-bottom:12px} .finea-mail .border-b{border-bottom:1px solid var(--mail-border);padding:12px}</style>
+<script>try{document.documentElement.classList.toggle('finea-dark-mode',(localStorage.getItem('finea.app.theme')||localStorage.getItem('finea.portal.theme'))==='dark')}catch(e){}</script></head><body>
+<?php } ?>
+<link rel="stylesheet" href="mail-theme.css?v=<?= filemtime(__DIR__.'/mail-theme.css') ?>">
 <style>
     /* Rendu email: éviter débordements sur contenus HTML */
     .email-body img {
@@ -76,9 +85,9 @@ $fetcher->closeConnection();
         text-decoration: underline;
     }
 </style>
-<div class="container mx-auto px-4 pb-10">
+<div class="finea-mail container mx-auto px-4 pb-10">
 
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <?php if (!$embedded): ?><div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Lecture email</h1>
             <p class="mt-2 text-gray-600"><a href="mailbox_emails.php?folder=<?= urlencode($folder) ?>" class="text-indigo-700 hover:underline">← Retour à la boîte</a></p>
@@ -92,6 +101,7 @@ $fetcher->closeConnection();
         </div>
     </div>
 
+    <?php endif; ?>
     <?php if (!empty($error)): ?>
         <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700">
             <div class="font-semibold">Erreur</div>
@@ -161,19 +171,19 @@ $fetcher->closeConnection();
                 <?php endif; ?>
 
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <a href="compose_email.php?folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-xl shadow hover:bg-indigo-700 transition text-sm">
+                    <a target="_top" href="compose_email.php?folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-xl shadow hover:bg-indigo-700 transition text-sm">
                         <i class="fas fa-pen"></i>
                         Nouveau
                     </a>
-                    <a href="compose_email.php?action=reply&uid=<?= urlencode((string)$uid) ?>&folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
+                    <a target="_top" href="compose_email.php?action=reply&uid=<?= urlencode((string)$uid) ?>&folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
                         <i class="fas fa-reply"></i>
                         Répondre
                     </a>
-                    <a href="compose_email.php?action=replyall&uid=<?= urlencode((string)$uid) ?>&folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
+                    <a target="_top" href="compose_email.php?action=replyall&uid=<?= urlencode((string)$uid) ?>&folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
                         <i class="fas fa-reply-all"></i>
                         Répondre à tous
                     </a>
-                    <a href="compose_email.php?action=forward&uid=<?= urlencode((string)$uid) ?>&folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
+                    <a target="_top" href="compose_email.php?action=forward&uid=<?= urlencode((string)$uid) ?>&folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
                         <i class="fas fa-share"></i>
                         Transférer
                     </a>
@@ -265,9 +275,7 @@ $fetcher->closeConnection();
                     ?>
 
                     <?php if (trim($safeHtml) !== '' && trim($rawHtml) !== ''): ?>
-                        <div class="email-body p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800">
-                            <?= $safeHtml ?>
-                        </div>
+                        <iframe title="Contenu du message" class="mail-body-frame" sandbox="" referrerpolicy="no-referrer" srcdoc="<?= htmlspecialchars('<meta http-equiv="Content-Security-Policy" content="default-src &apos;none&apos;; img-src data:; style-src &apos;unsafe-inline&apos;"><style>body{font:14px system-ui;color:#172033;background:white;overflow-wrap:anywhere}img,table{max-width:100%}</style>'.$safeHtml, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"></iframe>
                     <?php else: ?>
                         <div class="p-4 rounded-xl bg-gray-50 border border-gray-200 whitespace-pre-wrap text-gray-800">
                             <?= nl2br(htmlspecialchars($rawText, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?>
@@ -280,7 +288,7 @@ $fetcher->closeConnection();
     <?php endif; ?>
 
 </div>
-<?php require_once __DIR__ . '/../decaissement/includes/footer.php'; ?>
+<?php if (!$embedded) require_once __DIR__ . '/../decaissement/includes/footer.php'; else echo '</body></html>'; ?>
 
 
 
