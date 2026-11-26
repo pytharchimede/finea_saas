@@ -104,3 +104,37 @@
 }
 .button.primary{background:#685887;border-color:#685887}
 .button.primary:hover{background:#594a76;border-color:#594a76}
+
+
+/* Shared FINEA tenant palette and appearance. */
+@media screen {
+:root{--ink:var(--brand-text,var(--finea-text));--muted:var(--brand-muted,var(--finea-muted));--accent:var(--brand-accent,#1746b0);--line:var(--finea-border)}
+html.finea-dark-mode{--ink:var(--finea-text);--muted:var(--finea-muted);--accent:#a5c7ff}
+body{color:var(--ink)}
+body.finea-dark-mode{background:var(--finea-page)!important}
+.sidebar,.topbar{background:var(--brand-primary,#081c65);color:var(--brand-on-primary,#fff);border-color:var(--brand-accent)}
+.sidebar :is(.brand,.workspace-label,.sidebar-bottom,.sidebar-bottom small,nav a),.topbar :is(strong,.eyebrow){color:var(--brand-on-primary,#fff)}
+.accounting-brand{border-color:currentColor}
+.accounting-brand img{background:#fff;border-radius:8px;padding:5px}
+.sidebar nav a:hover,.sidebar nav a.active,.sidebar .portal-return,.accounting-brand .brand-module,.topbar .access-label,.topbar .accounting-theme-toggle{background:var(--brand-accent,#1746b0);color:var(--brand-on-accent,#fff);border-color:transparent}
+.portal-return small,.portal-return>span:first-child{color:inherit;background:transparent}
+.topbar .accounting-theme-toggle{margin-left:auto;margin-right:12px}
+.button.primary,.button.primary:hover,.tabs a.selected{background:var(--brand-accent);border-color:var(--brand-accent);color:var(--brand-on-accent)}
+.page-heading h1{color:var(--ink)}
+html.finea-dark-mode :is(.card,.stats article,.filters,.button:not(.primary):not(.danger):not(.accounting-theme-toggle),.search-select-menu,.search-select-status,.file-drop-preview,.file-drop-zone,.entry-create-panel,.entries-tabs,.opening,.source-amount,.workflow b,.file-drop-icon,.file-drop-badge,.file-drop-remove,.search-select-code,.pill){background:var(--finea-surface-raised);color:var(--finea-text);border-color:var(--finea-border)}
+html.finea-dark-mode :is(label,td small,footer,.stats small,.history li,dd,.tabs a,.search-select-option,.search-select-icon,.search-select-chevron,.file-drop-hint strong,.file-drop-hint span,.file-drop-hint small,.file-drop-info strong,.entry-create-copy h2,.entry-create-copy p,.source-amount small,.source-amount strong){color:var(--finea-text)}
+html.finea-dark-mode :is(td,.entries-card .actions){border-color:var(--finea-border)}
+html.finea-dark-mode :is(.search-select-option:hover,.search-select-option.highlighted,.search-select-option[aria-selected=true],.entries-tabs a.selected,.entries-tabs a:hover,.file-drop-zone:hover,.file-drop-zone.drag-over,.file-drop-zone:focus-within,.entry-create-icon){background:var(--finea-surface-soft);color:var(--finea-text)}
+html.finea-dark-mode #accounts-table .account-row{--account-tint:var(--finea-surface);--account-marker:var(--finea-border);--account-tone:var(--finea-text)}
+html.finea-dark-mode #accounts-table :is(.account-row--class,.account-row--group,.account-row--subgroup){--account-tint:var(--finea-surface-soft);--account-marker:var(--brand-accent)}
+html.finea-dark-mode #accounts-table :is(.account-name,.account-parent,.account-level-label,.pill){color:var(--finea-text)}
+html.finea-dark-mode #accounts-table .pill{background:var(--finea-surface-raised);border-color:var(--finea-border)}
+html.finea-dark-mode :is(.notice,.pill.draft){background:#423719;color:#fde6a6;border-color:#8b7138}
+html.finea-dark-mode :is(.notice.success,.pill.posted){background:#123c32;color:#a7f3d0;border-color:#34775f}
+html.finea-dark-mode :is(.notice.error,.pill.cancelled,.button.danger,.remove-line,.file-drop.invalid .file-drop-zone){background:#481f2b;color:#fecdd3;border-color:#a85a70}
+}
+@media print {
+html.finea-dark-mode body{background:#fff!important;color:#000!important;color-scheme:light}
+html.finea-dark-mode body :is(.card,.stats article,.filters,table,thead,tbody,tr,th,td,input,select){background:#fff!important;color:#000!important;border-color:#aaa!important;box-shadow:none!important}
+html.finea-dark-mode body :is(h1,h2,h3,p,small,label,a,span,strong){color:#000!important}
+}
