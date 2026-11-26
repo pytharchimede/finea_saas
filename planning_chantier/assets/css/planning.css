@@ -4213,3 +4213,23 @@ body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-pre
 .pc-workspace .pc-dashboard-shortcuts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:20px}
 .pc-workspace .pc-dashboard-shortcuts a{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--pc-border);border-radius:12px;background:var(--pc-card);color:var(--pc-text);font-weight:700}
 .pc-workspace .pc-dashboard-shortcuts i{color:var(--pc-muted)}
+
+/* Meeting preparation: both meeting types and both form panels. */
+.pc-workspace :is(.pc-meeting-type-card,.pc-card-pro){
+    background:var(--pc-card)!important;
+    color:var(--pc-text)!important;
+    border:1px solid var(--pc-border)!important;
+    box-shadow:none!important;
+}
+.pc-workspace .pc-meeting-type-card :is(strong,h2,h3){color:var(--pc-text)!important}
+.pc-workspace .pc-meeting-type-card :is(span,p,small){color:var(--pc-muted)!important}
+.pc-workspace .pc-meeting-type-card i{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.pc-workspace .pc-meeting-type-card:hover{background:var(--pc-soft)!important;border-color:var(--brand-accent,#d71920)!important}
+.pc-workspace .pc-card-pro :is(.pc-field label,.pc-subtitle,.pc-preparation-people strong){color:var(--pc-text)!important}
+.pc-workspace .pc-card-pro .pc-preparation-people small{color:var(--pc-muted)!important}
+.pc-workspace .pc-preparation-project-card>input:checked+span,
+.pc-workspace .pc-preparation-people label:has(input:checked){
+    background:var(--pc-soft)!important;border-color:var(--brand-accent,#d71920)!important;
+    color:var(--pc-text)!important;box-shadow:inset 0 0 0 1px var(--brand-accent,#d71920)!important;
+}
+.pc-workspace .pc-preparation-project-card>input:focus-visible+span{outline:2px solid #6495ed;outline-offset:2px}

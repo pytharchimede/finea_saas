@@ -9,7 +9,7 @@ function pc_render_module_assets(): void
     }
     $done = true;
     ?>
-    <link rel="stylesheet" href="assets/css/planning.css?v=20261126-theme">
+    <link rel="stylesheet" href="assets/css/planning.css?v=20261126-preparation">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <?php
 }
