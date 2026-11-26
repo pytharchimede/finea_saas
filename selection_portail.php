@@ -2848,6 +2848,31 @@ require_once __DIR__ . '/decaissement/includes/header.php';
     body.portal-theme-dark .portal-left-panel :is(button,a):focus-visible {
         outline:2px solid #a5c7ff!important;outline-offset:3px;
     }
+
+    /* Solid institutional surfaces must use their own foreground, not the primary ink.
+       Keep the same pair on hover: darkening a light accent can invalidate contrast. */
+    body :is(.portal-chip-action:not(.portal-chip-danger),.portal-shortcut-chip,.portal-filter-chip.is-active,.portal-enter-button,.portal-module-launcher-enter,.portal-search-clear,.portal-pin-button.is-active,.portal-module-launcher-close,.portal-module-icon,.portal-favorite-icon,.portal-module-launcher-icon,.portal-group-title i,.portal-search-result-icon),
+    body :is(.portal-chip-action:not(.portal-chip-danger),.portal-shortcut-chip,.portal-filter-chip.is-active,.portal-enter-button,.portal-module-launcher-enter,.portal-search-clear,.portal-pin-button.is-active,.portal-module-launcher-close):hover {
+        background:var(--portal-brand)!important;color:var(--brand-on-accent,#fff)!important;
+    }
+    body :is(.portal-chip-action:not(.portal-chip-danger),.portal-shortcut-chip,.portal-enter-button,.portal-module-launcher-enter,.portal-search-clear,.portal-pin-button.is-active,.portal-module-launcher-close,.portal-module-icon,.portal-favorite-icon,.portal-module-launcher-icon,.portal-search-result-icon) :is(i,svg,span) {
+        color:inherit!important;
+    }
+    body .portal-chip-danger {color:var(--brand-on-primary,#fff)!important}
+    body .portal-chip-danger :is(i,svg,span){color:inherit!important}
+    body .portal-left-panel .portal-filter-chip {display:flex;align-items:center;gap:.45rem}
+    body .portal-left-panel .portal-filter-chip span {margin-left:auto}
+    body:not(.portal-theme-dark) .portal-left-panel .portal-filter-chip:not(.is-active) {background:#fff!important;color:#17243d!important;border-color:#cbd5e1!important}
+    body:not(.portal-theme-dark) .portal-left-panel .portal-filter-chip:not(.is-active):hover {background:#e2e8f0!important;color:#17243d!important}
+    body:not(.portal-theme-dark) .portal-left-panel .portal-filter-chip:not(.is-active) span {background:#e2e8f0!important;color:#17243d!important}
+    body .portal-left-panel .portal-filter-chip.is-active span {background:var(--brand-on-accent,#fff)!important;color:var(--portal-brand)!important;border-color:transparent!important}
+    body .portal-left-panel .portal-filter-chip i {color:inherit!important}
+    body:not(.portal-theme-dark) .portal-left-panel :is(.portal-search-meta,.portal-badge-legend-link) {background:#f1f5f9!important;color:#17243d!important;border-color:#cbd5e1!important}
+    body:not(.portal-theme-dark) .portal-left-panel .portal-badge-legend-link:hover {background:#e2e8f0!important}
+    body .portal-left-panel .portal-badge-legend-link :is(i,span){color:inherit!important}
+    body:not(.portal-theme-dark) .portal-left-panel :is(button,a):focus-visible {outline:2px solid #17243d!important;outline-offset:3px}
+    body:not(.portal-theme-dark) :is(.portal-module-group-pill,.portal-group-count){background:#f1f5f9!important;color:#17243d!important}
+    body.portal-theme-dark :is(.portal-module-group-pill,.portal-group-count){background:#202e43!important;color:#f5f8fc!important}
 </style>
 <div class="portal-page">
     <div class="portal-shell">
