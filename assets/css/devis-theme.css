@@ -631,3 +631,17 @@
 .devis-page .unit-table tbody tr:hover td{background:var(--dv-soft)!important}
 .devis-page .uf-card{color:var(--dv-text)}.devis-page .uf-head p{color:var(--dv-muted)}
 :is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .uf-error{background:#481f2b;color:#fecdd3;border-color:#9f1239}
+
+.devis-page .unit-info{cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-size:13px}
+.devis-page .unit-info:hover{border-color:var(--brand-accent)}
+.devis-page .unit-info-dialog{width:min(580px,calc(100% - 24px));max-height:85vh;overflow:auto;margin:auto;padding:0;border:1px solid var(--devis-border);border-radius:18px;background:var(--dv-card);color:var(--dv-text);box-shadow:0 24px 80px #0005}
+.devis-page .unit-info-dialog::backdrop{background:#0009}
+.devis-page .unit-info-dialog header{display:flex;justify-content:space-between;align-items:center;padding:20px;background:var(--brand-primary);color:var(--brand-on-primary)}
+.devis-page .unit-info-dialog header h2{font-size:20px;font-weight:800;color:inherit}
+.devis-page .unit-info-dialog header button{font-size:26px;color:inherit;padding:4px 12px}
+.devis-page .unit-info-body{padding:22px;display:grid;gap:12px}
+.devis-page .unit-info-body h3{font-weight:800;color:var(--dv-text)}
+.devis-page .unit-info-body p{color:var(--dv-muted)}
+.devis-page #unitResult{display:block;margin:14px 0;padding:14px;background:var(--dv-soft);color:var(--dv-text);border-radius:10px;font-size:20px;font-weight:800;overflow-wrap:anywhere}
+.devis-page #unitEquivalences{display:grid;gap:6px;font-size:13px}
+.devis-page .unit-info-dialog [hidden]{display:none!important}
