@@ -17,6 +17,7 @@ if ($hasFineaShell) {
     echo '<link rel="stylesheet" href="assets/css/ticketing.css">';
     echo '<link rel="stylesheet" href="assets/css/ticketing-modern.css">';
 }
+echo '<link rel="stylesheet" href="assets/css/ticketing-theme.css?v=' . filemtime(__DIR__.'/../assets/css/ticketing-theme.css') . '">';
 $statsForHero = $stats ?? [];
 ?>
 <div class="ticket-page-bg">
@@ -30,6 +31,7 @@ $statsForHero = $stats ?? [];
           <p>Un guichet unique pour adresser une demande à un service, une personne, un chantier ou un module FINEA.</p>
         </div>
         <div class="ticket-hero-actions">
+          <button type="button" id="ticketThemeToggle" class="ticket-btn">Mode sombre</button>
           <a href="index.php?action=create" class="ticket-btn ticket-btn-light"><i class="fa-solid fa-plus"></i>Nouveau ticket</a>
           <a href="index.php?action=received" class="ticket-btn ticket-btn-yellow"><i class="fa-solid fa-inbox"></i>Tickets reçus</a>
           <a href="index.php?action=admin" class="ticket-btn ticket-btn-ghost"><i class="fa-solid fa-list-check"></i>Tous les tickets</a>
@@ -45,6 +47,15 @@ $statsForHero = $stats ?? [];
   </div>
 </div>
 <script src="assets/js/ticketing.js"></script>
+<script>
+(function(){const root=document.documentElement,b=document.getElementById('ticketThemeToggle');
+function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}
+try{const saved=localStorage.getItem('finea.app.theme')||localStorage.getItem('finea.portal.theme');if(saved)root.classList.toggle('finea-dark-mode',saved==='dark');}catch(e){}
+sync();new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});
+b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}sync();});
+window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))root.classList.toggle('finea-dark-mode',e.newValue==='dark');});
+})();
+</script>
 <?php
 if ($hasFineaShell && is_file($footer)) require_once $footer;
 elseif (!$hasFineaShell) echo '</body></html>';
