@@ -1,0 +1,28 @@
+
+body.feb-validation-theme{--fv-surface:var(--brand-surface);--fv-card:var(--brand-surface);--fv-text:var(--brand-text);--fv-muted:var(--brand-muted);--fv-border:#cbd5e1;--fv-link:var(--brand-primary)}
+html.finea-dark-mode body.feb-validation-theme{--fv-surface:#0f172a;--fv-card:#1e293b;--fv-text:#f1f5f9;--fv-muted:#cbd5e1;--fv-border:#475569;--fv-link:#e2e8f0;color-scheme:dark}
+body.feb-validation-theme .feb-workspace{background:var(--fv-surface)!important;color:var(--fv-text)}
+body.feb-validation-theme :is(.feb-panel,.feb-stat-tile,.feb-doc-tile,.feb-meta-item,.feb-list-card,.feb-card-meta-item,.feb-card-date,.feb-content-card,.feb-priority-card,.feb-decision-panel,.feb-decision-note){background:var(--fv-card)!important;border-color:var(--fv-border)!important;color:var(--fv-text)}
+body.feb-validation-theme :is(.feb-list-card,.feb-priority-card)::before{background:linear-gradient(90deg,var(--brand-primary),var(--brand-accent))!important}
+body.feb-validation-theme :is(.feb-kicker,.feb-card-number,.feb-avatar-fallback,.feb-doc-open){color:var(--fv-link)!important}
+body.feb-validation-theme .feb-avatar{background:var(--fv-card)!important;border-color:var(--fv-border)}
+body.feb-validation-theme .feb-doc-open{background:var(--fv-card)!important;border-color:var(--fv-border)}
+body.feb-validation-theme :is(.feb-meta-label,.feb-card-meta-label,.feb-card-date-label,.feb-doc-name,.feb-content-title){color:var(--fv-muted)!important}
+body.feb-validation-theme :is(.feb-card-meta-value,.feb-card-date-value,.feb-doc-type){color:var(--fv-text)!important}
+body.feb-validation-theme :is(.feb-card-topline,.feb-card-footer,.feb-content-section){border-color:var(--fv-border)}
+body.feb-validation-theme nav[aria-label="Vues de validation FEB"]{background:var(--fv-card)!important;border-color:var(--fv-border)!important}
+body.feb-validation-theme nav[aria-label="Vues de validation FEB"] a{background:var(--fv-card)!important;color:var(--fv-text)!important;border-color:var(--fv-border)!important}
+body.feb-validation-theme nav[aria-label="Vues de validation FEB"] a[data-fv-active="1"]{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border-color:var(--brand-primary)!important}
+body.feb-validation-theme nav[aria-label="Vues de validation FEB"] a i{color:inherit!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.bg-white,.bg-slate-50,.bg-slate-100,.bg-slate-200){background:#1e293b!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.text-slate-950,.text-slate-900,.text-slate-800,.text-slate-700,.text-slate-600,.text-slate-500){color:#e2e8f0!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.border-slate-100,.border-slate-200,.border-slate-300){border-color:#475569!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,textarea){background:#172033!important;color:#f1f5f9!important;border-color:#475569!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.bg-indigo-50,.bg-blue-50,.bg-sky-50,.bg-emerald-50,.bg-rose-50,.bg-red-50,.bg-amber-50,.bg-orange-50){background:#263448!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.text-indigo-900,.text-indigo-800,.text-indigo-700,.text-indigo-600,.text-blue-700,.text-sky-700){color:#c7d2fe!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.text-emerald-900,.text-emerald-800,.text-emerald-700,.feb-amount,.feb-card-amountline-label){color:#86efac!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.text-rose-900,.text-rose-800,.text-rose-700,.text-red-700){color:#fda4af!important}
+html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalModal) :is(.text-amber-900,.text-amber-800,.text-amber-700){color:#fde68a!important}
+html.finea-dark-mode body.feb-validation-theme .feb-card-amountline{background:#18352e!important;border-color:#365e50}
+body.feb-validation-theme #febApprovalModal .bg-gradient-to-r{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+body.feb-validation-theme #fvThemeToggle{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important}
