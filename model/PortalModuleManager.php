@@ -11,8 +11,7 @@ class PortalModuleManager
         $this->pdo = $pdo;
         $this->ensureTable();
         $this->seedDefaultsIfEmpty();
-        $this->migrateCommunicationPrimaryTarget();
-        $this->migrateCommunicationPresentation();
+        $this->pdo->exec("DELETE FROM portal_modules WHERE module_key = 'module_communication' OR target LIKE 'communication/%' OR target = 'communication.php'");
         $this->migrateFormationModule();
         $this->migrateSupplierModule();
         $this->migrateAddressBookModule();
@@ -685,38 +684,6 @@ class PortalModuleManager
         $stmt->execute($module);
     }
 
-    private function migrateCommunicationPrimaryTarget(): void
-    {
-        $stmt = $this->pdo->prepare('UPDATE ' . self::TABLE . '
-            SET target = :new_target, slug = :new_slug
-            WHERE module_key = :module_key
-              AND (target = :old_target OR slug = :old_slug)');
-        $stmt->execute([
-            'new_target' => 'communication/mes_taches_communication.php',
-            'new_slug' => 'mes_taches_communication.php',
-            'module_key' => 'module_communication',
-            'old_target' => 'communication/dashboard_communication.php',
-            'old_slug' => 'dashboard_communication.php',
-        ]);
-    }
-
-    private function migrateCommunicationPresentation(): void
-    {
-        $stmt = $this->pdo->prepare('UPDATE ' . self::TABLE . '
-            SET label = :label,
-                icon = :icon,
-                color = :color,
-                subtitle = :subtitle
-            WHERE module_key = :module_key');
-        $stmt->execute([
-            'label' => 'Mes tâches',
-            'icon' => 'fa-list-check',
-            'color' => '#0f766e',
-            'subtitle' => 'Suivre vos tâches, échéances, commentaires et pièces jointes au même endroit',
-            'module_key' => 'module_communication',
-        ]);
-    }
-
     public static function defaultModules(): array
     {
         $module_list = [
@@ -898,18 +865,6 @@ class PortalModuleManager
                 'required_permissions' => ['acces_carnet_adresse', 'acces_admin'],
                 'subtitle' => 'Répertoire premium des contacts internes, fournisseurs et prestataires avec actions directes',
                 'sort_order' => 122,
-                'is_active' => 1,
-            ],
-            [
-                'module_key' => 'module_communication',
-                'label' => 'Mes tâches',
-                'icon' => 'fa-list-check',
-                'color' => '#0f766e',
-                'target' => 'communication/mes_taches_communication.php',
-                'slug' => 'mes_taches_communication.php',
-                'required_permissions' => ['acces_communication', 'acces_admin'],
-                'subtitle' => 'Suivre vos tâches, échéances, commentaires et pièces jointes au même endroit',
-                'sort_order' => 130,
                 'is_active' => 1,
             ],
             [

@@ -15,9 +15,6 @@ class PortalBadgeManager
     public const VARIANT_WATCH = 'watch';
 
     private const MODULE_THRESHOLDS = [
-        'module_communication' => [
-            'critical_overdue_days' => 3,
-        ],
         'module_admin' => [
             'critical_pending_days' => 2,
         ],
@@ -40,14 +37,6 @@ class PortalBadgeManager
     ];
 
     private const MODULE_PRESENTATION = [
-        'module_communication' => [
-            'counted_description' => 'Le badge compte vos tâches de communication qui ne sont pas encore terminées.',
-            'variant_labels' => [
-                'watch' => 'tâches à traiter',
-                'urgent' => 'tâches en retard',
-                'critical' => 'tâches en retard critique',
-            ],
-        ],
         'module_employe' => [
             'counted_description' => 'Le badge compte vos demandes employé encore en attente de traitement.',
             'variant_labels' => [
@@ -163,7 +152,6 @@ class PortalBadgeManager
     ];
 
     private const VOLATILE_MODULE_KEYS = [
-        'module_communication',
         'module_validation_feb',
         'module_emails',
         'module_crm',
@@ -265,7 +253,6 @@ class PortalBadgeManager
             }
         }
 
-        $this->appendCommunicationBadge($badges, $scope, $debug);
         $this->appendEmployeeBadge($badges, $scope, $debug);
         $this->appendRhBadge($badges, $scope, $debug);
         $this->appendAdminBadge($badges, $scope, $debug);
@@ -291,87 +278,6 @@ class PortalBadgeManager
             'badges' => $badges,
             'debug' => $debug,
         ];
-    }
-
-    private function appendCommunicationBadge(array &$badges, string $scope, array &$debug): void
-    {
-        $moduleKey = 'module_communication';
-        $entry = $this->createDebugEntry($moduleKey, $scope, 'comm_tasks');
-
-        if (!$entry['handled']) {
-            $entry['reason'] = 'scope_filtered';
-            $this->storeDebugEntry($debug, $entry);
-            return;
-        }
-
-        $entry['permission_granted'] = $this->hasAnyPermission(['acces_communication', 'acces_admin']);
-        if (!$entry['permission_granted']) {
-            $entry['reason'] = 'permission_missing';
-            $this->storeDebugEntry($debug, $entry);
-            return;
-        }
-
-        if ($this->currentUserId === null) {
-            $entry['reason'] = 'missing_current_user';
-            $this->storeDebugEntry($debug, $entry);
-            return;
-        }
-
-        try {
-            $criticalDays = (int) ($this->getModuleThresholds($moduleKey)['critical_overdue_days'] ?? 3);
-            $stmt = $this->pdo->prepare(
-                "SELECT
-                    SUM(CASE WHEN archived_at IS NULL AND assignee_user_id = :user_id AND status NOT IN ('done', 'cancelled') AND deadline < DATE_SUB(NOW(), INTERVAL {$criticalDays} DAY) THEN 1 ELSE 0 END) AS critical_count,
-                    SUM(CASE WHEN archived_at IS NULL AND assignee_user_id = :user_id AND status NOT IN ('done', 'cancelled') THEN 1 ELSE 0 END) AS pending_count,
-                    SUM(CASE WHEN archived_at IS NULL AND assignee_user_id = :user_id AND status NOT IN ('done', 'cancelled') AND deadline < NOW() THEN 1 ELSE 0 END) AS late_count
-                 FROM comm_tasks"
-            );
-            $stmt->execute(['user_id' => $this->currentUserId]);
-            $row = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
-            $criticalCount = (int) ($row['critical_count'] ?? 0);
-            $lateCount = (int) ($row['late_count'] ?? 0);
-            $pendingCount = (int) ($row['pending_count'] ?? 0);
-            $entry['counts'] = [
-                'critical_count' => $criticalCount,
-                'late_count' => $lateCount,
-                'pending_count' => $pendingCount,
-            ];
-
-            if ($criticalCount > 0) {
-                $badge = $this->buildBadge($criticalCount, 'tâches en retard critique', self::VARIANT_CRITICAL, true);
-                $badges[$moduleKey] = $badge;
-                $entry['reason'] = 'critical_threshold_reached';
-                $entry['badge'] = $badge;
-                $this->storeDebugEntry($debug, $entry);
-                return;
-            }
-
-            if ($lateCount > 0) {
-                $badge = $this->buildBadge($lateCount, 'tâches en retard', self::VARIANT_URGENT, true);
-                $badges[$moduleKey] = $badge;
-                $entry['reason'] = 'urgent_signal';
-                $entry['badge'] = $badge;
-                $this->storeDebugEntry($debug, $entry);
-                return;
-            }
-
-            if ($pendingCount > 0) {
-                $badge = $this->buildBadge($pendingCount, 'tâches à traiter', self::VARIANT_WATCH, true);
-                $badges[$moduleKey] = $badge;
-                $entry['reason'] = 'watch_signal';
-                $entry['badge'] = $badge;
-                $this->storeDebugEntry($debug, $entry);
-                return;
-            }
-        } catch (Throwable $e) {
-            $entry['reason'] = 'query_error';
-            $entry['error'] = $e->getMessage();
-            $this->storeDebugEntry($debug, $entry);
-            return;
-        }
-
-        $entry['reason'] = 'no_signal';
-        $this->storeDebugEntry($debug, $entry);
     }
 
     private function appendEmployeeBadge(array &$badges, string $scope, array &$debug): void

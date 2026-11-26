@@ -47,7 +47,6 @@ $items = [
     'gestion_acces' => [$menuUrl('admin/gestion_acces.php'), '<i class="fas fa-shield-alt"></i>', 'Acces'],
     'contrats' => [$menuUrl('contrats/index.php'), '<i class="fas fa-file-signature"></i>', 'Contrats'],
     'portail' => [$menuUrl('selection_portail.php'), '<i class="fas fa-th-large"></i>', 'Portail'],
-    'communication' => [$menuUrl('communication/mes_taches_communication.php'), '<i class="fas fa-list-check"></i>', 'Mes taches'],
     'procedures' => [$menuUrl('procedures/index.php'), '<i class="fas fa-project-diagram"></i>', 'Procédures'],
 ];
 
@@ -58,12 +57,7 @@ foreach ($items as $slug => $cfg) {
         continue;
     }
 
-    if ($slug === 'communication') {
-        $can = !empty($_SESSION['permissions']['acces_communication'] ?? 0) || !empty($_SESSION['permissions']['acces_admin'] ?? 0);
-        if (!$can) {
-            continue;
-        }
-    } elseif ($slug === 'contrats') {
+    if ($slug === 'contrats') {
         $can = !empty($_SESSION['permissions']['acces_contrats'] ?? 0) || !empty($_SESSION['permissions']['acces_admin'] ?? 0);
         if (!$can) {
             continue;

@@ -249,7 +249,6 @@ function portalPageLabel(string $page): string
         'liste_utilisateur.php' => 'Liste des utilisateurs',
         'profil.php' => 'Mon profil',
         'documentation.php' => 'Documentation',
-        'communication.php' => 'Communication',
         'emploi_du_temps/index.php' => 'Emploi du temps',
         'formation/index.php' => 'Formation',
         'tresorerie_chantiers.php' => 'Trésorerie en temps réel',
@@ -475,7 +474,6 @@ function portalPageCategory(string $page): string
     $categories = [
         'admin' => 'Administration',
         'crm' => 'CRM',
-        'communication' => 'Communication',
         'decaissement' => 'Décaissement',
         'employe' => 'Employés',
         'facturation' => 'Facturation',
@@ -526,7 +524,7 @@ function portalResolvePageTarget(string $page): ?string
         return $page;
     }
 
-    $directories = ['employe', 'fournisseur', 'admin', 'crm', 'facturation', 'decaissement', 'rh', 'communication'];
+    $directories = ['employe', 'fournisseur', 'admin', 'crm', 'facturation', 'decaissement', 'rh'];
     foreach ($directories as $directory) {
         $candidate = $directory . '/' . $page;
         if (is_file(__DIR__ . '/../' . $candidate)) {
@@ -548,7 +546,6 @@ function portalPageSubtitle(string $page, string $target): string
         'liste_facture.php' => 'Accéder aux factures et au suivi de facturation',
         'profil.php' => 'Consulter vos informations personnelles',
         'documentation.php' => 'Guides, procédures et ressources d utilisation',
-        'communication.php' => 'Accéder aux échanges et actions de communication',
         'emploi_du_temps/index.php' => 'Organiser le planning et les disponibilités',
         'formation/index.php' => 'Ouvrir les contenus de formation et tutoriels',
         'tresorerie_chantiers.php' => 'Consulter en temps réel les encaissements, dépenses, prévisions et ressources disponibles',

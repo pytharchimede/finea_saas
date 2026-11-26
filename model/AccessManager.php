@@ -388,23 +388,6 @@ class AccessManager
         'clients.php' => ['acces_crm_clients', 'acces_crm', 'acces_direction', 'acces_admin'],
         'rdv.php' => ['acces_crm_rdv', 'acces_crm', 'acces_direction', 'acces_admin'],
 
-        // ================= COMMUNICATION =================
-        'dashboard_communication.php' => 'acces_communication',
-        'mes_taches_communication.php' => 'acces_communication',
-        'taches_communication.php' => 'acces_communication',
-        'messagerie_communication.php' => 'acces_communication',
-        'pieces_jointes_communication.php' => 'acces_communication',
-        'communication.php' => 'acces_communication',
-        'communication_state.php' => 'acces_communication',
-        'communication_tasks.php' => 'acces_communication',
-        'communication_attachments.php' => 'acces_communication',
-        'communication_attachment_delete.php' => 'acces_communication',
-        'communication_comment.php' => 'acces_communication',
-        'communication_messages.php' => 'acces_communication',
-        'communication_send.php' => 'acces_communication',
-        'communication_typing.php' => 'acces_communication',
-        'communication_typing_poll.php' => 'acces_communication',
-
         // ================= DOCUMENTATION =================
         'documentation.php' => 'acces_documentation',
         'documentation_download.php' => 'acces_documentation',
@@ -467,7 +450,6 @@ class AccessManager
         'acces_fournisseur' => 'fournisseur',
         'acces_facturation' => 'facturation',
 
-        'acces_communication' => 'communication',
 
         'acces_mail' => 'mail',
 
@@ -983,7 +965,7 @@ class AccessManager
                 }
             }
 
-            // Module Communication (remplace WhatsApp)
+            // Permissions complémentaires
             if (!in_array('acces_carnet_adresse', $columns, true)) {
                 $alter[] = "ADD COLUMN acces_carnet_adresse TINYINT(1) NOT NULL DEFAULT 0";
             }
@@ -996,9 +978,6 @@ class AccessManager
                 $alter[] = "ADD COLUMN acces_parc_informatique TINYINT(1) NOT NULL DEFAULT 0";
             }
 
-            if (!in_array('acces_communication', $columns, true)) {
-                $alter[] = "ADD COLUMN acces_communication TINYINT(1) NOT NULL DEFAULT 0";
-            }
 
             if (!in_array('acces_documentation', $columns, true)) {
                 $alter[] = "ADD COLUMN acces_documentation TINYINT(1) NOT NULL DEFAULT 0";

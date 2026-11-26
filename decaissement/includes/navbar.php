@@ -370,22 +370,6 @@ $navLinks = [
         'icon' => 'fa-solid fa-calendar-days',
     ],
     [
-        'label' => 'Communication interne',
-        'sublabel' => 'Échanges et coordination',
-        'href' => $layoutRootBase . 'communication/dashboard_communication.php',
-        'perm' => ['acces_communication', 'acces_admin'],
-        'active' => 'communication_dashboard',
-        'icon' => 'fa-solid fa-comments',
-    ],
-    [
-        'label' => 'Mes tâches',
-        'sublabel' => 'Organisation du travail',
-        'href' => $layoutRootBase . 'communication/mes_taches_communication.php',
-        'perm' => ['acces_communication','acces_admin'],
-        'active' => 'communication',
-        'icon' => 'fa-solid fa-list-check',
-    ],
-    [
         'label' => 'Documentation',
         'href' => $layoutRootBase . 'documentation/index.php',
         'perm' => 'acces_documentation',
@@ -529,7 +513,7 @@ $navCategoryMap = [
     'module_devis'=>'Commercial','module_devis_create'=>'Commercial','module_devis_list'=>'Commercial','module_clients'=>'Commercial','module_offres'=>'Commercial','module_unites'=>'Commercial','crm'=>'Commercial',
     'module_debourse'=>'Finance & décisions','budgets'=>'Finance & décisions','feb_finance'=>'Finance & décisions','contestations'=>'Finance & décisions','conformite'=>'Finance & décisions','approbation'=>'Finance & décisions','achat'=>'Finance & décisions','urgences'=>'Finance & décisions','regularisations_urgentes'=>'Finance & décisions','pointfinancier'=>'Finance & décisions','depenses_planifiees'=>'Finance & décisions','compta'=>'Finance & décisions','regularisation_decaissements'=>'Finance & décisions','facturation'=>'Finance & décisions','fournisseur'=>'Finance & décisions','historique'=>'Finance & décisions','relink_debourse'=>'Finance & décisions','besoins_recurrents'=>'Finance & décisions',
     'dashboard_dg'=>'Direction Générale','feb_price_challenge_control'=>'Direction Générale','tresorerie_pilotage'=>'Direction Générale',
-    'ticketing'=>'Organisation & collaboration','formation'=>'Organisation & collaboration','documentation'=>'Organisation & collaboration','emploi_du_temps'=>'Organisation & collaboration','communication'=>'Organisation & collaboration','communication_dashboard'=>'Organisation & collaboration',
+    'ticketing'=>'Organisation & collaboration','formation'=>'Organisation & collaboration','documentation'=>'Organisation & collaboration','emploi_du_temps'=>'Organisation & collaboration',
     'feb_price_challengers'=>'Administration','admin'=>'Administration','parc_informatique'=>'Administration',
     'Portail'=>'Portail',
 ];
