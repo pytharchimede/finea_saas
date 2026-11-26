@@ -1,0 +1,2 @@
+# Modèle BTP
+Le studio préremplit un brouillon vierge avec le modèle BTP. Enregistrer ou publier explicitement. Les brouillons et publications existants ne sont pas écrasés. Les six SVG sont des illustrations originales schématiques, pas des photos de chantiers. Remplacer les exemples fictifs et vérifier les activités avant publication commerciale. Les images sont servies par media.php selon les droits de publication. Aucun client ni recrutement réel n'est revendiqué.

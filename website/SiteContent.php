@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/BtpDemo.php';
 final class SiteContent {
  public static function defaults(array $brand):array {
- return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[],'slides'=>[],'partners'=>[],'careers'=>[],'contact_form'=>false];
+ return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[],'slides'=>[],'partners'=>[],'careers'=>[],'contact_form'=>false,'demo'=>false];
  }
  public static function install(PDO $db):void {
  $db->exec("CREATE TABLE IF NOT EXISTS finea_website_content (id TINYINT UNSIGNED PRIMARY KEY,draft_json LONGTEXT NOT NULL,published_json LONGTEXT NULL,published_at DATETIME NULL,updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
@@ -34,6 +35,7 @@ final class SiteContent {
  foreach(['title'=>190,'body'=>15000,'location'=>190,'category'=>100] as $field=>$max)if(mb_strlen($entry[$field])>$max)throw new InvalidArgumentException('Contenu trop long.');
  $out[$key][]=$entry;
  }}
+ $out['demo']=!empty($post['demo']);
  $out['contact_form']=!empty($post['contact_form']);
  $out['show_contact']=!empty($post['show_contact']);return $out;
  }
