@@ -7,7 +7,7 @@ function crm_h($value): string
 
 function crm_page_open(): string
 {
-    return '<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(255,247,237,0.95),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(219,234,254,0.85),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12"><div class="container mx-auto px-4 py-8">';
+    return '<link rel="stylesheet" href="../assets/css/crm-theme.css?v=20261126"><div class="crm-page min-h-screen pb-12"><div class="container mx-auto px-4 py-8">';
 }
 
 function crm_page_close(): string
@@ -17,7 +17,7 @@ function crm_page_close(): string
 
 function crm_hero(string $eyebrow, string $title, string $subtitle, array $actions = []): string
 {
-    $html = '<section class="relative overflow-hidden rounded-[32px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">';
+    $html = '<section class="crm-hero relative overflow-hidden rounded-[32px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">';
     $html .= '<div class="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-[#fabd02]/20 blur-2xl"></div>';
     $html .= '<div class="absolute bottom-0 right-28 h-28 w-28 rounded-full bg-sky-300/20 blur-2xl"></div>';
     $html .= '<div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">';
@@ -29,10 +29,10 @@ function crm_hero(string $eyebrow, string $title, string $subtitle, array $actio
         foreach ($actions as $action) {
             $variant = (string)($action['variant'] ?? 'ghost');
             $class = $variant === 'primary'
-                ? 'bg-[#fabd02] text-slate-950 shadow-lg shadow-amber-500/20 hover:bg-amber-300'
+                ? 'crm-accent shadow-lg'
                 : ($variant === 'light'
-                    ? 'bg-white text-slate-900 shadow-lg shadow-slate-950/20 hover:bg-amber-50'
-                    : 'border border-white/15 text-white/90 hover:bg-white/10');
+                    ? 'crm-light shadow-lg'
+                    : 'crm-ghost border');
             $html .= '<a href="' . crm_h($action['href'] ?? '#') . '" class="inline-flex items-center rounded-2xl px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5 ' . $class . '">';
             if (!empty($action['icon'])) {
                 $html .= '<i class="fas ' . crm_h($action['icon']) . ' mr-2"></i>';
@@ -56,9 +56,9 @@ function crm_module_tabs(string $active): string
     $html = '<section class="mt-6 mb-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">';
     foreach ($tabs as $key => $tab) {
         $isActive = $active === $key;
-        $cardClass = $isActive ? 'border-slate-950 bg-slate-950 text-white' : 'border-white/80 bg-white/90 text-slate-800 hover:bg-slate-50';
-        $iconClass = $isActive ? 'bg-white/15 text-[#fabd02]' : 'bg-orange-50 text-orange-700';
-        $descClass = $isActive ? 'text-slate-300' : 'text-slate-500';
+        $cardClass = $isActive ? 'crm-tab crm-tab-active' : 'crm-tab';
+        $iconClass = $isActive ? 'crm-tab-icon' : 'crm-tab-icon';
+        $descClass = $isActive ? 'crm-tab-desc' : 'crm-tab-desc';
         $html .= '<a href="' . crm_h($tab['href']) . '" class="rounded-[26px] border p-5 shadow-[0_16px_45px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 ' . $cardClass . '">';
         $html .= '<div class="flex items-start gap-4"><span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl ' . $iconClass . '"><i class="fas ' . crm_h($tab['icon']) . '"></i></span>';
         $html .= '<span><span class="block font-semibold">' . crm_h($tab['label']) . '</span><span class="mt-1 block text-sm ' . $descClass . '">' . crm_h($tab['desc']) . '</span></span></div></a>';
@@ -77,16 +77,16 @@ function crm_flash_box(string $message, string $type = 'success'): string
 
 function crm_card_class(): string
 {
-    return 'rounded-[30px] border border-white/80 bg-white/95 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.06)]';
+    return 'crm-card rounded-[30px] border p-6 shadow-[0_18px_55px_rgba(15,23,42,0.06)]';
 }
 
 function crm_action_button(string $href, string $label, string $icon = 'fa-plus', string $variant = 'primary'): string
 {
     $class = $variant === 'light'
-        ? 'bg-white text-slate-800 border border-slate-200 hover:bg-slate-50'
+        ? 'crm-light border'
         : ($variant === 'dark'
-            ? 'bg-slate-950 text-white hover:bg-[#1d2b57]'
-            : 'bg-[#fabd02] text-slate-950 hover:bg-amber-300');
+            ? 'crm-primary'
+            : 'crm-accent');
     return '<a href="' . crm_h($href) . '" class="inline-flex items-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5 ' . $class . '"><i class="fas ' . crm_h($icon) . ' mr-2"></i>' . crm_h($label) . '</a>';
 }
 

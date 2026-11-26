@@ -67,7 +67,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
         <datalist id="crmSourceOptions"><option value="Recommandation"><option value="Appel entrant"><option value="Prospection terrain"><option value="Email"><option value="Reseaux sociaux"><option value="Salon professionnel"></datalist>
         <label class="text-sm font-semibold text-slate-700">Statut<select name="statut" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 focus:ring-2 focus:ring-amber-200"><option>Nouveau</option><option>Qualifie</option><option>En negociation</option><option>Gagne</option><option>Perdu</option></select></label>
         <label class="lg:col-span-2 text-sm font-semibold text-slate-700">Notes<textarea name="notes" rows="4" class="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 focus:ring-2 focus:ring-amber-200"></textarea></label>
-        <div class="lg:col-span-2 flex justify-end gap-3"><a href="prospects.php" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 font-semibold text-slate-700">Annuler</a><button class="rounded-2xl bg-[#fabd02] px-6 py-3 font-bold text-slate-950 hover:bg-amber-300">Enregistrer le prospect</button></div>
+        <div class="lg:col-span-2 flex justify-end gap-3"><a href="prospects.php" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 font-semibold text-slate-700">Annuler</a><button class="rounded-2xl crm-accent px-6 py-3 font-bold text-slate-950 hover:bg-amber-300">Enregistrer le prospect</button></div>
     </form>
 </section>
 <?= crm_page_close() ?>

@@ -45,13 +45,13 @@ require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
 <?= crm_page_open() ?>
-<?= crm_hero('Module CRM - ' . $todayLabel, 'Pilotage commercial BANAMUR', 'Une vue direction pour suivre les prospects, le pipeline, les rendez-vous, les relances et les prochaines actions commerciales.', [
+<?= crm_hero('Module CRM - ' . $todayLabel, 'Pilotage commercial', 'Une vue direction pour suivre les prospects, le pipeline, les rendez-vous, les relances et les prochaines actions commerciales.', [
     ['href' => 'prospect_form.php', 'label' => 'Nouveau prospect', 'icon' => 'fa-user-plus', 'variant' => 'light'],
     ['href' => 'opportunites.php', 'label' => 'Pipeline', 'icon' => 'fa-chart-line', 'variant' => 'primary'],
     ['href' => 'rdv.php', 'label' => 'Planifier RDV', 'icon' => 'fa-calendar-plus', 'variant' => 'ghost'],
 ]) ?>
 <?= crm_module_tabs('dashboard') ?>
-<?php if ($billingAlerts): ?><section class="mb-6 rounded-[26px] border border-amber-200 bg-amber-50 p-5 text-amber-950"><div class="flex flex-wrap items-center justify-between gap-3"><div><div class="text-xs font-bold uppercase tracking-[.18em]">Relances Facturation</div><h2 class="mt-1 text-xl font-extrabold"><?=count($billingAlerts)?> devis à transformer en facture</h2></div><a href="../facturation/factures_vente.php" class="rounded-xl bg-[#1d2b57] px-4 py-2 text-sm font-bold text-white">Ouvrir Facturation</a></div><div class="mt-4 flex flex-wrap gap-2"><?php foreach(array_slice($billingAlerts,0,8) as $alert): ?><span class="rounded-full border border-amber-200 bg-white px-3 py-2 text-xs font-semibold"><?=crm_h((string)($alert['numero_devis'] ?: $alert['reference_offre']))?> · <?=date('d/m/Y',strtotime((string)$alert['billing_date']))?></span><?php endforeach; ?></div></section><?php endif; ?>
+<?php if ($billingAlerts): ?><section class="mb-6 rounded-[26px] border border-amber-200 bg-amber-50 p-5 text-amber-950"><div class="flex flex-wrap items-center justify-between gap-3"><div><div class="text-xs font-bold uppercase tracking-[.18em]">Relances Facturation</div><h2 class="mt-1 text-xl font-extrabold"><?=count($billingAlerts)?> devis à transformer en facture</h2></div><a href="../facturation/factures_vente.php" class="rounded-xl crm-primary px-4 py-2 text-sm font-bold text-white">Ouvrir Facturation</a></div><div class="mt-4 flex flex-wrap gap-2"><?php foreach(array_slice($billingAlerts,0,8) as $alert): ?><span class="rounded-full border border-amber-200 bg-white px-3 py-2 text-xs font-semibold"><?=crm_h((string)($alert['numero_devis'] ?: $alert['reference_offre']))?> · <?=date('d/m/Y',strtotime((string)$alert['billing_date']))?></span><?php endforeach; ?></div></section><?php endif; ?>
 <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
     <?php $cards = [
     ['Prospects', number_format((int)($data['kpiProspects'] ?? 0)), 'Base CRM', 'fa-user-plus', 'prospects.php'],
@@ -84,9 +84,9 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <div class="flex justify-between gap-4">
                 <div class="min-w-0">
                     <div class="text-xs font-semibold uppercase tracking-wide text-slate-500"><?= crm_h($card[0]) ?></div>
-                    <div class="mt-2 truncate text-xl font-extrabold text-[#1d2b57]"><?= crm_h($card[1]) ?></div>
+                    <div class="mt-2 truncate text-xl font-extrabold crm-brand-text"><?= crm_h($card[1]) ?></div>
                     <div class="mt-1 text-xs text-slate-500"><?= crm_h($card[2]) ?></div>
-                </div><span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#fabd02]/15 text-[#1d2b57]"><i class="fas <?= crm_h($card[3]) ?>"></i></span>
+                </div><span class="flex h-11 w-11 items-center justify-center rounded-2xl crm-accent/15 crm-brand-text"><i class="fas <?= crm_h($card[3]) ?>"></i></span>
             </div>
         </div>
     <?php endforeach; ?>
@@ -101,9 +101,9 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                 </div><a href="opportunites.php" class="text-sm font-semibold text-orange-700">Kanban</a>
             </div><?php $maxPipeline = max(1, ...array_map(static fn($r) => (float)($r['amount'] ?? 0), $pipelineByStage ?: [['amount' => 0]])); ?><div class="mt-4 space-y-3"><?php if (!$pipelineByStage): ?><div class="text-sm text-slate-500">Aucune opportunite.</div><?php endif; ?><?php foreach ($pipelineByStage as $stage): ?><?php $amount = (float)($stage['amount'] ?? 0);
                                                                                                                                                                                                                                                                                                                                 $pct = min(100, ($amount / $maxPipeline) * 100); ?><div>
-                        <div class="flex justify-between text-xs"><span class="font-semibold text-slate-700"><?= crm_h($stage['etape'] ?? 'N/A') ?> (<?= (int)($stage['count_items'] ?? 0) ?>)</span><strong class="text-[#1d2b57]"><?= crm_h(crm_xof($amount)) ?></strong></div>
+                        <div class="flex justify-between text-xs"><span class="font-semibold text-slate-700"><?= crm_h($stage['etape'] ?? 'N/A') ?> (<?= (int)($stage['count_items'] ?? 0) ?>)</span><strong class="crm-brand-text"><?= crm_h(crm_xof($amount)) ?></strong></div>
                         <div class="mt-1 h-2 rounded-full bg-slate-100">
-                            <div class="h-2 rounded-full bg-[#fabd02]" style="width: <?= (float)$pct ?>%"></div>
+                            <div class="h-2 rounded-full crm-accent" style="width: <?= (float)$pct ?>%"></div>
                         </div>
                     </div><?php endforeach; ?></div>
         </section>
@@ -112,7 +112,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                 <h2 class="text-lg font-semibold text-slate-950">Prospects par source</h2><?php $maxSource = max(1, ...array_map(static fn($r) => (int)($r['count_items'] ?? 0), $prospectsBySource ?: [['count_items' => 0]])); ?><div class="mt-4 space-y-3"><?php foreach ($prospectsBySource as $source): ?><?php $count = (int)($source['count_items'] ?? 0); ?><div>
                         <div class="flex justify-between text-xs"><span><?= crm_h($source['source'] ?? 'N/A') ?></span><strong><?= $count ?></strong></div>
                         <div class="mt-1 h-2 rounded-full bg-slate-100">
-                            <div class="h-2 rounded-full bg-[#1d2b57]" style="width: <?= min(100, ($count / $maxSource) * 100) ?>%"></div>
+                            <div class="h-2 rounded-full crm-primary" style="width: <?= min(100, ($count / $maxSource) * 100) ?>%"></div>
                         </div>
                     </div><?php endforeach; ?></div>
             </article>
@@ -149,7 +149,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                         <div class="text-xs text-slate-500"><?= crm_h($p['next_followup_at'] ?? '') ?></div>
                     </a><?php endforeach; ?>
             </div>
-            <div class="pt-2"><a class="block rounded-xl bg-[#1d2b57] px-4 py-3 text-center font-semibold text-white" href="/emploi_du_temps/index.php?period=week&date=<?= crm_h(date('Y-m-d')) ?>">Ouvrir l'emploi du temps</a></div>
+            <div class="pt-2"><a class="block rounded-xl crm-primary px-4 py-3 text-center font-semibold text-white" href="/emploi_du_temps/index.php?period=week&date=<?= crm_h(date('Y-m-d')) ?>">Ouvrir l'emploi du temps</a></div>
         </div>
     </aside>
 </div>

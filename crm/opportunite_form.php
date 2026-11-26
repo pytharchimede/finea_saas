@@ -38,7 +38,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
 <label class="text-sm font-semibold text-slate-700">Prochaine action<input name="next_action_at" type="datetime-local" <?= $input ?>></label>
 <label class="text-sm font-semibold text-slate-700">Duree (minutes)<input name="next_action_duration_min" type="number" min="5" max="480" step="5" value="30" <?= $input ?>></label>
 <label class="lg:col-span-2 text-sm font-semibold text-slate-700">Notes<textarea name="notes" rows="4" class="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3 focus:ring-2 focus:ring-amber-200"></textarea></label>
-<div class="lg:col-span-2 flex justify-end gap-3"><a href="opportunites.php" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 font-semibold text-slate-700">Annuler</a><button class="rounded-2xl bg-[#fabd02] px-6 py-3 font-bold text-slate-950 hover:bg-amber-300">Creer l'opportunite</button></div>
+<div class="lg:col-span-2 flex justify-end gap-3"><a href="opportunites.php" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 font-semibold text-slate-700">Annuler</a><button class="rounded-2xl crm-accent px-6 py-3 font-bold text-slate-950 hover:bg-amber-300">Creer l'opportunite</button></div>
 </form></section>
 <?= crm_page_close() ?><?= crm_interaction_assets() ?>
 <script>document.addEventListener('DOMContentLoaded',()=>{const t=document.getElementById('linkedType'),p=document.getElementById('prospectWrap'),c=document.getElementById('clientWrap');function sync(){p.classList.toggle('hidden',t.value==='client');c.classList.toggle('hidden',t.value!=='client')}t.addEventListener('change',sync);sync();});</script>

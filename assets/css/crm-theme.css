@@ -1,0 +1,31 @@
+/* CRM: shared tenant-aware surfaces, actions and semantic states. */
+.crm-page{--crm-bg:#f1f5f9;--crm-card:var(--brand-surface,#fff);--crm-soft:#eaf0f6;--crm-text:var(--brand-text,#17243d);--crm-muted:#475569;--crm-border:#cbd5e1;--crm-field:#fff;--crm-focus:var(--brand-primary,#081c65);background:var(--crm-bg)!important;color:var(--crm-text)}
+.crm-page .crm-hero{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;border-bottom:4px solid var(--brand-accent,#d71920)!important}
+.crm-page .crm-hero :is(h1,p){color:inherit!important}
+.crm-page :is(.crm-card,.crm-tab,[class*="bg-white"]):not(.crm-hero *):not(.crm-tab-active){background:var(--crm-card)!important;border-color:var(--crm-border)!important;color:var(--crm-text)!important}
+.crm-page :is(.crm-accent,.crm-tab-active){background:var(--brand-accent,#d71920)!important;color:var(--brand-on-accent,#fff)!important;border-color:transparent!important}
+.crm-page .crm-primary{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.crm-page :is(.crm-accent,.crm-primary,.crm-tab-active) :is(i,span,svg){color:inherit!important}
+.crm-page .crm-tab-active .crm-tab-icon{background:transparent!important}
+.crm-page .crm-tab-icon{background:var(--crm-soft);color:var(--crm-text)}
+.crm-page .crm-tab-desc{color:var(--crm-muted)}
+.crm-page .crm-light{background:var(--crm-card)!important;color:var(--crm-text)!important;border-color:var(--crm-border)!important}
+.crm-page .crm-ghost{color:inherit!important;border-color:currentColor}
+.crm-page :is(.crm-accent,.crm-primary,.crm-tab,.crm-light):hover{outline:2px solid var(--crm-focus);outline-offset:2px}
+.crm-page :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,textarea,.crm-select-search-list,.crm-select-search-option){background:var(--crm-field)!important;color:var(--crm-text)!important;border-color:var(--crm-border)!important}
+.crm-page :is(button,a,input,select,textarea):focus-visible{outline:2px solid var(--crm-focus)!important;outline-offset:3px}
+.crm-page .crm-select-search-option:hover,.crm-page .crm-select-search-option.is-active,.crm-page .crm-kanban-column.is-drop-target{background:var(--crm-soft)!important;color:var(--crm-text)!important;outline-color:var(--crm-focus)!important}
+.crm-page :is(.crm-kanban-column,[class*="bg-slate-50"]){background:var(--crm-soft)!important;border-color:var(--crm-border)!important}
+.crm-page .crm-brand-text{color:var(--crm-text)!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page{color-scheme:dark;--crm-bg:#08111f;--crm-card:#172337;--crm-soft:#202e43;--crm-text:#f5f8fc;--crm-muted:#c6d0de;--crm-border:#52647e;--crm-field:#0d1727;--crm-focus:#a5c7ff}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page :is(.text-slate-950,.text-slate-900,.text-slate-800,.text-slate-700){color:var(--crm-text)!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page :is(.text-slate-600,.text-slate-500,.text-slate-400){color:var(--crm-muted)!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page :is(.bg-orange-50,.bg-amber-50){background:#422b18!important;color:#fde68a!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page :is(.text-orange-700,.text-orange-600,.text-amber-950,.text-amber-800,.text-amber-700){color:#fde68a!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page .bg-emerald-50{background:#123c32!important;color:#a7f3d0!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page :is(.text-emerald-800,.text-emerald-700){color:#a7f3d0!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page .bg-rose-50{background:#481f2b!important;color:#fecdd3!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page :is(.text-rose-800,.text-rose-700){color:#fecdd3!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page .bg-sky-50{background:#17354b!important;color:#bae6fd!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .crm-page .text-sky-800{color:#bae6fd!important}
+.crm-page .crm-hero :is(.crm-accent,.crm-light,.crm-ghost) :is(i,span){color:inherit!important}
