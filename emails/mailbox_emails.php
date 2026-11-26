@@ -232,27 +232,29 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
         }
     }
 </style>
-<div class="mailbox-page container mx-auto px-4 pb-10">
+<link rel="stylesheet" href="mail-theme.css?v=<?= filemtime(__DIR__.'/mail-theme.css') ?>">
+<div class="finea-mail mailbox-page container mx-auto px-4 pb-10">
 
     <div class="mailbox-header flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
             <div class="mailbox-toolbar-chip w-fit">
                 <i class="fas fa-envelope-open-text"></i>
-                Webmail pro
+                FINEA Mail
             </div>
-            <h1 class="mt-3 text-3xl md:text-4xl font-bold text-slate-800">Boîte de réception</h1>
+            <h1 class="mt-3 text-3xl md:text-4xl font-bold text-slate-800">Messagerie professionnelle</h1>
             <p class="mt-2 text-slate-600">Compte : <span class="font-semibold text-slate-800"><?= htmlspecialchars($username !== '' ? $username : '—') ?></span></p>
             <p class="mt-1 text-xs text-slate-500">Dossier actif : <span class="font-mono"><?= htmlspecialchars($folder) ?></span></p>
         </div>
 
         <div class="flex flex-wrap gap-3">
+            <button id="mailThemeToggle" type="button" class="mail-theme px-4 py-2 rounded-xl">Mode sombre</button>
             <a href="../selection_portail.php" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md text-gray-700 transition">
                 <i class="fas fa-arrow-left"></i>
                 Portail
             </a>
 
             <?php if (!empty($_SESSION['personnel_email_password'] ?? '')): ?>
-                <a href="logout_mailbox.php" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition">
+                <a href="logout_mailbox.php" class="mail-danger inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition">
                     <i class="fas fa-lock"></i>
                     Déconnecter le mail
                 </a>
@@ -420,7 +422,7 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                                 <i class="fas fa-shield-halved"></i>
                                 <?= !empty($_SESSION['mail_password_persisted']) ? 'Connecté en permanence' : 'Connexion active' ?>
                             </span>
-                            <a href="compose_email.php?folder=<?= urlencode($folder) ?>" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition text-sm text-slate-700">
+                            <a href="compose_email.php?folder=<?= urlencode($folder) ?>" class="mail-compose inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition text-sm text-slate-700">
                                 <i class="fas fa-pen"></i>
                                 Nouveau
                             </a>
@@ -431,6 +433,7 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                         </div>
                     </div>
 
+                    <div class="p-3"><input id="mailSearch" class="mail-search" type="search" placeholder="Rechercher dans les messages chargés" aria-label="Rechercher dans les messages chargés"></div>
                     <div id="mailboxLoading" class="mailbox-empty-state">
                         <div class="text-4xl mb-2">📨</div>
                         Chargement des emails…
@@ -445,11 +448,18 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                 </div>
             </div>
 
+            <section class="mail-reading" aria-label="Volet de lecture">
+                <div id="mailReadingEmpty" class="mail-reading-empty"><i class="fas fa-envelope-open fa-3x"></i><p>Sélectionnez un message pour le lire.</p></div>
+                <iframe id="mailReadingFrame" title="Lecture du message" hidden></iframe>
+            </section>
         </div>
 
     <?php endif; ?>
 
 </div>
+<script>
+(function(){const root=document.documentElement,b=document.getElementById('mailThemeToggle');function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));const frame=document.getElementById('mailReadingFrame');try{frame?.contentDocument?.documentElement.classList.toggle('finea-dark-mode',dark)}catch(e){}}sync();new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'))}catch(e){}sync()});})();
+</script>
 
 <?php if (!$needPassword): ?>
     <script>
@@ -585,7 +595,12 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                 elFolderCacheMeta.textContent = 'La liste des dossiers sera mémorisée après le prochain chargement réussi.';
             }
 
+            let selectedUid = null;
+            const search = document.getElementById('mailSearch');
+            search.addEventListener('input',()=>render(loaded));
             function render(list) {
+                const query=search.value.trim().toLocaleLowerCase();
+                if(query)list=list.filter(m=>[m.subject,m.from,m.teaser].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
                 if (!elList) return;
                 elList.innerHTML = '';
                 const frag = document.createDocumentFragment();
@@ -608,12 +623,22 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                     const teaser = (mail.teaser || '').toString();
 
                     const li = document.createElement('li');
-                    li.className = 'mailbox-message-row';
+                    li.className = 'mailbox-message-row' + (isRead?'':' is-unread');
 
                     const a = document.createElement('a');
                     a.className = 'mailbox-message-link';
                     a.href = 'view_email.php?uid=' + encodeURIComponent(String(uid)) + '&folder=' + encodeURIComponent(String(folder));
 
+                    if(String(selectedUid)===String(uid))a.setAttribute('aria-current','true');
+                    a.addEventListener('click',e=>{
+                        if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+                        e.preventDefault();selectedUid=uid;
+                        document.querySelectorAll('.mailbox-message-link[aria-current]').forEach(x=>x.removeAttribute('aria-current'));
+                        a.setAttribute('aria-current','true');
+                        const frame=document.getElementById('mailReadingFrame');
+                        document.getElementById('mailReadingEmpty').hidden=true;
+                        frame.hidden=false;frame.src=a.href+'&pane=1';
+                    });
                     const row = document.createElement('div');
                     row.className = 'flex items-start justify-between gap-4';
 
