@@ -645,3 +645,5 @@
 .devis-page #unitResult{display:block;margin:14px 0;padding:14px;background:var(--dv-soft);color:var(--dv-text);border-radius:10px;font-size:20px;font-weight:800;overflow-wrap:anywhere}
 .devis-page #unitEquivalences{display:grid;gap:6px;font-size:13px}
 .devis-page .unit-info-dialog [hidden]{display:none!important}
+
+.devis-page .unit-row-actions{display:flex;gap:8px;align-items:center}.devis-page .unit-row-actions :is(button,a){display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--devis-border);border-radius:9px;background:var(--dv-soft);color:var(--dv-text);cursor:pointer}.devis-page .unit-row-actions :is(button,a):hover{background:var(--brand-primary);color:var(--brand-on-primary)}.devis-page .unit-description-field{margin-top:18px}.devis-page .unit-description-field textarea{width:100%;padding:12px;border:1px solid var(--devis-border);border-radius:10px;background:var(--dv-field);color:var(--dv-text);resize:vertical}

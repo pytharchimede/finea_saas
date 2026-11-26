@@ -9,7 +9,7 @@ document.querySelectorAll('.unit-info').forEach(button=>button.addEventListener(
 symbol=button.dataset.symbol;current=Object.prototype.hasOwnProperty.call(catalog,symbol)?catalog[symbol]:null;
 $('unitInfoTitle').textContent=button.dataset.label+' ('+symbol+')';
 $('unitInfoCategory').textContent=current?.category||'Unité personnalisée';
-$('unitInfoDescription').textContent=current?.description||'Aucune définition standard associée à ce symbole.';
+$('unitInfoDescription').textContent=button.dataset.description||current?.description||'Aucune définition standard associée à ce symbole.';
 $('unitInfoExample').textContent=current?.example||'Selon les pratiques de votre entreprise.';
 $('unitInfoUsage').textContent=button.dataset.count+' ligne(s) de devis associée(s).';
 const compatible=(current?.units||[]).filter(u=>u[0]!==symbol);

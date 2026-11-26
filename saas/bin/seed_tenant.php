@@ -33,6 +33,8 @@ try {
  $fks=(int)$pdo->query("SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_schema=DATABASE() AND constraint_type='FOREIGN KEY'")->fetchColumn();
  if ($count!==415 || $fks!==157) fail("Schéma incomplet : {$count} tables, {$fks} contraintes (attendu : 415 et 157).");
  foreach (['finea_company_branding','user_devis_banamur','role_devis_banamur'] as $table) { $check=$pdo->query('SELECT COUNT(*) FROM `'.$table.'`')->fetchColumn(); if ((int)$check!==0) fail("Table {$table} non vide. Initialisation refusée pour éviter les doublons."); }
+ require_once dirname(__DIR__,2).'/model/UnitDescriptionMigration.php';
+ UnitDescriptionMigration::install($pdo);
  $pdo->beginTransaction();
  try {
   $s=$pdo->prepare('INSERT INTO role_devis_banamur (lib_role_devis) VALUES (?)');$s->execute(['Administrateur FINEA SaaS']);$role=(int)$pdo->lastInsertId();
@@ -43,6 +45,8 @@ try {
   $sql='INSERT INTO finea_company_branding (`'.implode('`,`',$columns).'`) VALUES ('.implode(',',array_fill(0,count($columns),'?')).')';
   $pdo->prepare($sql)->execute($values);
   $unitResult=StandardUnitSeeder::seed($pdo);
+  $descriptionStmt=$pdo->prepare('UPDATE unites_mesure SET description=? WHERE BINARY symbole=BINARY ? AND description IS NULL');
+  foreach(UnitDescriptionMigration::DEFAULTS as $symbol=>$description) $descriptionStmt->execute([$description,$symbol]);
   $pdo->commit();
  } catch(Throwable $e) {if($pdo->inTransaction())$pdo->rollBack();throw $e;}
  // Le marquage plateforme intervient après le commit métier; un échec est récupérable manuellement.
