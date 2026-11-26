@@ -2,10 +2,19 @@
 declare(strict_types=1);
 final class SiteContent {
  public static function defaults(array $brand):array {
- return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false];
+ return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[]];
  }
  public static function install(PDO $db):void {
  $db->exec("CREATE TABLE IF NOT EXISTS finea_website_content (id TINYINT UNSIGNED PRIMARY KEY,draft_json LONGTEXT NOT NULL,published_json LONGTEXT NULL,published_at DATETIME NULL,updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+ }
+ public static function installMedia(PDO $db):void {
+ $db->exec("CREATE TABLE IF NOT EXISTS finea_website_media (id CHAR(32) PRIMARY KEY,mime VARCHAR(30) NOT NULL,content MEDIUMBLOB NOT NULL,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+ }
+ public static function upload(PDO $db,array $file):string {
+ if(($file['error']??UPLOAD_ERR_NO_FILE)===UPLOAD_ERR_NO_FILE)return '';
+ if(($file['error']??-1)!==UPLOAD_ERR_OK||!is_uploaded_file($file['tmp_name'])||$file['size']>3*1024*1024)throw new InvalidArgumentException('Image : maximum 3 Mo.');
+ $info=@getimagesize($file['tmp_name']);if(!$info||!in_array($info['mime'],['image/jpeg','image/png','image/webp'],true)||$info[0]*$info[1]>20000000)throw new InvalidArgumentException('Image JPEG, PNG ou WebP valide requise (20 mégapixels maximum).');
+ $id=bin2hex(random_bytes(16));$q=$db->prepare('INSERT INTO finea_website_media(id,mime,content) VALUES(?,?,?)');$q->execute([$id,$info['mime'],file_get_contents($file['tmp_name'])]);return $id;
  }
  public static function read(PDO $db):array {
  return $db->query('SELECT * FROM finea_website_content WHERE id=1')->fetch(PDO::FETCH_ASSOC)?:[];
@@ -14,11 +23,13 @@ final class SiteContent {
  $data=json_decode($json??'',true);return array_replace(self::defaults($brand),is_array($data)?$data:[]);
  }
  public static function fromPost(array $post):array {
- $out=[];foreach(['headline'=>190,'intro'=>1000,'about'=>10000,'seo_title'=>190,'seo_description'=>320] as $key=>$max){$v=trim((string)($post[$key]??''));if(mb_strlen($v)>$max)throw new InvalidArgumentException('Texte trop long : '.$key);$out[$key]=$v;}
+ $out=[];foreach(['headline'=>190,'intro'=>1000,'about'=>10000,'seo_title'=>190,'seo_description'=>320,'tagline'=>120] as $key=>$max){$v=trim((string)($post[$key]??''));if(mb_strlen($v)>$max)throw new InvalidArgumentException('Texte trop long : '.$key);$out[$key]=$v;}
  if($out['headline']==='')throw new InvalidArgumentException('Le titre est obligatoire.');
- foreach(['services','projects','news'] as $key){$out[$key]=[];$raw=trim((string)($post[$key]??''));if(mb_strlen($raw)>20000)throw new InvalidArgumentException('Contenu trop long.');foreach(preg_split('/\R/u',$raw) as $line){if(trim($line)==='')continue;[$title,$body]=array_pad(explode('|',$line,2),2,'');if(trim($title)===''||mb_strlen(trim($title))>190||mb_strlen(trim($body))>2000)throw new InvalidArgumentException('Vérifiez les titres et descriptions.');$out[$key][]=['title'=>trim($title),'body'=>trim($body)];}if(count($out[$key])>50)throw new InvalidArgumentException('50 éléments maximum par rubrique.');}
+ foreach(['services','projects','news','values','figures'] as $key){$out[$key]=[];$raw=trim((string)($post[$key]??''));if(mb_strlen($raw)>20000)throw new InvalidArgumentException('Contenu trop long.');foreach(preg_split('/\R/u',$raw) as $line){if(trim($line)==='')continue;[$title,$body]=array_pad(explode('|',$line,2),2,'');if(trim($title)===''||mb_strlen(trim($title))>190||mb_strlen(trim($body))>2000)throw new InvalidArgumentException('Vérifiez les titres et descriptions.');$out[$key][]=['title'=>trim($title),'body'=>trim($body)];}if(count($out[$key])>50)throw new InvalidArgumentException('50 éléments maximum par rubrique.');}
+ foreach(['hero_image','about_image'] as $key){$out[$key]=self::imageId((string)($post[$key]??''));}
  $out['show_contact']=!empty($post['show_contact']);return $out;
  }
+ public static function imageId(string $id):string {if($id!==''&&!preg_match('/^[a-f0-9]{32}$/D',$id))throw new InvalidArgumentException('Image invalide.');return $id;}
  public static function save(PDO $db,array $data,bool $publish):void {
  $json=json_encode($data,JSON_THROW_ON_ERROR|JSON_UNESCAPED_UNICODE);
  if($publish){$q=$db->prepare('INSERT INTO finea_website_content(id,draft_json,published_json,published_at) VALUES(1,?,?,NOW()) ON DUPLICATE KEY UPDATE draft_json=VALUES(draft_json),published_json=VALUES(published_json),published_at=NOW()');$q->execute([$json,$json]);}
