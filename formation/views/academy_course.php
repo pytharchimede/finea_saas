@@ -6,6 +6,9 @@ $questions = $academyQuizQuestions ?? [];
 $lessons = array_values($lessons);
 $hasQuiz = $quiz && !empty($questions);
 $totalSteps = count($lessons) + (int)$hasQuiz;
+$certQuery=$academyPdo->prepare('SELECT certificate_ref FROM formation_certificates WHERE user_id=? AND course_id=? AND (expires_at IS NULL OR expires_at>NOW()) LIMIT 1');
+$certQuery->execute([$currentUserId,(int)$course['id']]);
+$courseCertificate=$certQuery->fetchColumn();
 ?>
 <link rel="stylesheet" href="<?= htmlspecialchars(($appBasePath === '' ? '' : $appBasePath) . '/formation/assets/academy-v11.css', ENT_QUOTES, 'UTF-8') ?>">
 <a class="academy-back" href="<?= htmlspecialchars($formationHomeUrl . '?academy=dashboard', ENT_QUOTES, 'UTF-8') ?>">← Retour à FINEA Academy</a>
@@ -21,6 +24,9 @@ $totalSteps = count($lessons) + (int)$hasQuiz;
         <small><?= (int) ($course['estimated_minutes'] ?? 15) ?> min estimées</small>
     </div>
 </section>
+<?php if ($courseCertificate): ?>
+<div class="academy-block"><strong>Certificat de cours disponible</strong> <a class="finea-action-btn finea-action-btn--primary" href="<?= htmlspecialchars($appBasePath.'/formation/certificate.php?course='.(int)$course['id'],ENT_QUOTES,'UTF-8') ?>">Télécharger mon certificat PDF</a></div>
+<?php endif; ?>
 
 <?php if (!empty($academyFlash)): ?>
     <div class="finea-alert academy-flash academy-flash--<?= htmlspecialchars((string) ($academyFlash['type'] ?? 'info'), ENT_QUOTES, 'UTF-8') ?>">
