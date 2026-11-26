@@ -33,7 +33,7 @@ function httpGetJson(string $url, int $timeoutSeconds = 2): ?array
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeoutSeconds);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeoutSeconds);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'banamur-admin/1.0');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'finea-admin/1.0');
         $body = curl_exec($ch);
         $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -50,7 +50,7 @@ function httpGetJson(string $url, int $timeoutSeconds = 2): ?array
         'http' => [
             'method' => 'GET',
             'timeout' => $timeoutSeconds,
-            'header' => "User-Agent: banamur-admin/1.0\r\n",
+            'header' => "User-Agent: finea-admin/1.0\r\n",
         ],
         'ssl' => [
             'verify_peer' => true,
@@ -465,497 +465,23 @@ require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
 
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-    <div class="container mx-auto py-10 px-4">
-        <!-- En-tête -->
-        <div class="text-center mb-12">
-            <h1 class="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent drop-shadow-lg">
-                🛡️ Tableau de bord Administrateur Système
-                <p class="text-xl text-gray-600 mt-4">Gestion des utilisateurs, des rôles et des permissions.</p>
-
-                <div class="flex flex-wrap justify-center gap-4 mt-8">
-                    <a href="liste_users.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-users mr-2"></i>
-                        Liste utilisateurs
-                    </a>
-                    <a href="portal_modules.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white rounded-xl hover:from-fuchsia-600 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-puzzle-piece mr-2"></i>
-                        Modules du portail
-                    </a>
-                    <a href="search_engine_training.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-amber-500 text-white rounded-xl hover:from-indigo-700 hover:to-amber-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-brain mr-2"></i>
-                        Entraîner le moteur
-                    </a>
-                    <a href="notification_email_tester.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-sky-600 to-cyan-600 text-white rounded-xl hover:from-sky-700 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-envelope-circle-check mr-2"></i>
-                        Test notifications email
-                    </a>
-                    <a href="whatsapp_templates.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-500 text-white rounded-xl hover:from-emerald-700 hover:to-green-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fab fa-whatsapp mr-2"></i>
-                        Console WhatsApp
-                    </a>
-                    <a href="notification_matrix.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-rose-600 to-orange-500 text-white rounded-xl hover:from-rose-700 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-bell-slash mr-2"></i>
-                        Matrice notifications
-                    </a>
-                    <a href="gestion_acces.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-user-shield mr-2"></i>
-                        Droits & permissions
-                    </a>
-                    <a href="access_matrix.php" class="inline-flex items-center px-6 py-3 bg-slate-950 text-white rounded-xl hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-table-cells-large mr-2"></i>
-                        Matrice des accès
-                    </a>
-                    <a href="audit_acl.php" class="inline-flex items-center px-6 py-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-shield-halved mr-2"></i>
-                        Audit ACL
-                    </a>
-                    <a href="../dashboard_dg.php" class="inline-flex items-center px-6 py-3 bg-[#1d2b57] text-white rounded-xl hover:bg-[#26396f] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-chart-pie mr-2"></i>
-                        Dashboard DG
-                    </a>
-                    <a href="version_finea.php" class="inline-flex items-center px-6 py-3 bg-amber-400 text-slate-900 rounded-xl hover:bg-amber-300 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-code-branch mr-2"></i>
-                        Version FINEA
-                    </a>
-                    <a href="fne_tools.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-xl hover:from-indigo-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-receipt mr-2"></i>
-                        Outils FNE
-                    </a>
-                    <a href="workflow_fiches_admin.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-600 to-indigo-600 text-white rounded-xl hover:from-cyan-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-code-branch mr-2"></i>
-                        Pilotage workflow fiches
-                    </a>
-                    <a href="portal_badges_debug.php" class="inline-flex items-center px-5 py-3 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all shadow-sm hover:shadow-md">
-                        <i class="fas fa-bug mr-2 text-slate-500"></i>
-                        Debug badges portail
-                    </a>
-                    <a href="portal_badges_settings.php" class="inline-flex items-center px-5 py-3 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all shadow-sm hover:shadow-md">
-                        <i class="fas fa-sliders-h mr-2 text-slate-500"></i>
-                        Paramétrage badges portail
-                    </a>
-                    <a href="feb_ocr_settings.php" class="inline-flex items-center px-5 py-3 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all shadow-sm hover:shadow-md">
-                        <i class="fas fa-file-signature mr-2 text-slate-500"></i>
-                        OCR FEB
-                    </a>
-                    <a href="attendance_control_center.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-user-clock mr-2"></i>
-                        Centre contrôle pointage
-                    </a>
-                    <a href="remaniement_matricules.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-950 text-white rounded-xl hover:from-slate-900 hover:to-black transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-id-card mr-2"></i>
-                        Remaniement matricules RH
-                    </a>
-                    <a href="ai_evolution.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-brain mr-2"></i>
-                        Evolution IA
-                    </a>
-                    <a href="ai_insights_360.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-700 text-white rounded-xl hover:from-cyan-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"><i class="fas fa-chart-line mr-2"></i>Intelligence 360°</a>
-                    <a href="add_user.php" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-user-plus mr-2"></i>
-                        Ajouter utilisateur
-                    </a>
-                    <a href="../selection_portail.php" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <i class="fas fa-th-large mr-2"></i>
-                        Retour au Portail
-                    </a>
-                </div>
-        </div>
-
-        <!-- Indicateurs clés -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 border border-indigo-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Total Utilisateurs</p>
-                        <p class="text-3xl font-bold text-indigo-600"><?= number_format($totalUsers) ?></p>
-                        <p class="text-xs text-gray-500 mt-1">Comptes créés</p>
-                    </div>
-                    <div class="bg-indigo-100 p-3 rounded-xl">
-                        <i class="fas fa-users text-2xl text-indigo-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 border border-green-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Utilisateurs Actifs</p>
-                        <p class="text-3xl font-bold text-green-600"><?= number_format($activeUsers) ?></p>
-                        <p class="text-xs text-gray-500 mt-1">Actifs dans le système</p>
-                    </div>
-                    <div class="bg-green-100 p-3 rounded-xl">
-                        <i class="fas fa-user-check text-2xl text-green-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 border border-red-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Utilisateurs Inactifs</p>
-                        <p class="text-3xl font-bold text-red-600"><?= number_format($inactiveUsers) ?></p>
-                        <p class="text-xs text-gray-500 mt-1">Comptes désactivés</p>
-                    </div>
-                    <div class="bg-red-100 p-3 rounded-xl">
-                        <i class="fas fa-user-slash text-2xl text-red-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 border border-yellow-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Nouveaux ce mois</p>
-                        <p class="text-3xl font-bold text-yellow-600"><?= number_format($newUsersThisMonth) ?></p>
-                        <p class="text-xs text-gray-500 mt-1">Créations récentes</p>
-                    </div>
-                    <div class="bg-yellow-100 p-3 rounded-xl">
-                        <i class="fas fa-calendar-plus text-2xl text-yellow-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <a href="email_logs.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Emails système</h3>
-                        <p class="text-sm text-gray-500 mt-2">Consulter les emails envoyés, erreurs SMTP et ouvertures.</p>
-                    </div>
-                    <div class="text-purple-600 text-3xl">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="notification_email_tester.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Test notifications email</h3>
-                        <p class="text-sm text-gray-500 mt-2">Prévisualiser les variables dynamiques, choisir un destinataire test et rejouer l’envoi réel pour contrôle anti-spam.</p>
-                    </div>
-                    <div class="text-sky-600 text-3xl">
-                        <i class="fas fa-envelope-circle-check"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="ai_evolution.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Evolution IA</h3>
-                        <p class="text-sm text-gray-500 mt-2">Voir l'apprentissage IA, les signaux chantiers et les projections de decaissement.</p>
-                    </div>
-                    <div class="text-indigo-600 text-3xl">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="notifications_settings.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Notifications</h3>
-                        <p class="text-sm text-gray-500 mt-2">Configurer évènements, destinataires et canaux (système/email).</p>
-                    </div>
-                    <div class="text-indigo-600 text-3xl">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="planning_meeting_settings.php" class="block p-6 rounded-2xl border border-amber-200 bg-amber-50/60 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Paramètres des réunions</h3>
-                        <p class="text-sm text-gray-500 mt-2">Définir le chantier Bureau utilisé pour organiser les réunions par service.</p>
-                    </div>
-                    <div class="text-amber-600 text-3xl">
-                        <i class="fas fa-people-group"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="notification_matrix.php" class="block p-6 rounded-2xl border border-rose-200 bg-rose-50/60 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Matrice notifications personnel</h3>
-                        <p class="text-sm text-gray-500 mt-2">Desactiver en un clic toutes les notifications FINEA et piloter Email/Systeme par personne.</p>
-                    </div>
-                    <div class="text-rose-600 text-3xl">
-                        <i class="fas fa-bell-slash"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="access_request_support_settings.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Support accès</h3>
-                        <p class="text-sm text-gray-500 mt-2">Choisir quels employés du service informatique reçoivent les demandes d'accès et suivre les dernières soumissions.</p>
-                    </div>
-                    <div class="text-cyan-600 text-3xl">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                </div>
-            </a>
-
-            <a href="positioning_settings.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Géolocalisation fournisseurs</h3>
-                        <p class="text-sm text-gray-500 mt-2">Piloter l'API GPS, la carte Leaflet, l'autocomplétion Nominatim et le temps réel depuis l'administration.</p>
-                    </div>
-                    <div class="text-emerald-600 text-3xl">
-                        <i class="fas fa-map-location-dot"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- Accès rapides -->
-        <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 mb-12">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Accès rapides</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="liste_users.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Utilisateurs</h3>
-                            <p class="text-sm text-gray-500 mt-2">Voir, modifier et activer/désactiver des comptes.</p>
-                        </div>
-                        <div class="text-indigo-600 text-3xl">
-                            <i class="fas fa-users"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="gestion_acces.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Permissions</h3>
-                            <p class="text-sm text-gray-500 mt-2">Gérer les droits d'accès par utilisateur.</p>
-                        </div>
-                        <div class="text-emerald-600 text-3xl">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="add_user.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Ajouter</h3>
-                            <p class="text-sm text-gray-500 mt-2">Créer un nouveau compte utilisateur.</p>
-                        </div>
-                        <div class="text-yellow-600 text-3xl">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="fne_tools.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Outils FNE</h3>
-                            <p class="text-sm text-gray-500 mt-2">Tester signature, avoir, verify facture & contrôle décaissement.</p>
-                        </div>
-                        <div class="text-indigo-600 text-3xl">
-                            <i class="fas fa-receipt"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="db_tools.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Base de données</h3>
-                            <p class="text-sm text-gray-500 mt-2">Statistiques et export SQL (admin).</p>
-                        </div>
-                        <div class="text-indigo-600 text-3xl">
-                            <i class="fas fa-database"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="relink_fiches_debourse.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Reliaison fiches</h3>
-                            <p class="text-sm text-gray-500 mt-2">Lister les fiches non reliées et choisir manuellement la bonne ligne de déboursé.</p>
-                        </div>
-                        <div class="text-amber-600 text-3xl">
-                            <i class="fas fa-link"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="logistics_fuel_tools.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Outils carburant logistique</h3>
-                            <p class="text-sm text-gray-500 mt-2">Generation des lignes carburant et rattrapage admin des bons manquants.</p>
-                        </div>
-                        <div class="text-orange-600 text-3xl">
-                            <i class="fas fa-gas-pump"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="workflow_fiches_admin.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Workflow fiches</h3>
-                            <p class="text-sm text-gray-500 mt-2">Repositionner une fiche, convertir un total en partiel et suivre la famille parent/enfant.</p>
-                        </div>
-                        <div class="text-cyan-600 text-3xl">
-                            <i class="fas fa-code-branch"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="positioning_settings.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Paramétrage géolocalisation</h3>
-                            <p class="text-sm text-gray-500 mt-2">Ouvrir directement les réglages GPS fournisseurs et lancer le géocodage des adresses existantes.</p>
-                        </div>
-                        <div class="text-emerald-600 text-3xl">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="portal_badges_debug.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Debug badges portail</h3>
-                            <p class="text-sm text-gray-500 mt-2">Contrôler les signaux métier, seuils et compteurs qui alimentent les badges du portail.</p>
-                        </div>
-                        <div class="text-slate-600 text-3xl">
-                            <i class="fas fa-bug"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="portal_badges_settings.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Paramétrage badges portail</h3>
-                            <p class="text-sm text-gray-500 mt-2">Régler ce qui est compté, les textes affichés aux utilisateurs et les seuils d’alerte par module.</p>
-                        </div>
-                        <div class="text-slate-700 text-3xl">
-                            <i class="fas fa-sliders-h"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="branding_settings.php" class="block p-6 rounded-2xl border border-violet-200 bg-violet-50/50 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between"><div><h3 class="text-lg font-semibold text-gray-800">Branding de l’entreprise</h3><p class="text-sm text-gray-500 mt-2">Modifier le logo, l’icône et les informations légales utilisées partout dans FINEA et les PDF.</p></div><div class="text-violet-700 text-3xl"><i class="fas fa-palette"></i></div></div>
-                </a>
-
-                <a href="whatsapp_templates.php" class="block p-6 rounded-2xl border border-emerald-200 bg-emerald-50/50 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div><h3 class="text-lg font-semibold text-gray-800">Console WhatsApp · modèles et tests</h3><p class="text-sm text-gray-500 mt-2">Créer les modèles, suivre leur validation Meta, envoyer des tests et consulter les journaux.</p></div>
-                        <div class="text-emerald-700 text-3xl"><i class="fab fa-whatsapp"></i></div>
-                    </div>
-                </a>
-
-                <a href="audit_erp.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Audit ERP</h3>
-                            <p class="text-sm text-gray-500 mt-2">Consulter la traçabilité transversale des accès, exports et actions métier.</p>
-                        </div>
-                        <div class="text-rose-600 text-3xl">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="access_matrix.php" class="block p-6 rounded-2xl border border-cyan-200 bg-cyan-50/50 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Matrice globale des accès</h3>
-                            <p class="text-sm text-gray-500 mt-2">Visualiser, modifier et exporter tous les droits de tous les utilisateurs.</p>
-                        </div>
-                        <div class="text-cyan-700 text-3xl">
-                            <i class="fas fa-table-cells-large"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="audit_acl.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Audit ACL</h3>
-                            <p class="text-sm text-gray-500 mt-2">Croiser les pages, cartes du portail, permissions et comptes incoherents.</p>
-                        </div>
-                        <div class="text-amber-500 text-3xl"><i class="fas fa-shield-halved"></i></div>
-                    </div>
-                </a>
-
-                <a href="version_finea.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Version & roadmap</h3>
-                            <p class="text-sm text-gray-500 mt-2">Consulter la version deployee, les evolutions et la trajectoire FINEA.</p>
-                        </div>
-                        <div class="text-indigo-700 text-3xl"><i class="fas fa-code-branch"></i></div>
-                    </div>
-                </a>
-
-                <a href="../decaissement/migration_fiches_ancien_systeme.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Migration fiches</h3>
-                            <p class="text-sm text-gray-500 mt-2">Transférer les fiches de décaissement (ancien → nouveau).</p>
-                        </div>
-                        <div class="text-blue-600 text-3xl">
-                            <i class="fas fa-file-import"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="../selection_portail.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Portail</h3>
-                            <p class="text-sm text-gray-500 mt-2">Retourner à la sélection de modules.</p>
-                        </div>
-                        <div class="text-gray-700 text-3xl">
-                            <i class="fas fa-th-large"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="../deconnex.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Déconnexion</h3>
-                            <p class="text-sm text-gray-500 mt-2">Se déconnecter de l'espace administrateur.</p>
-                        </div>
-                        <div class="text-red-600 text-3xl">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="popup_notifications.php" class="block p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Pop-up nouveautés</h3>
-                            <p class="text-sm text-gray-500 mt-2">Créer des annonces de nouveaux modules, corrections et mises à jour avec accusé de lecture.</p>
-                        </div>
-                        <div class="text-red-600 text-3xl">
-                            <i class="fas fa-bullhorn"></i>
-                        </div>
-                    </div>
-                </a>
-
-
-            </div>
-        </div>
-
+<link rel="stylesheet" href="dashboard-admin.css?v=<?= filemtime(__DIR__.'/dashboard-admin.css') ?>">
+<div class="admin-hub">
+<div class="admin-hub-inner">
+<header class="admin-hub-header">
+<div class="admin-identity"><?php $adminLogo = \CompanyBranding::logoUrl(rtrim(\AccessManager::getApplicationBasePath(),'/').'/'); if($adminLogo): ?><img src="<?= htmlspecialchars($adminLogo,ENT_QUOTES,'UTF-8') ?>" alt="Logo entreprise"><?php endif; ?><div><span class="admin-eyebrow">FINEA · Administration système</span><h1>Tableau de bord</h1><p>Supervision des comptes, accès et paramètres de l’entreprise.</p></div></div>
+<div class="admin-header-actions"><a href="../selection_portail.php" class="admin-action"><i class="fas fa-th-large"></i> Portail</a><a href="add_user.php" class="admin-action admin-primary"><i class="fas fa-user-plus"></i> Nouvel utilisateur</a></div>
+</header>
+<section class="admin-kpis" aria-label="Indicateurs utilisateurs">
+<article><i class="fas fa-users"></i><span>Utilisateurs</span><strong><?= number_format($totalUsers) ?></strong></article>
+<article><i class="fas fa-user-check"></i><span>Comptes actifs</span><strong><?= number_format($activeUsers) ?></strong></article>
+<article><i class="fas fa-user-slash"></i><span>Comptes inactifs</span><strong><?= number_format($inactiveUsers) ?></strong></article>
+<article><i class="fas fa-calendar-plus"></i><span>Nouveaux ce mois</span><strong><?= number_format($newUsersThisMonth) ?></strong></article>
+</section>
+<section class="admin-directory"><div class="admin-section-heading"><div><h2>Centre de gestion</h2><p>Ouvrez une catégorie ou recherchez une fonction.</p></div><input id="admin-tool-search" type="search" placeholder="Rechercher un outil…" aria-label="Rechercher un outil"></div>
+<div class="admin-groups"><details class="admin-group"><summary><i class="fas fa-user-shield"></i><span>Utilisateurs et sécurité<small>7 fonctions</small></span><i class="fas fa-chevron-down admin-chevron"></i></summary><div class="admin-links"><a href="liste_users.php"><span><strong>Utilisateurs</strong><small>Voir, modifier et activer/désactiver des comptes.</small></span><i class="fas fa-angle-right"></i></a><a href="add_user.php"><span><strong>Ajouter</strong><small>Créer un nouveau compte utilisateur.</small></span><i class="fas fa-angle-right"></i></a><a href="gestion_acces.php"><span><strong>Permissions</strong><small>Gérer les droits d'accès par utilisateur.</small></span><i class="fas fa-angle-right"></i></a><a href="access_matrix.php"><span><strong>Matrice globale des accès</strong><small>Visualiser, modifier et exporter tous les droits de tous les utilisateurs.</small></span><i class="fas fa-angle-right"></i></a><a href="audit_acl.php"><span><strong>Audit ACL</strong><small>Croiser les pages, cartes du portail, permissions et comptes incoherents.</small></span><i class="fas fa-angle-right"></i></a><a href="audit_erp.php"><span><strong>Audit ERP</strong><small>Consulter la traçabilité transversale des accès, exports et actions métier.</small></span><i class="fas fa-angle-right"></i></a><a href="access_request_support_settings.php"><span><strong>Support accès</strong><small>Choisir quels employés du service informatique reçoivent les demandes d'accès et suivre les dernières soumissions.</small></span><i class="fas fa-angle-right"></i></a></div></details><details class="admin-group"><summary><i class="fas fa-palette"></i><span>Portail et identité<small>5 fonctions</small></span><i class="fas fa-chevron-down admin-chevron"></i></summary><div class="admin-links"><a href="portal_modules.php"><span><strong>Modules du portail</strong></span><i class="fas fa-angle-right"></i></a><a href="branding_settings.php"><span><strong>Branding de l’entreprise</strong><small>Modifier le logo, l’icône et les informations légales utilisées partout dans FINEA et les PDF.</small></span><i class="fas fa-angle-right"></i></a><a href="portal_badges_settings.php"><span><strong>Paramétrage badges portail</strong><small>Régler ce qui est compté, les textes affichés aux utilisateurs et les seuils d’alerte par module.</small></span><i class="fas fa-angle-right"></i></a><a href="portal_badges_debug.php"><span><strong>Debug badges portail</strong><small>Contrôler les signaux métier, seuils et compteurs qui alimentent les badges du portail.</small></span><i class="fas fa-angle-right"></i></a><a href="popup_notifications.php"><span><strong>Pop-up nouveautés</strong><small>Créer des annonces de nouveaux modules, corrections et mises à jour avec accusé de lecture.</small></span><i class="fas fa-angle-right"></i></a></div></details><details class="admin-group"><summary><i class="fas fa-bell"></i><span>Notifications et messagerie<small>5 fonctions</small></span><i class="fas fa-chevron-down admin-chevron"></i></summary><div class="admin-links"><a href="notifications_settings.php"><span><strong>Notifications</strong><small>Configurer évènements, destinataires et canaux (système/email).</small></span><i class="fas fa-angle-right"></i></a><a href="notification_matrix.php"><span><strong>Matrice notifications personnel</strong><small>Desactiver en un clic toutes les notifications FINEA et piloter Email/Systeme par personne.</small></span><i class="fas fa-angle-right"></i></a><a href="email_logs.php"><span><strong>Emails système</strong><small>Consulter les emails envoyés, erreurs SMTP et ouvertures.</small></span><i class="fas fa-angle-right"></i></a><a href="notification_email_tester.php"><span><strong>Test notifications email</strong><small>Prévisualiser les variables dynamiques, choisir un destinataire test et rejouer l’envoi réel pour contrôle anti-spam.</small></span><i class="fas fa-angle-right"></i></a><a href="whatsapp_templates.php"><span><strong>Console WhatsApp · modèles et tests</strong><small>Créer les modèles, suivre leur validation Meta, envoyer des tests et consulter les journaux.</small></span><i class="fas fa-angle-right"></i></a></div></details><details class="admin-group"><summary><i class="fas fa-sliders-h"></i><span>Paramètres métiers<small>10 fonctions</small></span><i class="fas fa-chevron-down admin-chevron"></i></summary><div class="admin-links"><a href="fne_tools.php"><span><strong>Outils FNE</strong><small>Tester signature, avoir, verify facture &amp; contrôle décaissement.</small></span><i class="fas fa-angle-right"></i></a><a href="workflow_fiches_admin.php"><span><strong>Workflow fiches</strong><small>Repositionner une fiche, convertir un total en partiel et suivre la famille parent/enfant.</small></span><i class="fas fa-angle-right"></i></a><a href="feb_ocr_settings.php"><span><strong>OCR FEB</strong></span><i class="fas fa-angle-right"></i></a><a href="relink_fiches_debourse.php"><span><strong>Reliaison fiches</strong><small>Lister les fiches non reliées et choisir manuellement la bonne ligne de déboursé.</small></span><i class="fas fa-angle-right"></i></a><a href="logistics_fuel_tools.php"><span><strong>Outils carburant logistique</strong><small>Generation des lignes carburant et rattrapage admin des bons manquants.</small></span><i class="fas fa-angle-right"></i></a><a href="attendance_control_center.php"><span><strong>Centre contrôle pointage</strong></span><i class="fas fa-angle-right"></i></a><a href="remaniement_matricules.php"><span><strong>Remaniement matricules RH</strong></span><i class="fas fa-angle-right"></i></a><a href="planning_meeting_settings.php"><span><strong>Paramètres des réunions</strong><small>Définir le chantier Bureau utilisé pour organiser les réunions par service.</small></span><i class="fas fa-angle-right"></i></a><a href="positioning_settings.php"><span><strong>Paramétrage géolocalisation</strong><small>Ouvrir directement les réglages GPS fournisseurs et lancer le géocodage des adresses existantes.</small></span><i class="fas fa-angle-right"></i></a><a href="../decaissement/migration_fiches_ancien_systeme.php"><span><strong>Migration fiches</strong><small>Transférer les fiches de décaissement (ancien → nouveau).</small></span><i class="fas fa-angle-right"></i></a></div></details><details class="admin-group"><summary><i class="fas fa-server"></i><span>Système et intelligence<small>6 fonctions</small></span><i class="fas fa-chevron-down admin-chevron"></i></summary><div class="admin-links"><a href="db_tools.php"><span><strong>Base de données</strong><small>Statistiques et export SQL (admin).</small></span><i class="fas fa-angle-right"></i></a><a href="version_finea.php"><span><strong>Version &amp; roadmap</strong><small>Consulter la version deployee, les evolutions et la trajectoire FINEA.</small></span><i class="fas fa-angle-right"></i></a><a href="search_engine_training.php"><span><strong>Entraîner le moteur</strong></span><i class="fas fa-angle-right"></i></a><a href="ai_evolution.php"><span><strong>Evolution IA</strong><small>Voir l'apprentissage IA, les signaux chantiers et les projections de decaissement.</small></span><i class="fas fa-angle-right"></i></a><a href="ai_insights_360.php"><span><strong>Intelligence 360°</strong></span><i class="fas fa-angle-right"></i></a><a href="../dashboard_dg.php"><span><strong>Dashboard DG</strong></span><i class="fas fa-angle-right"></i></a></div></details></div><p id="admin-no-tools" hidden>Aucun outil correspondant.</p>
+</section>
+<details class="admin-activity" id="admin-activity" <?= !empty($_GET) ? 'open' : '' ?>><summary><span><i class="fas fa-chart-line"></i> Activité des connexions</span><span class="admin-activity-count"><?= number_format($loginsToday) ?> aujourd’hui <i class="fas fa-chevron-down"></i></span></summary>
         <!-- Connexions -->
         <div class="bg-white rounded-2xl shadow-xl p-6 mb-12 border border-gray-100">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">Activité des connexions</h2>
@@ -1182,6 +708,8 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </div>
         </div>
 
+        </details>
+        <div class="admin-bottom"><a href="../deconnex.php">Déconnexion</a></div>
         <script>
             (function() {
                 if (typeof window.Chart === 'undefined') {
@@ -1360,8 +888,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                 }
             })();
         </script>
-
-
+        <script src="dashboard-admin.js?v=<?= filemtime(__DIR__.'/dashboard-admin.js') ?>"></script>
     </div>
 </div>
 
