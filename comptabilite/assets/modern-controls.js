@@ -17,7 +17,9 @@ window.AccountingControls = (() => {
         .filter(Boolean).join(' ') || 'Rechercher et sélectionner';
 
     function enhanceSelect(select) {
-        if (instances.has(select) || select.multiple) return;
+        // Native selects inside modal dialogs must stay in the browser top layer.
+        // Dynamic disabled/required fields also retain native constraint validation.
+        if (instances.has(select) || select.multiple || select.closest('dialog')) return;
         const required = select.required;
         const wrapper = element('span', 'search-select');
         const input = element('input', 'search-select-input');
