@@ -38,6 +38,21 @@ class UniteMesure
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
+    public function usageReport(array $filters = []): array
+    {
+        $sql = 'SELECT u.id,u.symbole,u.libelle,COALESCE(l.usage_count,0) usage_count FROM unites_mesure u LEFT JOIN (SELECT unite_id,COUNT(*) usage_count FROM ligne_devis_banamur WHERE unite_id IS NOT NULL GROUP BY unite_id) l ON l.unite_id=u.id WHERE 1=1';
+        $params=[];
+        if (($filters['q']??'') !== '') {
+            $sql .= ' AND (u.symbole LIKE :symbol OR u.libelle LIKE :label)';
+            $params=['symbol'=>'%'.$filters['q'].'%','label'=>'%'.$filters['q'].'%'];
+        }
+        if (($filters['usage']??'')==='used') $sql.=' AND COALESCE(l.usage_count,0)>0';
+        if (($filters['usage']??'')==='unused') $sql.=' AND COALESCE(l.usage_count,0)=0';
+        $stmt=$this->pdo->prepare($sql.' ORDER BY u.libelle,u.id');
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }
+
     public function add($symbole, $libelle)
     {
         $stmt = $this->pdo->prepare("INSERT INTO unites_mesure (symbole, libelle) VALUES (:symbole, :libelle)");

@@ -66,10 +66,12 @@ if ($module === 'clients') {
         $rows[]=[(string)$project['num_offre'],(string)$project['reference_offre'],(string)($m['nom_client']??''),(string)$project['commercial_dedie'],(string)$project['date_offre'],(int)$m['quote_count'],$sites,(float)$m['project_value']];
     }
 } else {
-    $rows = (new UniteMesure(Database::getConnection()))->search($filters);
-    $headers = ['Symbole','Libellé'];
-    $widths = [30,70];
-    $rows = array_map(static fn(array $row): array => [(string)$row['symbole'],(string)$row['libelle']], $rows);
+    $usage=$_GET['usage']??'';
+    if(!in_array($usage,['','used','unused'],true)){http_response_code(400);exit('Filtre invalide.');}
+    $rows = (new UniteMesure(Database::getConnection()))->usageReport($filters+['usage'=>$usage]);
+    $headers = ['Symbole','Libellé','Lignes de devis','Utilisation'];
+    $widths = [18,42,20,20];
+    $rows = array_map(static fn(array $row): array => [(string)$row['symbole'],(string)$row['libelle'],(int)$row['usage_count'],(int)$row['usage_count']>0?'Utilisée':'Inutilisée'], $rows);
 }
 $lastColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(count($headers));
 $brand = CompanyBranding::get();
