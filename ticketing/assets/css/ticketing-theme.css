@@ -1,0 +1,29 @@
+@media screen {
+.ticket-page-bg{--tk-page:#fff;--tk-panel:#fff;--tk-soft:#f4f7fc;--tk-field:#fff;--tk-ink:#172033;--tk-muted:#475569;--tk-border:#cbd5e1;--blue:var(--brand-primary,#081c65);--yellow:var(--brand-accent,#1746b0);background:var(--tk-page)!important;color:var(--tk-ink)}
+html.finea-dark-mode .ticket-page-bg{--tk-page:#0d1727;--tk-panel:#172337;--tk-soft:#1e3048;--tk-field:#101c2e;--tk-ink:#f1f5f9;--tk-muted:#cbd5e1;--tk-border:#405773;color-scheme:dark}
+.ticket-page-bg :is(.ticket-hero,.ticket-aside){background:var(--blue)!important;color:var(--brand-on-primary,#fff)!important;border-color:var(--blue)!important}
+.ticket-page-bg :is(.ticket-hero,.ticket-aside) :is(h1,h2,p,small,span,i){color:inherit!important}
+.ticket-page-bg .ticket-hero-glow{display:none}
+.ticket-page-bg :is(.ticket-aside-link,.ticket-btn-ghost){background:color-mix(in srgb,var(--brand-on-primary,#fff) 9%,var(--blue))!important;color:var(--brand-on-primary,#fff)!important}
+.ticket-page-bg :is(.ticket-aside-link.active,.ticket-aside-link:hover,.ticket-btn-yellow,#ticketThemeToggle){background:var(--yellow)!important;color:var(--brand-on-accent,#fff)!important;border-color:var(--yellow)!important}
+.ticket-page-bg .ticket-aside-icon{background:transparent!important;color:inherit!important}
+.ticket-page-bg .ticket-btn-primary,.ticket-page-bg .ticket-form-section-head>span,.ticket-page-bg .ticket-notif-avatar,.ticket-page-bg .ticket-followup-panel>i{background:var(--blue)!important;color:var(--brand-on-primary,#fff)!important}
+.ticket-page-bg :is(.ticket-btn-light,.ticket-btn-soft,.ticket-tracking-refresh){background:var(--tk-soft)!important;color:var(--tk-ink)!important;border-color:var(--tk-border)!important}
+.ticket-page-bg .ticket-btn i{color:inherit!important}
+.ticket-page-bg :is(.ticket-card,.ticket-kpi,.ticket-table td,.ticket-form-section,.ticket-followup-panel,.ticket-reception-panel,.ticket-message,.ticket-file-chip,.ticket-attachment,.ticket-tracking-person-row,.ticket-notif-row,.ticket-search-menu,.ticket-search-option){background:var(--tk-panel)!important;color:var(--tk-ink)!important;border-color:var(--tk-border)!important;box-shadow:none}
+.ticket-page-bg :is(.ticket-dropzone,.ticket-tracking-summary>div,.ticket-track-step,.ticket-search-badge,.ticket-engagement,.ticket-notif-pill,.ticket-category,.ticket-priority,.ticket-badge,.ticket-kpi i,.ticket-file-chip>i,.ticket-attachment>i,.ticket-dropzone>span,.ticket-track-step>i,.ticket-relance-count){background:var(--tk-soft)!important;color:var(--tk-ink)!important;border-color:var(--tk-border)!important}
+.ticket-page-bg :is(.ticket-table tr:hover td,.ticket-search-option:hover,.ticket-search-option.is-active,.ticket-dropzone:hover,.ticket-dropzone.is-dragover){background:var(--tk-soft)!important}
+.ticket-page-bg :is(.ticket-main h2,.ticket-main h3,.ticket-main h4,.ticket-main b,.ticket-main strong,.ticket-field span,.ticket-side-form label,.ticket-dl dd,.ticket-side-ticket>span,.ticket-assignee,.ticket-message p,.ticket-title-block p,.ticket-reception-panel label){color:var(--tk-ink)!important}
+.ticket-page-bg :is(.ticket-main small,.ticket-kpi span,.ticket-table th,.ticket-dl dt,.ticket-form-section-head p,.ticket-tracking-summary span,.ticket-tracking-head p,.ticket-tracking-note,.ticket-reception-panel p,.ticket-search-empty,.ticket-empty){color:var(--tk-muted)!important}
+.ticket-page-bg :is(.ticket-card-head p,.ticket-reception-brand){color:var(--tk-ink)!important}
+.ticket-page-bg :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,textarea,.ticket-search-control){background:var(--tk-field)!important;color:var(--tk-ink)!important;border-color:var(--tk-border)!important;box-shadow:none!important}
+.ticket-page-bg .ticket-search-control input{background:transparent!important}
+.ticket-page-bg :is(input,textarea)::placeholder{color:var(--tk-muted)!important}
+.ticket-page-bg :is(input,select,textarea,button,a):focus-visible,.ticket-page-bg .ticket-search-control:focus-within{outline:2px solid var(--yellow)!important;outline-offset:2px}
+.ticket-page-bg :is(.ticket-title-block,.ticket-history,.ticket-side-form,.ticket-upload-inline,.ticket-notification-log){border-color:var(--tk-border)!important}
+.ticket-page-bg .ticket-reception{border-top-color:var(--yellow)!important}
+html.finea-dark-mode .ticket-page-bg :is(.status-nouveau,.status-pris_en_charge,.status-en_attente,.tone-amber,.tone-orange,.ticket-relance-count){color:#fde68a!important}
+html.finea-dark-mode .ticket-page-bg :is(.status-en_cours,.tone-sky){color:#bfdbfe!important}
+html.finea-dark-mode .ticket-page-bg :is(.status-resolu,.status-cloture,.ticket-engagement.is-engaged,.ticket-notif-pill.is-read,.ticket-track-step.is-complete>i){color:#86efac!important}
+html.finea-dark-mode .ticket-page-bg :is(.status-rejete,.tone-rose,.ticket-track-step.is-error>i,.ticket-track-step em,.ticket-file-chip button){color:#fda4af!important;background:var(--tk-soft)!important}
+}
