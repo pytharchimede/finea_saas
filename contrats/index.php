@@ -23,9 +23,10 @@ require __DIR__ . '/../decaissement/includes/header.php';
 require __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
 
-<main class="mx-auto max-w-7xl px-4 py-8">
-	<header class="rounded-[28px] bg-gradient-to-r from-slate-950 via-indigo-950 to-cyan-900 p-8 text-white">
-		<p class="text-xs font-black uppercase tracking-[.25em] text-amber-300">
+<link rel="stylesheet" href="contract-theme.css?v=<?= filemtime(__DIR__ . '/contract-theme.css') ?>">
+<main class="contract-brand mx-auto max-w-7xl px-4 py-8">
+	<header class="contract-hero p-6">
+		<p class="text-xs font-black uppercase tracking-[.25em] contract-eyebrow">
 			Finéa · Commande &amp; sous-traitance
 		</p>
 		<div class="mt-2 flex flex-wrap items-center justify-between gap-4">
@@ -35,23 +36,23 @@ require __DIR__ . '/../decaissement/includes/navbar.php';
 					Postes verrouillés, avancement, récupération d’acompte et dossier de paiement.
 				</p>
 			</div>
-			<a href="creer.php" class="rounded-xl bg-amber-400 px-5 py-3 font-black text-slate-950">
+			<a href="creer.php" class="rounded-xl contract-primary px-5 py-3 font-bold">
 				<i class="fas fa-plus mr-2"></i>Nouveau contrat
 			</a>
 		</div>
 	</header>
 
 	<?php if ($contractIsDrh): ?>
-		<div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-950">
+		<div class="mt-5 rounded-xl border contract-soft p-4 text-sm font-bold contract-reference">
 			<i class="fas fa-user-shield mr-2"></i>
 			Mode DRH : vous pouvez affecter n’importe quel utilisateur actif — y compris vous-même — aux différents niveaux de validation.
 		</div>
 	<?php endif; ?>
 
-	<section class="mt-6 overflow-hidden rounded-3xl border bg-white shadow-sm">
+	<section class="mt-6 overflow-hidden rounded-xl border bg-white shadow-sm">
 		<div class="overflow-x-auto">
 			<table class="w-full min-w-[950px] text-left text-sm">
-				<thead class="bg-slate-950 text-white">
+				<thead class="contract-table-head">
 					<tr>
 						<th class="p-4">Référence</th>
 						<th class="p-4">Chantier</th>
@@ -66,7 +67,7 @@ require __DIR__ . '/../decaissement/includes/navbar.php';
 				<tbody>
 					<?php foreach ($rows as $row): ?>
 						<tr class="border-b">
-							<td class="p-4 font-black text-indigo-700">
+							<td class="p-4 font-black contract-reference">
 								<?= $h($row['reference']) ?>
 								<small class="block text-slate-400"><?= $h($row['document_id']) ?></small>
 							</td>
@@ -85,17 +86,17 @@ require __DIR__ . '/../decaissement/includes/navbar.php';
 								<?= number_format((float) $row['total_paye'], 0, ',', ' ') ?> FCFA
 							</td>
 							<td class="p-4">
-								<span class="rounded-full bg-indigo-50 px-3 py-1 font-bold text-indigo-700">
+								<span class="rounded-full contract-badge px-3 py-1 font-bold contract-reference">
 									<?= $h($row['statut']) ?>
 								</span>
 							</td>
 							<td class="p-4">
 								<div class="flex flex-wrap gap-2">
-									<a class="rounded-lg bg-slate-900 px-3 py-2 font-bold text-white" href="voir.php?id=<?= (int) $row['id'] ?>">
+									<a class="rounded-lg contract-primary px-3 py-2 font-bold" href="voir.php?id=<?= (int) $row['id'] ?>">
 										Ouvrir
 									</a>
 									<?php if ($contractIsDrh): ?>
-										<a class="rounded-lg bg-amber-400 px-3 py-2 font-black text-black" href="workflow.php?id=<?= (int) $row['id'] ?>&amp;etape=rh">
+										<a class="rounded-lg contract-primary px-3 py-2 font-bold" href="workflow.php?id=<?= (int) $row['id'] ?>&amp;etape=rh">
 											Validateurs
 										</a>
 									<?php endif; ?>

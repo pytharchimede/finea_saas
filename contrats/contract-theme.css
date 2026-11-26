@@ -1,0 +1,19 @@
+/* Tenant palette, independent of legacy workflow field names. */
+.contract-brand{color:var(--finea-text);--contract-tint:color-mix(in srgb,var(--brand-primary) 9%,var(--finea-surface-raised))}
+.contract-brand .contract-hero{background:var(--brand-primary);color:var(--brand-on-primary);border-radius:14px}
+.contract-brand .contract-hero :is(.text-slate-300,.contract-eyebrow){color:var(--brand-on-primary)!important;opacity:.9}
+.contract-brand .contract-hero h1{font-size:clamp(24px,3vw,32px);letter-spacing:-.025em}
+.contract-brand .contract-primary{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;display:inline-flex;align-items:center;justify-content:center}
+.contract-brand .contract-hero .contract-primary{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important}
+.contract-brand .contract-primary:hover{filter:brightness(.92)}
+.contract-brand .contract-soft,.contract-brand .contract-badge{background:var(--contract-tint)!important;color:var(--finea-text)!important;border-color:var(--finea-border)!important}
+.contract-brand .contract-reference{color:var(--brand-primary)!important}
+html.finea-dark-mode .contract-brand .contract-reference{color:var(--finea-text)!important}
+.contract-brand .contract-table-head,.contract-brand .contract-table-head th{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+.contract-brand :is(section,article,.bg-white){border-color:var(--finea-border)!important;box-shadow:none!important}
+.contract-brand :is(.bg-slate-50,.bg-slate-100){background:var(--finea-surface-soft)!important}
+.contract-brand :is(.text-slate-400,.text-slate-500,.text-slate-600){color:var(--finea-muted)!important}
+.contract-brand .text-slate-950{color:var(--finea-text)!important}
+.contract-brand a:focus-visible{outline:2px solid var(--brand-accent);outline-offset:3px}
+html.finea-dark-mode .contract-brand .bg-emerald-50{background:#15352c!important}
+html.finea-dark-mode .contract-brand .text-emerald-700{color:#a7f3d0!important}
