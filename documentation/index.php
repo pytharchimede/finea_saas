@@ -540,7 +540,47 @@ $renderFolderBranch = function (int $parentId = 0) use (&$renderFolderBranch, $c
 };
 ?>
 
-<div class="min-h-screen bg-slate-100">
+<style>
+.documentation-workspace { background: #fff !important; }
+.documentation-workspace #documentationLayout > aside {
+    background: #fff !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace {
+    background: #08111f !important;
+    color: #f5f8fc;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside {
+    background: #0d1727 !important;
+    color: #f5f8fc !important;
+    border-color: #52647e !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside :is(.bg-white,.bg-slate-50,.bg-slate-100,.bg-slate-200) {
+    background: #172337 !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside :is(.text-slate-400,.text-slate-500,.text-slate-600,.text-slate-700) {
+    color: #c6d0de !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside :is(.text-slate-800,.text-slate-900) {
+    color: #f5f8fc !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside .border-slate-200 {
+    border-color: #52647e !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside .bg-emerald-50 {
+    background: #123c32 !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside :is(.text-emerald-700,.text-emerald-800,.text-emerald-900) {
+    color: #a7f3d0 !important;
+}
+:is(html.finea-dark-mode, body.finea-dark-mode) .documentation-workspace #documentationLayout > aside :is(a,button):hover {
+    background-color: #202e43 !important;
+}
+.documentation-workspace #documentationLayout > aside :is(a,button):focus-visible {
+    outline: 2px solid var(--brand-accent,#1746b0);
+    outline-offset: 2px;
+}
+</style>
+<div class="documentation-workspace min-h-screen">
     <div class="mx-auto max-w-[1800px] px-4 py-5">
         <?php if (!empty($_SESSION['flash_success'])): ?>
             <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 shadow-sm">
@@ -578,7 +618,7 @@ $renderFolderBranch = function (int $parentId = 0) use (&$renderFolderBranch, $c
             </div>
 
             <div id="documentationLayout" class="grid grid-cols-1 gap-0 xl:grid-cols-[300px_minmax(0,1fr)]">
-                <aside class="border-b border-slate-200 bg-slate-50/80 p-4 xl:border-b-0 xl:border-r">
+                <aside class="border-b border-slate-200 p-4 xl:border-b-0 xl:border-r">
                     <div class="space-y-4">
                         <div class="rounded-2xl border border-slate-200 bg-white p-3">
                             <div class="mb-3 flex items-center justify-between gap-3">
@@ -1025,7 +1065,7 @@ $renderFolderBranch = function (int $parentId = 0) use (&$renderFolderBranch, $c
                     </div>
                 </main>
 
-                <aside id="rightPanel" class="hidden bg-slate-50/70 p-4 xl:border-l xl:border-slate-200">
+                <aside id="rightPanel" class="hidden p-4 xl:border-l xl:border-slate-200">
                     <div class="space-y-4">
                         <div class="rounded-2xl border border-slate-200 bg-white p-4">
                             <div class="mb-3 flex items-center justify-between gap-2">
