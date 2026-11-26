@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__.'/../model/CompanyExportBranding.php';
+require_once __DIR__.'/../model/EnvConfig.php';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -50,21 +52,21 @@ $tableHeader->addRow();
 
 // Logo à gauche
 $cellLogo = $tableHeader->addCell(2000, ['valign' => 'center']);
-$logoPath = '../logo/' . ($devis['logo'] ?? 'default_logo.jpg');
-if (file_exists($logoPath)) {
+$logoPath = CompanyBranding::logoFile();
+if ($logoPath && in_array(strtolower(pathinfo($logoPath, PATHINFO_EXTENSION)), ['png','jpg','jpeg'], true) && is_file($logoPath)) {
     $cellLogo->addImage($logoPath, ['width' => 80, 'height' => 80, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT]);
 }
 
 // Titres au centre
 $cellTitles = $tableHeader->addCell(7000, ['valign' => 'center']);
-$cellTitles->addText(Utils::toMbConvertEncoding('BANAMUR INDUSTRIES ET TECHNOLOGIES'), ['bold' => true, 'size' => 16], ['alignment' => 'center']);
-$cellTitles->addText(Utils::toMbConvertEncoding('BATIMENT-TRAVAUX PUBLICS'), ['bold' => false, 'size' => 13], ['alignment' => 'center']);
-$cellTitles->addText(Utils::toMbConvertEncoding('RENOVATION ET TRAVAUX NEUF'), ['bold' => true, 'size' => 13, 'color' => 'FFCC00'], ['alignment' => 'center']);
-$cellTitles->addText(Utils::toMbConvertEncoding('TUYAUTERIE-CHAUDRENERIE-CHARPENTE METALLIQUE'), ['bold' => false, 'size' => 14], ['alignment' => 'center']);
+$cellTitles->addText(Utils::toMbConvertEncoding(CompanyExportBranding::identityLine()), ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+$cellTitles->addText(Utils::toMbConvertEncoding('DEVIS'), ['bold' => false, 'size' => 13], ['alignment' => 'center']);
+$cellTitles->addText(Utils::toMbConvertEncoding((string)CompanyBranding::get()['address']), ['bold' => true, 'size' => 13, 'color' => CompanyExportBranding::rgb('primary')], ['alignment' => 'center']);
+$cellTitles->addText(Utils::toMbConvertEncoding(CompanyExportBranding::contactLine()), ['bold' => false, 'size' => 14], ['alignment' => 'center']);
 
 // QR code à gauche sous le logo
 $cellQR = $tableHeader->addCell(2000, ['valign' => 'center']);
-$qrCodeData = 'https://fidest.ci/planification/request/export_pdf.php?devisId=' . $devis['id'];
+$qrCodeData = CompanyExportBranding::documentUrl('request/export_pdf.php?devisId=' . rawurlencode((string)$devis['id']));
 $qrCodeFile = sys_get_temp_dir() . '/qrcode_' . uniqid() . '.png';
 $qrResult = Builder::create()->writer(new PngWriter())->data($qrCodeData)->size(120)->margin(5)->build();
 file_put_contents($qrCodeFile, $qrResult->getString());
@@ -106,12 +108,12 @@ $phpWord->addTableStyle('DevisTable', $tableStyle, [
 ]);
 $table = $section->addTable('DevisTable');
 $table->addRow(300);
-$table->addCell(800, ['bgColor' => '000000'])->addText('N°', ['bold' => true, 'color' => 'FFFFFF'], ['alignment' => 'center']);
-$table->addCell(3500)->addText('Désignation', ['bold' => true, 'color' => 'FFFFFF'], ['bgColor' => '000000', 'alignment' => 'center']);
-$table->addCell(1000)->addText('Qté', ['bold' => true, 'color' => 'FFFFFF'], ['bgColor' => '000000', 'alignment' => 'center']);
-$table->addCell(1000)->addText('U', ['bold' => true, 'color' => 'FFFFFF'], ['bgColor' => '000000', 'alignment' => 'center']);
-$table->addCell(1200)->addText('PU', ['bold' => true, 'color' => 'FFFFFF'], ['bgColor' => '000000', 'alignment' => 'center']);
-$table->addCell(1400)->addText('PT', ['bold' => true, 'color' => 'FFFFFF'], ['bgColor' => '000000', 'alignment' => 'center']);
+$table->addCell(800, ['bgColor' => CompanyExportBranding::rgb('primary')])->addText('N°', ['bold' => true, 'color' => CompanyExportBranding::rgb('primary',true)], ['alignment' => 'center']);
+$table->addCell(3500, ['bgColor'=>CompanyExportBranding::rgb('primary')])->addText('Désignation', ['bold'=>true,'color'=>CompanyExportBranding::rgb('primary',true)], ['alignment'=>'center']);
+$table->addCell(1000, ['bgColor'=>CompanyExportBranding::rgb('primary')])->addText('Qté', ['bold'=>true,'color'=>CompanyExportBranding::rgb('primary',true)], ['alignment'=>'center']);
+$table->addCell(1000, ['bgColor'=>CompanyExportBranding::rgb('primary')])->addText('U', ['bold'=>true,'color'=>CompanyExportBranding::rgb('primary',true)], ['alignment'=>'center']);
+$table->addCell(1200, ['bgColor'=>CompanyExportBranding::rgb('primary')])->addText('PU', ['bold'=>true,'color'=>CompanyExportBranding::rgb('primary',true)], ['alignment'=>'center']);
+$table->addCell(1400, ['bgColor'=>CompanyExportBranding::rgb('primary')])->addText('PT', ['bold'=>true,'color'=>CompanyExportBranding::rgb('primary',true)], ['alignment'=>'center']);
 
 foreach ($lignes as $index => $ligne) {
     $table->addRow(300);
@@ -167,8 +169,8 @@ if (!empty($devis['valide_dt']) && $devis['valide_dt'] == 1 && $signatureDirecte
 
 // === Pied de page ===
 $section->addTextBreak(2);
-$section->addText("FOURNITURES INDUSTRIELLES, DEPANNAGE ET TRAVAUX PUBLIQUES - Au capital de 10 000 000 F CFA - Siège Social : Abidjan, Koumassi, Zone industrielle", ['size' => 8], ['alignment' => 'center']);
-$section->addText("01 BP 1642 Abidjan 01 - Téléphone : (+225) 27-21-36-27-27  -  Email : info@fidest.org - RCCM : CI-ABJ-2017-B-20163  -  N° CC : 010274200088", ['size' => 8], ['alignment' => 'center']);
+$section->addText(CompanyExportBranding::identityLine(), ['size' => 8], ['alignment' => 'center']);
+$section->addText(CompanyExportBranding::contactLine(), ['size' => 8], ['alignment' => 'center']);
 
 // Nettoyage du QR code temporaire
 if (file_exists($qrCodeFile)) {

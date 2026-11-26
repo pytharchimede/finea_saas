@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__.'/../model/CompanyExportBranding.php';
+require_once __DIR__.'/../model/EnvConfig.php';
 
 include_once '../header/header_export_pdf.php';
 require_once("../model/Utils.php");
@@ -70,9 +72,9 @@ class PDF extends FPDF
         $this->SetFont('Arial', '', 7);
 
         // Ligne 1
-        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("S.A.R.L au Capital de 100 000 000 FCFA - Siège Social: Abidjan, Koumassi Bd. du Gabon prolongé – 01 BP 1642 Abidjan 01"), 0, 1, 'C');
+        $this->Cell(0, 3.5, Utils::toMbConvertEncoding(CompanyExportBranding::identityLine()), 0, 1, 'C');
         // Ligne 2
-        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("RCCM N°: CI-ABJ-03-2022-B13-02828 – Tél. : +225 27 21 36 27 27 / 27 21 36 09 29 – Fax : 27 21 36 05 75"), 0, 1, 'C');
+        $this->Cell(0, 3.5, Utils::toMbConvertEncoding(CompanyExportBranding::contactLine()), 0, 1, 'C');
         // Ligne 3
         $this->Cell(0, 3.5, Utils::toMbConvertEncoding("E-mail: banacerf1@gmail.com - Compte Bancaire BDU N° : CI180 01010 020401144580 11"), 0, 1, 'C');
 
@@ -135,7 +137,7 @@ $pdf->SetFont('Arial', 'B', 16);
 $pdf->AliasNbPages();
 
 // Dimensions
-$logoPath = '../logo/' . ($devis['logo'] ?? 'default_logo.jpg');
+$logoPath = CompanyBranding::logoFile();
 $logoWidth = 40;
 $logoHeight = 40;
 $enteteX = 10;
@@ -143,7 +145,7 @@ $enteteY = 10;
 $enteteW = 190;
 
 // Afficher le logo à gauche
-$pdf->Image($logoPath, $enteteX, $enteteY, $logoWidth, $logoHeight);
+if ($logoPath && in_array(strtolower(pathinfo($logoPath, PATHINFO_EXTENSION)), ['png','jpg','jpeg'], true) && ($size = @getimagesize($logoPath))) { $scale=min($logoWidth/$size[0],$logoHeight/$size[1]); $pdf->Image($logoPath,$enteteX,$enteteY,$size[0]*$scale,$size[1]*$scale); }
 
 // Zone de texte à droite du logo
 $textX = $enteteX + $logoWidth + 5;
@@ -153,24 +155,24 @@ $textY = $enteteY;
 // Préparer les 4 lignes (inchangé)
 $lines = [
     [
-        'text' => 'BANAMUR INDUSTRIES ET TECHNOLOGIES',
+        'text' => CompanyExportBranding::identityLine(),
         'size' => 16,
         'style' => 'B',
         'color' => [0, 0, 0],
         'font' => 'Arial'
     ],
     [
-        'text' => 'BATIMENT-TRAVAUX PUBLICS',
+        'text' => 'DEVIS',
         'size' => 13,
         'style' => '',
         'color' => [0, 0, 0],
         'font' => 'Arial'
     ],
     [
-        'text' => 'RENOVATION ET TRAVAUX NEUF',
+        'text' => (string)CompanyBranding::get()['address'],
         'size' => 13,
         'style' => 'B',
-        'color' => [255, 204, 0],
+        'color' => CompanyExportBranding::rgbArray('primary'),
         'font' => 'Arial'
     ],
     [
@@ -198,7 +200,7 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->Ln($logoHeight + 5);
 
 // Générer le QR code
-$qrCodeData = 'https://fidest.ci/planification/request/export_pdf.php?devisId=' . $devis['id'];
+$qrCodeData = CompanyExportBranding::documentUrl('request/export_pdf.php?devisId=' . rawurlencode((string)$devis['id']));
 $qrCodeFile = '../qrCodeFile/qrcode.png';
 QRcode::png($qrCodeData, $qrCodeFile, 'L', 4, 2);
 

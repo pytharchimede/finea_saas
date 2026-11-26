@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__.'/../model/CompanyExportBranding.php';
+require_once __DIR__.'/../model/EnvConfig.php';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -45,12 +47,13 @@ foreach ($uniteModel->getAll() as $u) {
 
 // --- Création du fichier Excel ---
 $spreadsheet = new Spreadsheet();
+$spreadsheet->getProperties()->setCreator(CompanyExportBranding::creator());
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Devis');
 
 // --- Ajout du logo (plus grand, bien positionné) ---
-$logoPath = '../logo/' . ($devis['logo'] ?: 'default_logo.jpg');
-if (file_exists($logoPath)) {
+$logoPath = CompanyBranding::logoFile();
+if ($logoPath && in_array(strtolower(pathinfo($logoPath, PATHINFO_EXTENSION)), ['png','jpg','jpeg'], true) && is_file($logoPath)) {
     $drawing = new Drawing();
     $drawing->setName('Logo');
     $drawing->setPath($logoPath);
@@ -84,7 +87,7 @@ $sheet->getStyle('B2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENT
 $row = 5;
 $sheet->mergeCells("A$row:C$row");
 $sheet->mergeCells("D$row:F$row");
-$sheet->setCellValue("A$row", "Expéditeur : BANAMUR BTP");
+$sheet->setCellValue("A$row", "Expéditeur : ".CompanyBranding::get()["company_name"]);
 $sheet->setCellValue("D$row", "Destinataire : " . $client['nom_client']);
 $sheet->getStyle("A$row:F$row")->getFont()->setBold(true);
 $row += 2;
@@ -163,10 +166,10 @@ $sheet->getStyle("A$headerRow:F$row")->getBorders()->getAllBorders()->setBorderS
 // --- Pied de page ---
 $row += 2;
 $sheet->mergeCells("A$row:F$row");
-$sheet->setCellValue("A$row", "FOURNITURES INDUSTRIELLES, DEPANNAGE ET TRAVAUX PUBLIQUES - Au capital de 10 000 000 F CFA - Siège Social : Abidjan, Koumassi, Zone industrielle");
+$sheet->setCellValue("A$row", CompanyExportBranding::identityLine());
 $row++;
 $sheet->mergeCells("A$row:F$row");
-$sheet->setCellValue("A$row", "01 BP 1642 Abidjan 01 - Téléphone : (+225) 27-21-36-27-27  -  Email : info@fidest.org - RCCM : CI-ABJ-2017-B-20163  -  N° CC : 010274200088");
+$sheet->setCellValue("A$row", CompanyExportBranding::contactLine());
 $sheet->getStyle("A" . ($row - 1) . ":A$row")->getFont()->setSize(8);
 $sheet->getStyle("A" . ($row - 1) . ":A$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 

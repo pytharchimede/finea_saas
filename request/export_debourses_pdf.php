@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__.'/../model/CompanyExportBranding.php';
+require_once __DIR__.'/../model/EnvConfig.php';
 require_once '../vendor/autoload.php';
 require_once '../model/Database.php';
 require_once '../model/AuditTrail.php';
@@ -17,9 +19,11 @@ $pdo = Database::getConnection();
 $devisModel = new Devis($pdo);
 $debourses = $devisModel->getDeboursesFiltres($chantierId, $search, $client);
 
+$primary=CompanyBranding::palette()['primary'];
+$foreground=CompanyBranding::contrastColor($primary);
 $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
-$pdf->SetCreator('Banamur');
-$pdf->SetAuthor('Banamur');
+$pdf->SetCreator(CompanyExportBranding::creator());
+$pdf->SetAuthor(CompanyExportBranding::creator());
 $pdf->SetTitle('Liste des déboursés');
 $pdf->SetMargins(10, 10, 10);
 $pdf->SetAutoPageBreak(true, 12);
@@ -72,7 +76,7 @@ $html = '
 <style>
   table { border-collapse: collapse; width: 100%; }
   th, td { border: 1px solid #bfc7d1; padding: 4px; }
-  th { background-color:#fabd02; color:#000000; font-weight:bold; }
+  th { background-color:{$primary}; color:{$foreground}; font-weight:bold; }
 </style>
 <table>
   <thead>
