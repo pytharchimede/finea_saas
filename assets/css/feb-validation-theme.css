@@ -26,3 +26,11 @@ html.finea-dark-mode body.feb-validation-theme :is(.feb-workspace,#febApprovalMo
 html.finea-dark-mode body.feb-validation-theme .feb-card-amountline{background:#18352e!important;border-color:#365e50}
 body.feb-validation-theme #febApprovalModal .bg-gradient-to-r{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
 body.feb-validation-theme #fvThemeToggle{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important}
+
+/* Explicit tenant foreground/background pair for the daily financial journal. */
+html body.feb-validation-theme .feb-workspace a[href="finance/journal_actions_feb.php"],
+html body.feb-validation-theme .feb-workspace a[href="finance/journal_actions_feb.php"]:hover,
+html body.feb-validation-theme .feb-workspace a[href="finance/journal_actions_feb.php"]:focus-visible{
+ background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border-color:var(--brand-primary)!important;
+}
+html body.feb-validation-theme .feb-workspace a[href="finance/journal_actions_feb.php"]:focus-visible{outline:2px solid var(--brand-accent);outline-offset:3px}
