@@ -44,10 +44,31 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
     @keyframes search-spin{to{transform:rotate(360deg)}}
     mark{background:#fef3c7;color:inherit;border-radius:.2rem;padding:0 .08rem}
     @media(max-width:640px){.search-engine-shell{width:calc(100% - 1rem);padding-top:2.2rem}.search-engine-tabs{justify-content:flex-start}.search-engine-tab{white-space:normal;text-align:center;flex:1 1 calc(50% - .55rem)}.search-engine-input{height:3.8rem;padding-right:3.8rem}.search-engine-submit{width:2.9rem;height:2.9rem;padding:0;font-size:0}.search-engine-submit i{font-size:1rem}.search-engine-result{grid-template-columns:2.65rem minmax(0,1fr)}.search-result-icon{width:2.65rem;height:2.65rem}.search-result-meta{grid-column:2;justify-self:start}}
+
+    .search-engine-page{--se-bg:#f8fafc;--se-panel:#fff;--se-soft:#f1f5f9;--se-text:#172033;--se-muted:#475569;--se-border:#cbd5e1;--se-link:var(--brand-primary,#1d2b57);--se-mark:#fef3c7;--se-mark-text:#422006;background:var(--se-bg);color:var(--se-text)}
+    html.finea-dark-mode .search-engine-page{--se-bg:#08111f;--se-panel:#172337;--se-soft:#1e2c42;--se-text:#f5f8fc;--se-muted:#c6d0de;--se-border:#405773;--se-link:#dbeafe;--se-mark:#654b13;--se-mark-text:#fff4c2;color-scheme:dark}
+    .search-engine-page .search-engine-title,.search-engine-page .search-result-title{color:var(--se-link)}
+    .search-engine-page .search-engine-title span{color:var(--se-link)}
+    .search-engine-page .search-engine-logo{background:var(--se-panel);border-color:var(--se-border)}
+    .search-engine-page :is(.search-engine-tagline,.search-engine-icon,.search-engine-summary,.search-result-subtitle,.search-engine-state,.search-engine-state i){color:var(--se-muted)}
+    .search-engine-page :is(.search-engine-input,.search-engine-tab,.search-engine-result,.search-engine-state,.search-engine-theme){background:var(--se-panel)!important;border-color:var(--se-border);color:var(--se-text)!important}
+    .search-engine-page .search-engine-input::placeholder{color:var(--se-muted);opacity:1}
+    .search-engine-page .search-engine-input:focus{border-color:var(--brand-accent,#fabd02);box-shadow:0 0 0 3px rgba(var(--brand-accent-rgb,250 189 2),.2)}
+    .search-engine-page :is(.search-engine-submit,.search-engine-tab.is-active,.search-engine-tab:hover){background:var(--brand-primary,#1d2b57)!important;color:var(--brand-on-primary,#fff)!important;border-color:var(--brand-primary,#1d2b57)}
+    .search-engine-page :is(.search-engine-submit,.search-engine-tab.is-active,.search-engine-tab:hover) i{color:inherit!important}
+    .search-engine-page .search-engine-result:hover{background:var(--se-soft)!important;border-color:var(--brand-accent,#fabd02)}
+    .search-engine-page :is(.search-result-icon,.search-result-meta){background:var(--se-soft);color:var(--se-text)}
+    .search-engine-page .search-engine-loader{border-color:var(--se-border);border-top-color:var(--brand-accent,#fabd02)}
+    .search-engine-page mark{background:var(--se-mark);color:var(--se-mark-text)}
+    .search-engine-page .search-engine-theme{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--se-border);border-radius:999px;padding:.55rem .85rem;font-size:.82rem;font-weight:700;cursor:pointer}
+    .search-engine-page .search-engine-tools{display:flex;justify-content:flex-end;margin-bottom:1rem}
+    .search-engine-page :is(button,a,input):focus-visible{outline:2px solid var(--brand-accent,#fabd02);outline-offset:3px}
+
 </style>
 
 <main class="search-engine-page">
     <div class="search-engine-shell">
+        <div class="search-engine-tools"><button type="button" id="searchEngineTheme" class="search-engine-theme"><i class="fa-solid fa-moon" aria-hidden="true"></i><span>Mode sombre</span></button></div>
         <header class="search-engine-home">
             <div class="search-engine-brand">
                 <?php if (is_file(__DIR__ . '/img/app_icon.png')): ?>
@@ -98,6 +119,31 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
 
 <script>
 (() => {
+    const themeButton = document.getElementById('searchEngineTheme');
+    const root = document.documentElement;
+    function syncSearchTheme() {
+        const dark = root.classList.contains('finea-dark-mode');
+        document.body.classList.toggle('finea-dark-mode', dark);
+        themeButton.setAttribute('aria-pressed', String(dark));
+        themeButton.querySelector('span').textContent = dark ? 'Mode clair' : 'Mode sombre';
+        themeButton.querySelector('i').className = 'fa-solid ' + (dark ? 'fa-sun' : 'fa-moon');
+    }
+    themeButton.addEventListener('click', () => {
+        const dark = !root.classList.contains('finea-dark-mode');
+        root.classList.toggle('finea-dark-mode', dark);
+        try {
+            localStorage.setItem('finea.app.theme', dark ? 'dark' : 'light');
+            localStorage.setItem('finea.portal.theme', dark ? 'dark' : 'light');
+        } catch (error) {}
+        syncSearchTheme();
+    });
+    new MutationObserver(syncSearchTheme).observe(root, {attributes:true, attributeFilter:['class']});
+    window.addEventListener('storage', event => {
+        if (['finea.app.theme','finea.portal.theme'].includes(event.key) && ['dark','light'].includes(event.newValue)) {
+            root.classList.toggle('finea-dark-mode', event.newValue === 'dark');
+        }
+    });
+    syncSearchTheme();
     const form = document.getElementById('fineaSearchForm');
     const input = document.getElementById('fineaSearchInput');
     const results = document.getElementById('fineaSearchResults');
