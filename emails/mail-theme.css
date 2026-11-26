@@ -1,0 +1,40 @@
+@media screen {
+.finea-mail{--mail-page:#fff;--mail-panel:#fff;--mail-soft:#f1f5fb;--mail-ink:#172033;--mail-muted:#475569;--mail-border:#cbd5e1;--mail-field:#fff;--mail-primary:var(--brand-primary,#081c65);--mail-on:var(--brand-on-primary,#fff);background:var(--mail-page)!important;color:var(--mail-ink);max-width:none!important;padding:16px!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+html.finea-dark-mode .finea-mail{--mail-page:#0d1727;--mail-panel:#172337;--mail-soft:#1e3048;--mail-ink:#f1f5f9;--mail-muted:#cbd5e1;--mail-border:#405773;--mail-field:#101c2e;color-scheme:dark}
+.finea-mail :is(.mailbox-header,.mailbox-toolbar,.mailbox-window,.mailbox-sidebar,.mailbox-main,.mailbox-message-row,.mailbox-empty-state){background:var(--mail-panel)!important;color:var(--mail-ink)!important;border-color:var(--mail-border)!important;box-shadow:none!important}
+.finea-mail .mailbox-header{background:var(--mail-primary)!important;color:var(--mail-on)!important;border-radius:12px;padding:12px 18px;margin-bottom:12px}
+.finea-mail .mailbox-header :is(h1,p,span,.mailbox-toolbar-chip){color:var(--mail-on)!important}
+.finea-mail .mailbox-header .mailbox-toolbar-chip{background:transparent!important;border:0;padding:0}
+.finea-mail .mailbox-header h1{font-size:1.4rem;margin:4px 0}
+.finea-mail .mailbox-header a:not(.mail-danger),.finea-mail .mail-theme,.finea-mail .mail-compose{background:var(--brand-accent,#1746b0)!important;color:var(--brand-on-accent,#fff)!important;border:0!important}
+.finea-mail .mailbox-window{display:grid;grid-template-columns:240px minmax(300px,380px) minmax(0,1fr);border-radius:12px;min-height:72vh}
+.finea-mail :is(.mailbox-sidebar,.mailbox-main){grid-column:auto!important;min-width:0;padding:12px;border-right:1px solid var(--mail-border)}
+.finea-mail .mailbox-sidebar{background:var(--mail-soft)!important}
+.finea-mail .mailbox-sidebar>div{padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
+.finea-mail .mailbox-toolbar{padding:12px!important}
+.finea-mail .mailbox-message-list{max-height:68vh;overflow:auto}
+.finea-mail .mailbox-message-link{padding:12px!important}
+.finea-mail .mailbox-message-link:hover,.finea-mail .mailbox-message-link[aria-current=true]{background:var(--mail-soft)!important;border-left-color:var(--mail-primary)!important}
+.finea-mail .mailbox-message-row.is-unread .mailbox-message-subject{font-weight:750}
+.finea-mail :is(.mailbox-message-from,.mailbox-message-subject){color:var(--mail-ink)!important}
+.finea-mail :is(.mailbox-message-date,.mailbox-message-preview,.mailbox-folder-label){color:var(--mail-muted)!important}
+.finea-mail .mail-reading{min-width:0;background:var(--mail-panel);display:flex;flex-direction:column}
+.finea-mail .mail-reading iframe{width:100%;height:76vh;border:0;background:var(--mail-panel)}
+.finea-mail .mail-reading-empty{padding:40px 20px;text-align:center;color:var(--mail-muted);margin:auto}
+.finea-mail .mail-search{width:100%;padding:10px;border:1px solid var(--mail-border);border-radius:8px}
+.finea-mail :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,textarea){background:var(--mail-field)!important;color:var(--mail-ink)!important;border-color:var(--mail-border)!important}
+.finea-mail :is(input,textarea)::placeholder{color:var(--mail-muted)!important}
+.finea-mail :is(.bg-indigo-600,.bg-slate-800){background:var(--mail-primary)!important;color:var(--mail-on)!important}
+.finea-mail :is(.bg-indigo-50){background:var(--mail-primary)!important;color:var(--mail-on)!important}
+.finea-mail .bg-indigo-50 :is(span,i){color:inherit!important}
+html.finea-dark-mode .finea-mail :where(.bg-white,[class~="bg-white/80"],[class~="bg-white/95"],.bg-gray-50,.bg-slate-50,[class~="bg-slate-50/70"],.bg-slate-100,.bg-red-50,.bg-amber-50,.bg-emerald-50,.bg-sky-100){background:var(--mail-panel)!important;border-color:var(--mail-border)!important}
+html.finea-dark-mode .finea-mail :where(.text-gray-500,.text-gray-600,.text-gray-700,.text-gray-800,.text-gray-900,.text-slate-500,.text-slate-600,.text-slate-700,.text-slate-800,.text-slate-900){color:var(--mail-ink)!important}
+html.finea-dark-mode .finea-mail :where(.text-red-700){color:#fda4af!important}
+html.finea-dark-mode .finea-mail :where(.text-emerald-800){color:#86efac!important}
+html.finea-dark-mode .finea-mail :where(.text-amber-800,.text-amber-900){color:#fde68a!important}
+html.finea-dark-mode .finea-mail :where(.text-indigo-700,.text-sky-700){color:#bfdbfe!important}
+html.finea-dark-mode .finea-mail :where([class~="hover:bg-gray-50"],[class~="hover:bg-slate-50"]):hover{background:var(--mail-soft)!important}
+.finea-mail .mail-body-frame{width:100%;min-height:360px;border:1px solid var(--mail-border);border-radius:8px;background:var(--mail-panel)}
+@media(max-width:1100px){.finea-mail .mailbox-window{grid-template-columns:200px minmax(0,1fr)}.finea-mail .mail-reading{grid-column:1/-1}.finea-mail .mail-reading iframe{height:65vh}}
+@media(max-width:650px){.finea-mail .mailbox-window{display:block}.finea-mail .mailbox-message-list{max-height:55vh}}
+}
