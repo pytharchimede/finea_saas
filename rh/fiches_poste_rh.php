@@ -86,6 +86,17 @@ html.finea-dark-mode body.rh-job-screen .rh-job-page,html body.rh-job-screen.fin
 html body.rh-job-screen .rh-job-page :is(.rh-job-panel,.bg-slate-50,#rh-dropzone,#rh-excel-import){background:var(--job-panel)!important;border-color:var(--job-border)!important}
 html body.rh-job-screen .rh-job-page .bg-slate-50{border:1px solid var(--job-border)!important;border-left:3px solid var(--brand-accent)!important}
 html body.rh-job-screen .rh-job-page #rh-job-form :is(input:not([type=hidden]),select,textarea){background:var(--job-field)!important}
+
+html body.rh-job-screen #rh-job-form .rh-job-list{background:var(--job-panel)!important;color:var(--job-ink)!important;border-color:var(--job-border)!important}
+html body.rh-job-screen #rh-job-form :is(.rh-job-list-title,.rh-job-bullet){color:var(--job-ink)!important}
+html body.rh-job-screen #rh-job-form .rh-job-add{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important;border-color:var(--brand-accent)!important}
+html body.rh-job-screen #rh-job-form .rh-job-remove{background:var(--job-panel)!important;color:#be123c!important;border-color:#be123c!important}
+html.finea-dark-mode body.rh-job-screen #rh-job-form .rh-job-remove{color:#fda4af!important;border-color:#fda4af!important}
+html body.rh-job-screen #rh-job-form .rh-job-options{background:var(--job-panel)!important;color:var(--job-ink)!important;border-color:var(--job-border)!important}
+html body.rh-job-screen #rh-job-form .rh-job-option{background:var(--job-panel)!important;color:var(--job-ink)!important;border-color:transparent!important}
+html body.rh-job-screen #rh-job-form .rh-job-option:hover{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+html body.rh-job-screen #rh-job-form input::placeholder{color:var(--job-muted)!important;opacity:1}
+html body.rh-job-screen #rh-job-form .rh-job-item-input{background:var(--job-field)!important;color:var(--job-ink)!important}
 </style>
 <script>
 (function(){
