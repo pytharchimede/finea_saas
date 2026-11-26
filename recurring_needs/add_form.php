@@ -122,7 +122,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
     }
 
     .rn-select-card .ts-control.focus {
-        border-color: #1d2b57;
+        border-color: var(--brand-accent);
         box-shadow: 0 0 0 4px rgba(29, 43, 87, 0.10);
     }
 
@@ -151,7 +151,8 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
     }
 </style>
 
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(250,189,2,0.15),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(29,43,87,0.15),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<link rel="stylesheet" href="recurring-theme.css?v=<?= filemtime(__DIR__.'/recurring-theme.css') ?>">
+<div class="rn-workspace min-h-screen pb-12">
     <div class="container mx-auto px-4 py-8">
         <?php if ($flash): ?>
             <div class="mb-5 rounded-2xl border <?= !empty($flash['ok']) ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-rose-200 bg-rose-50 text-rose-800' ?> px-5 py-4 font-semibold shadow-sm">
@@ -159,18 +160,18 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </div>
         <?php endif; ?>
 
-        <section class="relative overflow-hidden rounded-[34px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-7 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)] md:px-9 md:py-11">
-            <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#fabd02]/25 blur-2xl"></div>
+        <section class="rn-hero relative overflow-hidden rounded-[34px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[var(--brand-primary)] to-slate-900 px-7 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)] md:px-9 md:py-11">
+            <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[var(--brand-accent)]/25 blur-2xl"></div>
             <div class="absolute -bottom-20 left-20 h-48 w-48 rounded-full bg-white/10 blur-3xl"></div>
             <div class="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
                 <div>
                     <div class="mb-4 flex flex-wrap items-center gap-3">
-                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200">FINEA · Automatisation FEB</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200"><?= rn_h($layoutCompanyBranding['company_name'] ?? 'FINEA') ?> · Automatisation FEB</p>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-                            <i class="fas fa-bell mr-2 text-[#fabd02]"></i><?= rn_number(count($alerts)) ?> point(s) à surveiller
+                            <i class="fas fa-bell mr-2 text-[var(--brand-on-primary)]"></i><?= rn_number(count($alerts)) ?> point(s) à surveiller
                         </span>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-                            <i class="fas fa-calendar-check mr-2 text-[#fabd02]"></i>Création automatique J-7
+                            <i class="fas fa-calendar-check mr-2 text-[var(--brand-on-primary)]"></i>Création automatique J-7
                         </span>
                     </div>
                     <h1 class="max-w-4xl text-3xl font-semibold tracking-tight md:text-5xl">Formulaire d'ajout de besoins récurrents</h1>
@@ -207,51 +208,51 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                         <?php if ($editId > 0): ?><input type="hidden" name="id" value="<?= $editId ?>"><?php endif; ?>
                         <label class="lg:col-span-2">
                             <span class="text-sm font-semibold text-slate-700">Libellé du besoin</span>
-                            <input name="title" value="<?= rn_h($editingNeed['title'] ?? '') ?>" required class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100" placeholder="Ex : Carburant hebdomadaire chantier A">
+                            <input name="title" value="<?= rn_h($editingNeed['title'] ?? '') ?>" required class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100" placeholder="Ex : Carburant hebdomadaire chantier A">
                         </label>
                         <label>
                             <span class="text-sm font-semibold text-slate-700">Montant estimatif</span>
-                            <input name="amount_estimated" value="<?= rn_h($editingNeed['amount_estimated'] ?? '') ?>" type="number" min="0" step="1" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100" placeholder="0">
+                            <input name="amount_estimated" value="<?= rn_h($editingNeed['amount_estimated'] ?? '') ?>" type="number" min="0" step="1" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100" placeholder="0">
                         </label>
                         <label>
                             <span class="text-sm font-semibold text-slate-700">Priorité</span>
-                            <select name="priority" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                            <select name="priority" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                                 <?php foreach (['normale' => 'Normale', 'haute' => 'Haute', 'critique' => 'Critique', 'basse' => 'Basse'] as $value => $label): ?><option value="<?= $value ?>" <?= ($editingNeed['priority'] ?? 'normale') === $value ? 'selected' : '' ?>><?= $label ?></option><?php endforeach; ?>
                             </select>
                         </label>
                         <label>
                             <span class="text-sm font-semibold text-slate-700">Type</span>
-                            <select name="need_type" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                            <select name="need_type" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                                 <option value="interne" <?= ($editingNeed['need_type'] ?? 'interne') === 'interne' ? 'selected' : '' ?>>Besoin interne</option>
                                 <option value="externe" <?= ($editingNeed['need_type'] ?? '') === 'externe' ? 'selected' : '' ?>>Demande externe</option>
                             </select>
                         </label>
                         <label>
                             <span class="text-sm font-semibold text-slate-700">Mode financier</span>
-                            <select name="financial_mode" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                            <select name="financial_mode" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                                 <?php foreach (['avance_provisoire' => 'Avance provisoire', 'decaissement_unique' => 'Décaissement unique', 'assignation_logistique' => 'Assignation logistique', 'sans_decaissement' => 'Sans décaissement'] as $value => $label): ?><option value="<?= $value ?>" <?= ($editingNeed['financial_mode'] ?? 'avance_provisoire') === $value ? 'selected' : '' ?>><?= $label ?></option><?php endforeach; ?>
                             </select>
                         </label>
                         <label>
                             <span class="text-sm font-semibold text-slate-700">Fréquence</span>
-                            <select name="frequency_type" id="frequency_type" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                            <select name="frequency_type" id="frequency_type" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                                 <?php foreach (['weekly' => 'Hebdomadaire', 'monthly' => 'Mensuel', 'quarterly' => 'Trimestriel', 'semesterly' => 'Semestriel', 'yearly' => 'Annuel', 'daily' => 'Quotidien'] as $value => $label): ?><option value="<?= $value ?>" <?= ($editingNeed['frequency_type'] ?? 'monthly') === $value ? 'selected' : '' ?>><?= $label ?></option><?php endforeach; ?>
                             </select>
                         </label>
                         <label>
                             <span class="text-sm font-semibold text-slate-700">Intervalle</span>
-                            <input name="frequency_interval" id="frequency_interval" type="number" min="1" value="<?= rn_h($editingNeed['frequency_interval'] ?? 1) ?>" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                            <input name="frequency_interval" id="frequency_interval" type="number" min="1" value="<?= rn_h($editingNeed['frequency_interval'] ?? 1) ?>" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                         </label>
                         <div class="lg:col-span-4 grid gap-4 lg:grid-cols-3">
                             <label>
                                 <span class="text-sm font-semibold text-slate-700">Date du premier paiement</span>
-                                <input name="start_date" id="start_date" type="date" value="<?= rn_h($editingNeed['start_date'] ?? date('Y-m-d')) ?>" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                                <input name="start_date" id="start_date" type="date" value="<?= rn_h($editingNeed['start_date'] ?? date('Y-m-d')) ?>" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                             </label>
 
                             <label>
                                 <span class="text-sm font-semibold text-slate-700">Première échéance</span>
                                 <div class="relative mt-2">
-                                    <input name="next_due_date" id="next_due_date" type="date" value="<?= rn_h($editingNeed['next_due_date'] ?? (new DateTimeImmutable('+7 days'))->format('Y-m-d')) ?>" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-11 text-sm font-semibold text-slate-800 outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100">
+                                    <input name="next_due_date" id="next_due_date" type="date" value="<?= rn_h($editingNeed['next_due_date'] ?? (new DateTimeImmutable('+7 days'))->format('Y-m-d')) ?>" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-11 text-sm font-semibold text-slate-800 outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100">
                                     <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
                                         <i class="fas fa-calculator"></i>
                                     </span>
@@ -262,7 +263,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                             <label>
                                 <span class="text-sm font-semibold text-slate-700">Créer la FEB avant</span>
 
-                                <div class="mt-2 flex h-[46px] overflow-hidden rounded-2xl border border-slate-200 bg-white focus-within:border-[#1d2b57] focus-within:ring-4 focus-within:ring-blue-100">
+                                <div class="mt-2 flex h-[46px] overflow-hidden rounded-2xl border border-slate-200 bg-white focus-within:border-[var(--brand-accent)] focus-within:ring-4 focus-within:ring-blue-100">
                                     <input
                                         name="generate_days_before"
                                         type="number"
@@ -335,11 +336,11 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
 
                         <label class="lg:col-span-4">
                             <span class="text-sm font-semibold text-slate-700">Description / justification</span>
-                            <textarea name="description" rows="3" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57] focus:ring-4 focus:ring-blue-100" placeholder="Préciser le contexte, les documents attendus et la logique de génération."><?= rn_h($editingNeed['description'] ?? '') ?></textarea>
+                            <textarea name="description" rows="3" class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)] focus:ring-4 focus:ring-blue-100" placeholder="Préciser le contexte, les documents attendus et la logique de génération."><?= rn_h($editingNeed['description'] ?? '') ?></textarea>
                         </label>
                         <div class="lg:col-span-4 flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
                             <button type="submit" name="save_as_draft" value="1" class="inline-flex items-center rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"><i class="fas fa-file-pen mr-2"></i>Brouillon</button>
-                            <button type="submit" class="inline-flex items-center rounded-2xl bg-[#1d2b57] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5"><i class="fas fa-paper-plane mr-2 text-[#fabd02]"></i><?= $editId > 0 ? 'Enregistrer les modifications' : 'Soumettre' ?></button>
+                            <button type="submit" class="inline-flex items-center rounded-2xl bg-[var(--brand-primary)] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5"><i class="fas fa-paper-plane mr-2 text-[var(--brand-on-primary)]"></i><?= $editId > 0 ? 'Enregistrer les modifications' : 'Soumettre' ?></button>
                         </div>
                     </form>
                 </section>
@@ -348,7 +349,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </main>
 
             <aside class="space-y-6 xl:sticky xl:top-6 xl:self-start">
-                <section class="rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)]">
+                <section class="rn-quick rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)]">
                     <div class="mb-5">
                         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-200">Accès rapides</p>
                         <h2 class="mt-2 text-2xl font-semibold">Besoins récurrents</h2>
@@ -358,7 +359,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                         <?php foreach ($sideLinks as $index => $link): ?>
                             <a href="<?= rn_h($link['href']) ?>" class="relative block rounded-2xl border <?= $index < 2 ? 'border-amber-400/25 bg-amber-500/10 hover:bg-amber-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10' ?> px-4 py-4 transition">
                                 <div class="flex items-center gap-3">
-                                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-[#fabd02]"><i class="fas <?= rn_h($link['icon']) ?>"></i></span>
+                                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-[var(--brand-on-primary)]"><i class="fas <?= rn_h($link['icon']) ?>"></i></span>
                                     <span><span class="block font-semibold"><?= rn_h($link['label']) ?></span><span class="text-sm text-slate-400"><?= rn_h($link['hint']) ?></span></span>
                                 </div>
                             </a>
@@ -398,7 +399,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
 
                         return `
                             <div class="flex items-start gap-3">
-                                <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-[#1d2b57]">
+                                <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-[var(--brand-primary)]">
                                     <i class="fas fa-building"></i>
                                 </div>
                                 <div class="min-w-0">
