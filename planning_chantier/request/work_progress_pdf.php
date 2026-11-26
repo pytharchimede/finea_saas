@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__, 2).'/model/CompanyExportBranding.php';
+
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
@@ -93,8 +95,8 @@ $pdf->SetY(73);
 $widths = [9, 70, 13, 18, 18, 18, 31, 31, 18, 45];
 $headers = ['N°', 'Point, tâche ou sous-tâche', 'Unité', 'Qté prévue', 'Qté exécutée', 'Av. tech.', 'Montant client', 'Part exécutée', 'Av. fin.', 'Observations'];
 $drawHeader = static function () use ($pdf, $widths, $headers): void {
-    $pdf->SetFillColor(250, 189, 2);
-    $pdf->SetTextColor(0, 0, 0);
+    $pdf->SetFillColor(...CompanyExportBranding::rgbArray('primary'));
+    $pdf->SetTextColor(...CompanyExportBranding::rgbArray('primary',true));
     $pdf->SetFont('dejavusans', 'B', 6.5);
     foreach ($headers as $index => $header) {
         $pdf->Cell($widths[$index], 8, $header, 1, 0, 'C', true);

@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__, 2).'/model/CompanyExportBranding.php';
+
 
 if (!class_exists('TCPDF')) {
     throw new RuntimeException('TCPDF est introuvable. Vérifier vendor/autoload.php ou la bibliothèque TCPDF.');
@@ -8,7 +10,7 @@ if (!class_exists('TCPDF')) {
 if (!class_exists('PlanningMeetingTcpdfDocument')) {
     class PlanningMeetingTcpdfDocument extends TCPDF
     {
-        public string $companyName = 'BANAMUR';
+        public string $companyName = 'FINEA';
         public string $documentTitle = 'Point de réunion chantier';
         public string $moduleLabel = 'Module Planning Chantier FINEA';
         public string $logoPath = '';
@@ -19,7 +21,7 @@ if (!class_exists('PlanningMeetingTcpdfDocument')) {
             $this->Rect(0, 0, $this->getPageWidth(), 28, 'F');
             $this->SetDrawColor(203, 213, 225);
             $this->Line(12, 24.5, $this->getPageWidth() - 12, 24.5);
-            $this->SetFillColor(250, 189, 2);
+            $this->SetFillColor(...CompanyExportBranding::rgbArray('accent'));
             $this->Rect(12, 24.5, 34, 1.1, 'F');
 
             if ($this->logoPath !== '' && is_file($this->logoPath)) {
@@ -55,7 +57,7 @@ if (!class_exists('PlanningMeetingTcpdfDocument')) {
             $this->Ln(2.5);
             $this->SetFont('dejavusans', '', 8);
             $this->SetTextColor(100, 116, 139);
-            $this->Cell(0, 5, 'BANAMUR - '.$this->documentTitle.' sécurisé - Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
+            $this->Cell(0, 5, $this->companyName.' - '.$this->documentTitle.' sécurisé - Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
         }
     }
 }

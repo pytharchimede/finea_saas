@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__, 2).'/model/CompanyExportBranding.php';
+
 
 final class PlanningMeetingPdfService
 {
@@ -75,7 +77,7 @@ final class PlanningMeetingPdfService
             .box{border:1px solid #e2e8f0;border-radius:16px;padding:14px;margin:14px 0;background:#fff}h2{font-size:15px;margin:0 0 8px;color:#1d2b57}.muted{color:#64748b}.empty{text-align:center;color:#64748b;padding:20px}
             table{width:100%;border-collapse:collapse;margin-top:8px;background:white}th{background:#1d2b57;color:white;text-align:left;padding:9px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;border:1px solid #1d2b57}td{border:1px solid #e2e8f0;padding:9px;vertical-align:top}.num{width:28px;text-align:center;font-weight:900;color:#ea580c}.status{display:inline-block;border-radius:999px;background:#fef3c7;color:#92400e;padding:3px 8px;font-weight:800}.footer{margin-top:18px;border-top:1px solid #e2e8f0;padding-top:10px;text-align:center;color:#64748b;font-size:10px}
         </style></head><body><div class="page">
-            <div class="top"><div><div class="brand">BANAMUR</div><div class="sub">Direction exploitation - Document officiel</div></div><div class="ref"><strong>'.$this->h($reference).'</strong><br>Généré le '.$this->h(date('d/m/Y H:i')).'</div></div>
+            <div class="top"><div><div class="brand">'.$this->h((string)CompanyBranding::get()['company_name']).'</div><div class="sub">Direction exploitation - Document officiel</div></div><div class="ref"><strong>'.$this->h($reference).'</strong><br>Généré le '.$this->h(date('d/m/Y H:i')).'</div></div>
             <div class="hero"><h1>'.$this->h($documentTitle).'</h1><div class="meta">Date : <strong>'.$this->formatDate((string)$meeting['meeting_date']).'</strong> · Statut : <strong>'.$this->h($this->statusLabel((string)($meeting['status'] ?? 'draft'))).'</strong><br>Module : '.$this->h($moduleLabel).'</div><span class="tag">'.$this->h($meetingTitle).'</span></div>
             <div class="kpis"><div class="kpi"><div class="label">Points</div><div class="value">'.count($items).'</div></div><div class="kpi"><div class="label">Participants</div><div class="value">'.count($participants).'</div></div><div class="kpi"><div class="label">'.$scopeLabel.'</div><div class="value">'.$this->h((string)($meeting['project_label'] ?? 'Tous')).'</div></div><div class="kpi"><div class="label">Référence</div><div class="value">'.$this->h($reference).'</div></div></div>
             '.($operationalRows!==''?'<h2>Organisation et planning décidés en réunion</h2><table><thead><tr><th>#</th><th>Section</th><th>Tâche</th><th>Pilote</th><th>Copilote</th><th>Échéance</th><th>AV</th></tr></thead><tbody>'.$operationalRows.'</tbody></table>':'').'
@@ -85,7 +87,7 @@ final class PlanningMeetingPdfService
             <div class="box"><h2>Résumé de réunion</h2><div class="muted">'.nl2br($this->h((string)($meeting['resume'] ?? 'Aucun résumé renseigné.'))).'</div></div>
             <div class="box"><h2>Décisions générales</h2><div class="muted">'.nl2br($this->h((string)($meeting['decisions'] ?? 'Aucune décision générale renseignée.'))).'</div></div>
             <h2 style="margin-top:16px">Évaluation des participants</h2><table><thead><tr><th>Participant</th><th>Note</th><th>Score</th><th>Tâches confiées</th></tr></thead><tbody>'.$performanceRows.'</tbody></table>
-            <div class="footer">BANAMUR - Document généré par FINEA Planning Chantier</div>
+            <div class="footer">'.$this->h((string)CompanyBranding::get()['company_name']).' - Document généré par FINEA Planning Chantier</div>
         </div></body></html>';
     }
 
@@ -187,7 +189,7 @@ final class PlanningMeetingPdfService
         $generatedAt = date('d/m/Y H:i');
         $projectLabel = trim((string)($meeting['project_label'] ?? '')) ?: 'Tous les chantiers';
         $qrPayload = implode("\n", [
-            'BANAMUR - '.$documentTitle,
+            CompanyExportBranding::creator().' - '.$documentTitle,
             'Reference: ' . $reference,
             'Date: ' . $this->formatDate((string)$meeting['meeting_date']),
             'Points: ' . (count($items)+count($actionPoints)),
@@ -196,12 +198,12 @@ final class PlanningMeetingPdfService
         ]);
 
         $pdf = new PlanningMeetingTcpdfDocument('P', 'mm', 'A4', true, 'UTF-8', false);
-        $pdf->companyName = 'BANAMUR';
+        $pdf->companyName = (string)CompanyBranding::get()['company_name'];
         $pdf->documentTitle = $documentTitle;
         $pdf->moduleLabel = $isOffice?'Réunions des services FINEA':'Module Planning Chantier FINEA';
-        $pdf->logoPath = dirname(__DIR__, 2) . '/logo/default_logo.jpg';
-        $pdf->SetCreator('FINEA');
-        $pdf->SetAuthor($isOffice?'BANAMUR Réunions des services':'BANAMUR Planning Chantier');
+        $pdf->logoPath = (string)CompanyBranding::logoFile();
+        $pdf->SetCreator(CompanyExportBranding::creator());
+        $pdf->SetAuthor(CompanyExportBranding::creator());
         $pdf->SetTitle($documentTitle);
         $pdf->SetSubject($isOffice?'Réunion du service '.$projectLabel:'Réunion quotidienne de chantier');
         $pdf->SetMargins(12, 30, 12);

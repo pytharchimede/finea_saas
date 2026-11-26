@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__, 2).'/model/CompanyExportBranding.php';
+
 
 final class PlanningMeetingGanttPdfService
 {
@@ -35,7 +37,7 @@ final class PlanningMeetingGanttPdfService
         $dayWidth=$timelineWidth/$days;
 
         $pdf=new TCPDF('L','mm',[$pageWidth,210],true,'UTF-8',false);
-        $pdf->SetCreator('FINEA Planning Chantier');
+        $pdf->SetCreator(CompanyExportBranding::creator());
         $pdf->SetTitle('Gantt - '.$title);
         $pdf->SetMargins(10,10,10); $pdf->SetAutoPageBreak(false); $pdf->AddPage();
         $pdf->SetTextColor(15,23,42); $pdf->SetFont('dejavusans','B',12);
@@ -55,7 +57,7 @@ final class PlanningMeetingGanttPdfService
             }
             $this->drawLegend($pdf,$y+5,$pageWidth-20);
             $pdf->SetY(199); $pdf->SetFont('dejavusans','',6); $pdf->SetTextColor(100,116,139);
-            $pdf->Cell($pageWidth-20,4,'BANAMUR · Planning Chantier FINEA                                      Page '.($pageIndex+1).' / '.count($chunks),0,0,'C');
+            $pdf->Cell($pageWidth-20,4,CompanyExportBranding::creator().' · Planning Chantier                                      Page '.($pageIndex+1).' / '.count($chunks),0,0,'C');
         }
         $name=preg_replace('/[^a-z0-9_-]+/i','_',iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$title) ?: 'point_reunion');
         $pdf->Output('gantt_'.$name.'.pdf','I');
