@@ -2443,6 +2443,8 @@ if ($riskOnly) {
     }
 </style>
 
+<link rel="stylesheet" href="<?= htmlspecialchars($rootUrl('emploi_du_temps/module-theme.css'), ENT_QUOTES, 'UTF-8') ?>?v=<?= filemtime(__DIR__.'/module-theme.css') ?>">
+<script>document.body.classList.add('edt-module');</script>
 <div class="max-w-none mx-auto px-4 py-8 edt-shell">
     <div class="edt-page-header flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -2450,6 +2452,8 @@ if ($riskOnly) {
             <p class="text-sm text-gray-600 mt-1">Récap des tâches, suivi RH par personne, service ou toute l'entreprise.</p>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" id="edtThemeToggle" class="edt-top-btn edt-no-print px-3 py-2 rounded-xl text-sm font-semibold">Mode sombre</button>
+            <script>(function(){const root=document.documentElement,b=document.getElementById('edtThemeToggle');function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}sync();new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);sync();try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))root.classList.toggle('finea-dark-mode',e.newValue==='dark');});})();</script>
             <a href="<?= htmlspecialchars($rootUrl('selection_portail.php')) ?>" class="edt-top-btn edt-top-btn--portal px-3 py-2 rounded-xl text-sm font-semibold">Retour portail</a>
             <button type="button" id="edt-open-todo" class="edt-top-btn edt-top-btn--todo px-3 py-2 rounded-xl text-sm font-semibold">
                 <i class="fa-solid fa-list-check mr-2"></i>To-Do
