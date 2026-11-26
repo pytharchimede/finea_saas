@@ -3,6 +3,9 @@ $course = $academyCourseData['course'] ?? [];
 $lessons = $academyCourseData['lessons'] ?? [];
 $quiz = $academyCourseData['quiz'] ?? null;
 $questions = $academyQuizQuestions ?? [];
+$lessons = array_values($lessons);
+$hasQuiz = $quiz && !empty($questions);
+$totalSteps = count($lessons) + (int)$hasQuiz;
 ?>
 <link rel="stylesheet" href="<?= htmlspecialchars(($appBasePath === '' ? '' : $appBasePath) . '/formation/assets/academy-v11.css', ENT_QUOTES, 'UTF-8') ?>">
 <a class="academy-back" href="<?= htmlspecialchars($formationHomeUrl . '?academy=dashboard', ENT_QUOTES, 'UTF-8') ?>">← Retour à FINEA Academy</a>
@@ -26,17 +29,17 @@ $questions = $academyQuizQuestions ?? [];
     </div>
 <?php endif; ?>
 
-<div class="academy-learning-layout">
+<div class="academy-learning-layout academy-step-layout" data-academy-steps>
     <aside class="academy-toc">
-        <h3>Plan du parcours</h3>
+        <h3>Chapitres</h3><p class="academy-step-counter" aria-live="polite"></p>
         <?php foreach ($lessons as $index => $lesson): ?>
-            <a href="#lesson-<?= (int) $lesson['id'] ?>"><span><?= $index + 1 ?></span><?= htmlspecialchars((string) $lesson['title'], ENT_QUOTES, 'UTF-8') ?></a>
+            <a data-step-link href="#lesson-<?= (int) $lesson['id'] ?>"><span><?= $index + 1 ?></span><?= htmlspecialchars((string) $lesson['title'], ENT_QUOTES, 'UTF-8') ?></a>
         <?php endforeach; ?>
-        <?php if ($quiz): ?><a href="#academy-final-quiz"><span>✓</span>Test final</a><?php endif; ?>
+        <?php if ($hasQuiz): ?><a data-step-link href="#academy-final-quiz"><span>✓</span>Test final</a><?php endif; ?>
     </aside>
     <main class="academy-lessons">
         <?php foreach ($lessons as $index => $lesson): ?>
-            <article class="academy-lesson" id="lesson-<?= (int) $lesson['id'] ?>">
+            <article data-learning-step class="academy-lesson" id="lesson-<?= (int) $lesson['id'] ?>">
                 <div class="academy-lesson-index">Leçon <?= $index + 1 ?></div>
                 <h3><?= htmlspecialchars((string) $lesson['title'], ENT_QUOTES, 'UTF-8') ?></h3>
                 <?php if (!empty($lesson['video_url'])): ?>
@@ -53,7 +56,7 @@ $questions = $academyQuizQuestions ?? [];
         <?php endforeach; ?>
 
         <?php if ($quiz && !empty($questions)): ?>
-            <section class="academy-quiz" id="academy-final-quiz">
+            <section data-learning-step class="academy-quiz" id="academy-final-quiz">
                 <div class="academy-quiz-head">
                     <span class="academy-eyebrow">Validation de maîtrise</span>
                     <h3><?= htmlspecialchars((string) ($quiz['title'] ?? 'QCM final'), ENT_QUOTES, 'UTF-8') ?></h3>
@@ -89,5 +92,11 @@ $questions = $academyQuizQuestions ?? [];
                 </form>
             </section>
         <?php endif; ?>
+        <?php if ($totalSteps === 0): ?><p>Aucun contenu publié pour ce parcours.</p><?php endif; ?>
+        <nav class="academy-step-nav" aria-label="Navigation des chapitres" hidden>
+            <button type="button" data-step-prev class="finea-action-btn finea-action-btn--secondary">← Précédent</button>
+            <span data-step-position aria-live="polite"></span>
+            <button type="button" data-step-next class="finea-action-btn finea-action-btn--primary">Suivant →</button>
+        </nav>
     </main>
 </div>

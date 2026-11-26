@@ -29,3 +29,19 @@ html.finea-dark-mode .formation-page-shell .academy-answer:hover{background:var(
 .formation-page-shell .academy-soft-panel{padding:0;border:0!important;background:transparent!important}.formation-page-shell .academy-course-list{display:grid;grid-template-columns:1fr;gap:10px}.academy-course-list .academy-course-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;min-height:0;padding:16px;border-radius:12px}.academy-course-list .academy-card-top{grid-column:1/-1;justify-content:flex-start}.academy-course-list .academy-card-icon{width:30px;height:30px;border-radius:8px}.academy-course-list .academy-course-card:before{display:none}.academy-course-list .academy-course-card p,.academy-course-list .academy-progress-line,.academy-course-list .academy-card-meta{grid-column:1/-1}.academy-course-list .academy-card-footer{grid-column:2;grid-row:2;align-self:center}.academy-course-list [hidden]{display:none!important}#academyCourseFilter{width:100%;margin-bottom:14px}.academy-guides{grid-template-columns:220px minmax(0,1fr)}.academy-guides>.academy-doc-sidebar{grid-column:2;max-width:100%;border-top:1px solid var(--ac-border)}.academy-guides .formation-doc{max-width:850px;margin:auto}.academy-focus .academy-course-hero{padding:18px;border-radius:12px}.academy-focus .academy-learning-layout{grid-template-columns:minmax(0,190px) minmax(0,1fr)}
 @media(max-width:760px){.academy-guides,.academy-focus .academy-learning-layout{grid-template-columns:1fr}.academy-guides>.academy-doc-sidebar{grid-column:1}.academy-focus>.academy-content{padding:14px!important}.academy-course-list .academy-course-card{grid-template-columns:1fr}.academy-course-list .academy-card-footer{grid-column:1;grid-row:auto}.academy-simple-header{padding:12px}}
 }
+
+@media screen{
+.formation-page-shell .academy-step-layout{grid-template-columns:minmax(190px,240px) minmax(0,1fr);gap:24px;align-items:start}
+.academy-step-layout [data-learning-step][hidden],.academy-step-nav[hidden]{display:none!important}
+.academy-step-layout .academy-toc{position:sticky;top:12px;max-height:75vh;overflow:auto;padding:12px;border-radius:12px}
+.academy-step-layout .academy-toc a{display:flex;align-items:center;gap:8px;padding:10px;border-radius:8px;font-size:13px;line-height:1.45}
+.academy-step-layout .academy-toc a[aria-current=step]{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+.academy-step-layout .academy-toc a[aria-current=step] span{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important}
+.academy-step-counter{color:var(--ac-muted);font-size:12px;margin:8px 0}
+.academy-step-layout .academy-lesson,.academy-step-layout .academy-quiz{padding:clamp(16px,3vw,30px);border-radius:12px;scroll-margin-top:20px}
+.academy-step-layout .academy-block{background:transparent!important;border:0!important;padding:10px 0;line-height:1.75}
+.academy-step-layout .academy-block img{max-width:100%;height:auto}
+.academy-step-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;padding:14px 0;border-top:1px solid var(--ac-border)}
+.academy-step-nav button:disabled{opacity:.45;cursor:not-allowed}.academy-step-nav span{color:var(--ac-muted);font-size:13px}
+@media(max-width:760px){.formation-page-shell .academy-step-layout{grid-template-columns:1fr;gap:12px}.academy-step-layout .academy-toc{position:static;max-height:220px}.academy-step-nav{flex-wrap:wrap}}
+}
