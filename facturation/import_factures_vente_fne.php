@@ -47,9 +47,10 @@ $pageTitle='Import des factures de vente FNE';$activeMenu='facturation';
 require __DIR__.'/../decaissement/includes/header.php';
 require __DIR__.'/../decaissement/includes/navbar.php';
 ?>
-<main class="min-h-screen bg-[radial-gradient(circle_at_top_left,_#eef2ff,_transparent_38%),linear-gradient(180deg,_#f8fafc,_#eef2ff)] px-4 py-8">
+<link rel="stylesheet" href="../assets/css/billing-workspace.css?v=20261126a">
+<main class="billing-workspace min-h-screen px-4 py-8">
 <div class="mx-auto max-w-7xl space-y-6">
-    <section class="overflow-hidden rounded-[32px] bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-900 p-7 text-white shadow-2xl">
+    <section class="overflow-hidden rounded-[32px] billing-banner p-7 text-white shadow-2xl">
         <div class="flex flex-wrap items-end justify-between gap-5">
             <div><p class="text-xs font-black uppercase tracking-[.25em] text-indigo-300"><i class="fas fa-file-invoice mr-2"></i>DGI Côte d’Ivoire · ventes</p><h1 class="mt-3 text-3xl font-black">Centre d’import FNE</h1><p class="mt-2 max-w-2xl text-sm text-slate-300">Importez le récapitulatif complet, contrôlez chaque ligne et rapprochez-la d’une facture et d’un chantier Finéa sans créer de doublon.</p></div>
             <div class="flex gap-2"><a href="factures_vente.php#nouvelle-facture" class="rounded-xl bg-white px-4 py-3 text-sm font-black text-slate-950"><i class="fas fa-link mr-2 text-indigo-600"></i>Rapprocher une facture</a><a href="dashboard_facturation.php" class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm font-bold"><i class="fas fa-chart-pie mr-2"></i>Dashboard</a></div>
@@ -70,7 +71,7 @@ require __DIR__.'/../decaissement/includes/navbar.php';
         <form id="fneImportForm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf" value="<?=htmlspecialchars($_SESSION['fne_sales_import_csrf'])?>">
             <input id="fneFile" type="file" name="fne_file" accept=".csv,.xlsx,.xls" required class="sr-only">
-            <div id="fneDropzone" role="button" tabindex="0" class="group cursor-pointer rounded-[28px] border-2 border-dashed border-indigo-300 bg-gradient-to-br from-indigo-50 to-white p-8 text-center transition hover:border-indigo-500 hover:bg-indigo-50">
+            <div id="fneDropzone" role="button" tabindex="0" class="group cursor-pointer rounded-[28px] border-2 border-dashed border-indigo-300 bg-white p-8 text-center transition hover:border-indigo-500 hover:bg-indigo-50">
                 <div class="mx-auto grid h-16 w-16 place-items-center rounded-3xl bg-indigo-600 text-2xl text-white shadow-lg shadow-indigo-200"><i class="fas fa-cloud-arrow-up"></i></div>
                 <h2 class="mt-4 text-xl font-black text-slate-900">Déposez le récapitulatif FNE ici</h2><p class="mt-1 text-sm text-slate-500">ou cliquez pour parcourir · CSV, XLSX ou XLS · maximum 20 Mo</p>
             </div>

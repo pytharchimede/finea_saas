@@ -100,17 +100,18 @@ $alerts = $dashboardView['alerts'];
 $chartAchatStatus = $dashboardView['chartAchatStatus'];
 $chartVenteStatus = $dashboardView['chartVenteStatus'];?>
 
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(238,242,255,0.95),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(233,213,255,0.75),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<link rel="stylesheet" href="../assets/css/billing-workspace.css?v=20261126a">
+<div class="billing-workspace min-h-screen pb-12">
     <div class="container mx-auto px-4 py-8">
-        <div class="relative overflow-hidden rounded-[32px] border border-indigo-100 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
+        <div class="relative overflow-hidden rounded-[32px] border border-indigo-100 billing-banner px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
             <div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-2xl"></div>
             <div class="absolute bottom-0 right-24 h-24 w-24 rounded-full bg-indigo-300/20 blur-2xl"></div>
             <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div class="max-w-3xl">
                     <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-indigo-200">Facturation</p>
-                    <h1 class="text-3xl font-semibold tracking-tight md:text-5xl">Pilotage factures</h1>
+                    <h1 class="text-3xl font-semibold tracking-tight md:text-5xl">Pilotage de la facturation</h1>
                     <p class="mt-4 max-w-2xl text-sm text-slate-200 md:text-base">
-                        Tableau de bord du module facturation. Les données et formats seront alignés sur les exigences FNE.
+                        Suivez les factures clients, les achats fournisseurs, les encaissements et les contrôles FNE.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3">
@@ -144,12 +145,18 @@ $chartVenteStatus = $dashboardView['chartVenteStatus'];?>
                     </a>
                     <a href="parametres_facturation.php" class="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10">
                         <i class="fas fa-sliders mr-2"></i>
-                        Parametres
+                        Paramètres
                     </a>
                 </div>
             </div>
         </div>
 
+        <nav class="billing-nav" aria-label="Parcours de facturation">
+            <section><h2><i class="fas fa-receipt mr-2"></i>Ventes clients</h2><a href="factures_vente.php">Registre des ventes et encaissements</a><a href="import_factures_vente_fne.php">Importer les factures FNE</a></section>
+            <section><h2><i class="fas fa-file-invoice mr-2"></i>Achats fournisseurs</h2><a href="factures_achat.php">Contrôler les achats et paiements</a><a href="import_factures_achat_fne.php">Importer les achats FNE</a></section>
+            <section><h2><i class="fas fa-vault mr-2"></i>Trésorerie</h2><a href="tresorerie_chantiers.php">Trésorerie des chantiers et TVA</a></section>
+            <section><h2><i class="fas fa-shield-alt mr-2"></i>Contrôle et conformité</h2><a href="verifier_facture_fne.php">Vérifier une facture FNE</a><a href="recherche_factures.php">Rechercher une facture</a><a href="parametres_facturation.php">Paramètres</a></section>
+        </nav>
         <?php if (!$achatModel->isReady()): ?>
             <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
                 <?= htmlspecialchars($achatModel->getInitError() ?: 'Le module factures d\'achat n\'a pas pu initialiser ses tables.') ?>
@@ -168,17 +175,17 @@ $chartVenteStatus = $dashboardView['chartVenteStatus'];?>
                 <p class="mt-4 text-3xl font-semibold text-slate-950"><?= (int)$achatStats['total'] ?></p>
                 <p class="mt-2 text-sm text-slate-500">FEB + fiches de decaissement</p>
             </div>
-            <div class="rounded-[28px] border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-6 shadow-[0_16px_50px_rgba(99,102,241,0.10)]">
+            <div class="rounded-[28px] border border-indigo-100 bg-white p-6 shadow-[0_16px_50px_rgba(99,102,241,0.10)]">
                 <p class="text-sm font-medium text-indigo-700">À vérifier</p>
                 <p class="mt-4 text-3xl font-semibold text-slate-950"><?= (int)$achatStats['a_verifier'] ?></p>
                 <p class="mt-2 text-sm text-slate-500">FEB approuvees sans fiche creee</p>
             </div>
-            <div class="rounded-[28px] border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-6 shadow-[0_16px_50px_rgba(16,185,129,0.10)]">
+            <div class="rounded-[28px] border border-emerald-100 bg-white p-6 shadow-[0_16px_50px_rgba(16,185,129,0.10)]">
                 <p class="text-sm font-medium text-emerald-700">Vérifiées</p>
                 <p class="mt-4 text-3xl font-semibold text-slate-950"><?= (int)$achatStats['verifiee'] ?></p>
                 <p class="mt-2 text-sm text-slate-500">Fiches creees, non decaissees</p>
             </div>
-            <div class="rounded-[28px] border border-violet-100 bg-gradient-to-br from-violet-50 to-white p-6 shadow-[0_16px_50px_rgba(139,92,246,0.12)]">
+            <div class="rounded-[28px] border border-violet-100 bg-white p-6 shadow-[0_16px_50px_rgba(139,92,246,0.12)]">
                 <p class="text-sm font-medium text-violet-700">FNE</p>
                 <p class="mt-4 text-2xl font-semibold text-slate-950"><?= $fneConfigured ? 'Configuré' : 'À configurer' ?></p>
                 <p class="mt-2 text-sm text-slate-500">Base: <?= htmlspecialchars($fneBaseUrl !== '' ? $fneBaseUrl : '—') ?></p>
@@ -195,11 +202,11 @@ $chartVenteStatus = $dashboardView['chartVenteStatus'];?>
                     <div class="flex flex-wrap gap-2">
                         <a href="factures_achat.php" class="inline-flex items-center rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
                             <i class="fas fa-file-invoice mr-2"></i>
-                            Nouvel achat
+                            Consulter les achats
                         </a>
                         <a href="factures_vente.php" class="inline-flex items-center rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50">
                             <i class="fas fa-receipt mr-2 text-slate-500"></i>
-                            Nouvelle vente
+                            Consulter les ventes
                         </a>
                     </div>
                 </div>
@@ -265,7 +272,7 @@ $chartVenteStatus = $dashboardView['chartVenteStatus'];?>
                         <?php endif; ?>
                     </div>
                     <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                        <p class="text-sm font-semibold text-slate-950">Montant ventes (items_json)</p>
+                        <p class="text-sm font-semibold text-slate-950">Montant des ventes</p>
                         <p class="mt-2 text-2xl font-semibold text-slate-950"><?= htmlspecialchars(number_format((float)$venteAmounts['sum'], 2, '.', ' ')) ?></p>
                         <p class="mt-1 text-sm text-slate-500">Historique complet • conversion devise si taux (XOF).</p>
                         <?php if (!empty($venteAmounts['converted_count']) || !empty($venteAmounts['missing_rate_count'])): ?>

@@ -82,7 +82,8 @@ require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
 
-<div class="min-h-screen bg-slate-50 pb-12">
+<link rel="stylesheet" href="../assets/css/billing-workspace.css?v=20261126a">
+<div class="billing-workspace min-h-screen pb-12">
     <div class="container mx-auto px-4 py-8">
         <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
