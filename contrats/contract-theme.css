@@ -26,3 +26,16 @@ html.finea-dark-mode .contract-brand .text-emerald-700{color:#a7f3d0!important}
 .contract-create .line:has(input:disabled){cursor:not-allowed}
 html.finea-dark-mode .contract-create .bg-rose-50{background:#3b222e!important}
 html.finea-dark-mode .contract-create .text-rose-800{color:#fecdd3!important}
+
+.contract-brand .contract-border{border-color:var(--brand-primary)!important}
+.contract-brand .contract-ring:focus{--tw-ring-color:var(--brand-accent)}
+.contract-brand .contract-gantt-bar{background:var(--brand-primary)!important}
+.contract-brand .contract-primary :is(.text-white,.text-black){color:var(--brand-on-primary)!important}
+.contract-brand thead.contract-primary{display:table-header-group}
+.contract-brand tr.contract-primary{display:table-row}
+.contract-brand :is(td,th).contract-primary{display:table-cell}
+.contract-brand .contract-primary th{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+.contract-brand canvas:is(.signature-pad,.sig,#workflowCanvas){background:#fff!important;color:#111!important;touch-action:none}
+html.finea-dark-mode .contract-brand :is(.bg-rose-50,.bg-red-50){background:#3b222e!important}
+html.finea-dark-mode .contract-brand :is(.text-rose-800,.text-red-700,.text-red-800){color:#fecdd3!important}
+html.finea-dark-mode .contract-brand :is(.text-slate-700,.text-slate-900){color:var(--finea-text)!important}
