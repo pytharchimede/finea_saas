@@ -77,7 +77,7 @@ function logi_dashboard_tabs(string $active = 'exploitation'): string
             : 'border-white/80 bg-white/90 text-slate-800 hover:bg-slate-50';
         $iconClass = $isActive ? 'bg-white/15 text-[#fabd02]' : 'bg-orange-50 text-orange-700';
         $descClass = $isActive ? 'text-slate-300' : 'text-slate-500';
-        $html .= '<a href="' . logi_h($tab['href']) . '" class="rounded-[26px] border p-5 shadow-[0_16px_45px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 ' . $cardClass . '">';
+        $html .= '<a href="' . logi_h($tab['href']) . '"' . ($isActive ? ' aria-current="page"' : '') . ' class="logi-tab rounded-[26px] border p-5 shadow-[0_16px_45px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 ' . $cardClass . '">';
         $html .= '<div class="flex items-start gap-4">';
         $html .= '<span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl ' . $iconClass . '"><i class="fas ' . logi_h($tab['icon']) . '"></i></span>';
         $html .= '<span><span class="block font-semibold">' . logi_h($tab['label']) . '</span><span class="mt-1 block text-sm ' . $descClass . '">' . logi_h($tab['desc']) . '</span></span>';
