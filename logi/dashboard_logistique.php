@@ -41,13 +41,13 @@ $sideLinks = [
     ['href' => 'settings.php', 'icon' => 'fa-sliders', 'label' => 'Parametres', 'hint' => 'Reglages'],
 ];
 ?>
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(255,247,237,0.95),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(219,234,254,0.85),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<div class="logi-workspace min-h-screen pb-12">
     <div class="container mx-auto px-4 py-8">
         <?php if ($flashMessage !== ''): ?>
             <div class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 font-semibold text-emerald-800 shadow-sm"><?= logi_h($flashMessage) ?></div>
         <?php endif; ?>
 
-        <section class="relative overflow-hidden rounded-[32px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
+        <section class="logi-hero relative overflow-hidden rounded-[32px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
             <div class="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-[#fabd02]/20 blur-2xl"></div>
             <div class="absolute bottom-0 right-28 h-28 w-28 rounded-full bg-sky-300/20 blur-2xl"></div>
             <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -59,16 +59,17 @@ $sideLinks = [
                             <?= logi_dashboard_number($urgentTotal) ?> point<?= $urgentTotal > 1 ? 's' : '' ?> a surveiller
                         </span>
                     </div>
-                    <h1 class="text-3xl font-semibold tracking-tight md:text-5xl">Pilotage terrain du parc BANAMUR</h1>
+                    <h1 class="text-3xl font-semibold tracking-tight md:text-5xl">Pilotage terrain du parc <?= logi_h((string)($layoutCompanyBranding['company_name'] ?? 'FINEA')) ?></h1>
                     <p class="mt-4 max-w-2xl text-sm text-slate-200 md:text-base">
                         Une vue courte pour decider vite : disponibilite, demandes, retours, carburant, maintenance et alertes operationnelles.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3">
+                    <button type="button" id="logiThemeToggle" class="rounded-2xl border px-5 py-3 text-sm font-semibold">Mode sombre</button>
                     <a href="requests.php" class="inline-flex items-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-amber-50">
                         <i class="fas fa-list-check mr-2 text-orange-600"></i>Validations
                     </a>
-                    <a href="planning_form.php" class="inline-flex items-center rounded-2xl bg-[#fabd02] px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">
+                    <a href="planning_form.php" class="logi-accent inline-flex items-center rounded-2xl px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">
                         <i class="fas fa-plus mr-2"></i>Affecter
                     </a>
                     <a href="asset_daily_activity.php" class="inline-flex items-center rounded-2xl border border-white/15 px-5 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10">
@@ -92,7 +93,7 @@ $sideLinks = [
                             <div class="mt-3 text-3xl font-bold text-slate-950"><?= logi_h($kpi['value']) ?></div>
                             <p class="mt-2 text-sm text-slate-600"><?= logi_h($kpi['hint']) ?></p>
                         </div>
-                        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-700 transition group-hover:bg-orange-600 group-hover:text-white"><i class="fas <?= logi_h($kpi['icon']) ?>"></i></span>
+                        <span class="logi-kpi-icon flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-700 transition group-hover:bg-orange-600 group-hover:text-white"><i class="fas <?= logi_h($kpi['icon']) ?>"></i></span>
                     </div>
                     <div class="mt-4 text-sm font-semibold text-orange-700 opacity-0 transition group-hover:opacity-100">Ouvrir <i class="fas fa-arrow-right ml-1"></i></div>
                 </a>
@@ -162,7 +163,7 @@ $sideLinks = [
                                 <p class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-600">Parc</p>
                                 <h2 class="mt-1 text-xl font-semibold text-slate-950">Disponibilite</h2>
                             </div>
-                            <span class="rounded-full bg-[#1d2b57]/10 px-3 py-1 text-sm font-semibold text-[#1d2b57]"><?= $availability ?>%</span>
+                            <span class="logi-availability rounded-full px-3 py-1 text-sm font-semibold text-[#1d2b57]"><?= $availability ?>%</span>
                         </div>
                         <div class="h-64"><canvas id="assetStatusChart"></canvas></div>
                     </article>
@@ -199,7 +200,7 @@ $sideLinks = [
                 </section>
             </main>
 
-            <aside class="rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)] xl:sticky xl:top-6 xl:self-start">
+            <aside class="logi-sidebar rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)] xl:sticky xl:top-6 xl:self-start">
                 <div class="mb-5">
                     <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-200">Acces rapides</p>
                     <h2 class="mt-2 text-2xl font-semibold">Logistique</h2>
@@ -225,10 +226,29 @@ $sideLinks = [
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const root=document.documentElement, toggle=document.getElementById('logiThemeToggle');
+        const css=name=>getComputedStyle(document.body).getPropertyValue(name).trim();
+        const textColor=css('--lg-ink'), mutedColor=css('--lg-muted'), gridColor=css('--lg-border');
+        function syncTheme(){
+            const dark=root.classList.contains('finea-dark-mode');
+            document.body.classList.toggle('finea-dark-mode',dark);
+            toggle.textContent=dark?'☀ Mode clair':'☾ Mode sombre';
+            toggle.setAttribute('aria-pressed',String(dark));
+            for(const id of ['assetStatusChart','fuelChart']){
+                const chart=window.Chart?.getChart(id);if(!chart)continue;
+                const p=chart.options.plugins;
+                p.legend.labels.color=css('--lg-ink');
+                Object.assign(p.tooltip,{backgroundColor:css('--lg-panel'),titleColor:css('--lg-ink'),bodyColor:css('--lg-muted'),borderColor:css('--lg-border')});
+                for(const scale of Object.values(chart.options.scales||{})){if(scale.ticks)scale.ticks.color=css('--lg-muted');if(scale.grid)scale.grid.color=css('--lg-border');}
+                if(id==='assetStatusChart')chart.data.datasets[0].borderColor=css('--lg-panel');
+                else chart.data.datasets[1].pointBorderColor=css('--lg-panel');
+                chart.update('none');
+            }
+        }
+        toggle.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}syncTheme();});
+        new MutationObserver(syncTheme).observe(root,{attributes:true,attributeFilter:['class']});
+        syncTheme();
         if (!window.Chart) return;
-        const textColor = '#1f2937';
-        const mutedColor = '#64748b';
-        const gridColor = 'rgba(100,116,139,.22)';
         const commonPlugins = {
             legend: {
                 labels: {
@@ -242,10 +262,10 @@ $sideLinks = [
                 }
             },
             tooltip: {
-                backgroundColor: '#ffffff',
-                titleColor: '#0f172a',
-                bodyColor: '#334155',
-                borderColor: '#cbd5e1',
+                backgroundColor: css('--lg-panel'),
+                titleColor: textColor,
+                bodyColor: mutedColor,
+                borderColor: gridColor,
                 borderWidth: 1,
                 padding: 12
             }
@@ -257,7 +277,7 @@ $sideLinks = [
                 datasets: [{
                     data: <?= json_encode($charts['asset_data']) ?>,
                     backgroundColor: ['#059669', '#d97706', '#0284c7', '#dc2626', '#64748b'],
-                    borderColor: '#ffffff',
+                    borderColor: css('--lg-panel'),
                     borderWidth: 3
                 }]
             },
@@ -275,16 +295,16 @@ $sideLinks = [
                     type: 'bar',
                     label: 'Litres',
                     data: <?= json_encode($charts['fuel_liters']) ?>,
-                    backgroundColor: '#d97706',
+                    backgroundColor: css('--brand-accent'),
                     borderRadius: 10
                 }, {
                     type: 'line',
                     label: 'Montant',
                     data: <?= json_encode($charts['fuel_amounts']) ?>,
-                    borderColor: '#1d2b57',
-                    backgroundColor: '#1d2b57',
-                    pointBackgroundColor: '#1d2b57',
-                    pointBorderColor: '#ffffff',
+                    borderColor: css('--brand-primary'),
+                    backgroundColor: css('--brand-primary'),
+                    pointBackgroundColor: css('--brand-primary'),
+                    pointBorderColor: css('--lg-panel'),
                     borderWidth: 3,
                     tension: .35,
                     yAxisID: 'y1'
