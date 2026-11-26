@@ -2818,6 +2818,36 @@ require_once __DIR__ . '/decaissement/includes/header.php';
         border-color: var(--portal-brand) !important;
         color: #fff !important;
     }
+
+    /* Organisation: explicit opaque surface/foreground pairs, including counters. */
+    body.portal-theme-dark .portal-left-panel {
+        background:#172337!important;color:#f5f8fc!important;border:1px solid #52647e!important;
+    }
+    body.portal-theme-dark .portal-left-panel .portal-panel-title {color:#e2e8f0!important}
+    body.portal-theme-dark .portal-left-panel :is(.portal-filter-chip,.portal-badge-legend-link,.portal-search-meta) {
+        background:#202e43!important;color:#f5f8fc!important;border:1px solid #52647e!important;
+    }
+    body.portal-theme-dark .portal-left-panel .portal-filter-chip {
+        display:flex;align-items:center;gap:.45rem;
+    }
+    body.portal-theme-dark .portal-left-panel .portal-filter-chip span {
+        margin-left:auto;background:#0d1727!important;color:#e2e8f0!important;border:1px solid #52647e!important;
+    }
+    body.portal-theme-dark .portal-left-panel :is(.portal-filter-chip,.portal-badge-legend-link):hover {
+        background:#30435d!important;color:#fff!important;border-color:#a5c7ff!important;
+    }
+    body.portal-theme-dark .portal-left-panel .portal-filter-chip.is-active,
+    body.portal-theme-dark .portal-left-panel .portal-filter-chip.is-active:hover {
+        background:var(--brand-accent,#d71920)!important;color:var(--brand-on-accent,#fff)!important;border-color:var(--brand-on-accent,#fff)!important;
+    }
+    body.portal-theme-dark .portal-left-panel .portal-filter-chip.is-active span {
+        background:var(--brand-on-accent,#fff)!important;color:var(--brand-accent,#d71920)!important;border-color:transparent!important;
+    }
+    body.portal-theme-dark .portal-left-panel :is(.portal-filter-chip,.portal-badge-legend-link) i,
+    body.portal-theme-dark .portal-left-panel .portal-badge-legend-link span {color:inherit!important}
+    body.portal-theme-dark .portal-left-panel :is(button,a):focus-visible {
+        outline:2px solid #a5c7ff!important;outline-offset:3px;
+    }
 </style>
 <div class="portal-page">
     <div class="portal-shell">
@@ -3344,7 +3374,7 @@ require_once __DIR__ . '/decaissement/includes/header.php';
             const count = getVisibleModuleCountForFilter(filter.id);
             const iconMarkup = String(filter.id || '').startsWith('group:') ? '<i class="fas fa-folder-tree"></i> ' : '';
             return `
-                <button type="button" class="portal-filter-chip ${portalState.filter === filter.id ? 'is-active' : ''}" data-portal-filter="${escapeHtmlAttribute(filter.id)}">${iconMarkup}${escapeHtmlText(filter.label)} <span>${count}</span></button>
+                <button type="button" class="portal-filter-chip ${portalState.filter === filter.id ? 'is-active' : ''}" aria-pressed="${portalState.filter === filter.id ? 'true' : 'false'}" data-portal-filter="${escapeHtmlAttribute(filter.id)}">${iconMarkup}${escapeHtmlText(filter.label)} <span>${count}</span></button>
             `;
         }).join('');
     }
