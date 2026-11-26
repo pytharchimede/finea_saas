@@ -29,7 +29,8 @@ $academyCourseData = null;
 $academyQuizQuestions = [];
 $academyFlash = $_SESSION['formation_academy_flash'] ?? null;
 unset($_SESSION['formation_academy_flash']);
-$academyMode = trim((string) ($_GET['academy'] ?? ''));
+$academyMode = trim((string) ($_GET['academy'] ?? (isset($_GET['module']) || isset($_GET['doc']) || isset($_GET['capture_mode']) || isset($_GET['edit']) || isset($_GET['export']) || isset($_GET['download']) ? '' : 'dashboard')));
+if (!in_array($academyMode, ['', 'dashboard', 'catalog', 'progress', 'course'], true)) $academyMode = 'dashboard';
 $academyCourseSlug = trim((string) ($_GET['course'] ?? ''));
 
 try {
@@ -1142,33 +1143,18 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
 <div class="formation-page-shell min-h-screen bg-slate-100 py-6">
     <div class="formation-page-container space-y-6">
         <section class="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.07)]">
-            <div class="academy-brand-header px-6 py-5 md:px-8">
-                <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                    <div>
-                        <div class="text-[11px] font-semibold uppercase tracking-[0.28em] text-blue-100">Formation</div>
-                        <div class="mt-3 flex items-center gap-4">
-                            <?php if ($appIconUrl !== null): ?>
-                                <span class="inline-flex h-16 w-16 items-center justify-center rounded-3xl border border-white/15 bg-white/10 p-2 shadow-lg backdrop-blur-sm">
-                                    <img src="<?= htmlspecialchars($appIconUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Icône <?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?>" class="h-full w-full object-contain">
-                                </span>
-                            <?php endif; ?>
-                            <div>
-                                <h1 class="text-3xl font-bold md:text-4xl">FINEA Academy</h1>
-                                <p class="mt-2 max-w-3xl text-sm font-medium text-fuchsia-100 md:text-base"><?= htmlspecialchars((string)$academyBrand['company_name'], ENT_QUOTES, 'UTF-8') ?></p>
-                            </div>
-                        </div>
-                        <p class="mt-3 max-w-3xl text-sm text-blue-50 md:text-base">Un espace séparé de la gestion documentaire pour apprendre à utiliser <?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?> et transmettre la connaissance technique module par module.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" data-academy-theme class="academy-theme-button">Mode sombre</button>
-                        <?php if ($canAccessTechnical): ?>
-                            <span class="rounded-full border border-white/20 bg-slate-950/30 px-4 py-2 text-sm font-semibold">Accès technique</span>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-            <?php if ($canUseCaptureMode): ?>
-                <details class="academy-capture"><summary>Outils techniques et captures</summary><div class="border-t border-slate-200 bg-white px-6 py-5 md:px-8">
+            <header class="academy-simple-header">
+ <div class="academy-title"><?php if ($appIconUrl !== null): ?><img src="<?= htmlspecialchars($appIconUrl, ENT_QUOTES, 'UTF-8') ?>" alt=""><?php endif; ?><div><h1>FINEA Academy</h1><small><?= htmlspecialchars((string)$academyBrand['company_name'], ENT_QUOTES, 'UTF-8') ?></small></div></div>
+ <button type="button" data-academy-theme class="academy-theme-button">Mode sombre</button>
+</header>
+<nav class="academy-simple-nav" aria-label="Navigation Formation">
+<?php foreach (['dashboard'=>'Accueil','catalog'=>'Catalogue','progress'=>'Mes formations','guides'=>'Guides pratiques'] as $mode=>$label): ?>
+<a <?= ($academyMode === $mode || ($mode === 'guides' && $academyMode === '')) ? 'aria-current="page"' : '' ?> href="<?= htmlspecialchars(formationBuildUrl($mode === 'guides' ? ['module'=>$currentModule] : ['academy'=>$mode]), ENT_QUOTES, 'UTF-8') ?>"><?= $label ?></a>
+<?php endforeach; ?>
+<?php if ($isFormationAdmin): ?><a href="<?= htmlspecialchars($appBasePath.'/formation/admin/index.php', ENT_QUOTES, 'UTF-8') ?>">Administration</a><?php endif; ?>
+</nav>
+            <?php if ($canUseCaptureMode && $academyMode === ''): ?>
+                <details class="academy-capture" <?= $captureMode ? 'open' : '' ?>><summary>Outils techniques et captures</summary><div class="border-t border-slate-200 bg-white px-6 py-5 md:px-8">
                     <form method="get" action="<?= htmlspecialchars($formationHomeUrl, ENT_QUOTES, 'UTF-8') ?>" class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px_320px_auto] xl:items-end">
                         <input type="hidden" name="module" value="<?= htmlspecialchars($currentModule, ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="audience" value="<?= htmlspecialchars($currentAudience, ENT_QUOTES, 'UTF-8') ?>">
@@ -1202,8 +1188,8 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                 </div>
                 </details>
             <?php endif; ?>
-            <div class="academy-workspace<?= $academyMode !== '' ? ' academy-workspace-learning' : '' ?>">
-                <aside class="academy-library border-b border-slate-200 bg-slate-50/80 p-4 lg:border-b-0 lg:border-r"><a class="academy-home-link" href="<?= htmlspecialchars(formationBuildUrl(['academy'=>'dashboard']), ENT_QUOTES, 'UTF-8') ?>"><i class="fas fa-graduation-cap"></i> Mes parcours</a><label class="academy-filter-label" for="academyFilter">Rechercher un module</label><input id="academyFilter" type="search" placeholder="Filtrer les guides…">
+            <div class="academy-workspace<?= $academyMode !== '' ? ' academy-workspace-learning academy-focus' : ' academy-guides' ?>">
+                <?php if ($academyMode === ''): ?><aside class="academy-library border-b border-slate-200 bg-slate-50/80 p-4 lg:border-b-0 lg:border-r"><a class="academy-home-link" href="<?= htmlspecialchars(formationBuildUrl(['academy'=>'dashboard']), ENT_QUOTES, 'UTF-8') ?>"><i class="fas fa-graduation-cap"></i> Mes parcours</a><label class="academy-filter-label" for="academyFilter">Rechercher un module</label><input id="academyFilter" type="search" placeholder="Filtrer les guides…">
                     <div class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Modules</div>
                     <div class="space-y-3">
                         <?php if ($moduleCatalog === []): ?>
@@ -1233,7 +1219,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
-                </aside>
+                </aside><?php endif; ?>
 
                 <main class="academy-content border-b border-slate-200 p-5 lg:border-b-0 lg:border-r">
                     <?php if ($academyMode === 'course'): ?>
@@ -1242,14 +1228,11 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                         <?php else: ?>
                             <div class="finea-alert">Parcours Academy introuvable ou base FINEA Academy non initialisée.</div>
                         <?php endif; ?>
-                    <?php elseif ($academyMode === 'dashboard'): ?>
+                    <?php elseif (in_array($academyMode, ['dashboard','catalog','progress'], true)): ?>
                         <?php if (is_array($academyDashboard)): ?>
                             <?php require __DIR__ . '/views/academy_dashboard.php'; ?>
                         <?php endif; ?>
                     <?php else: ?>
-                        <?php if (is_array($academyDashboard)): ?>
-                            <?php require __DIR__ . '/views/academy_dashboard.php'; ?>
-                        <?php endif; ?>
                     <?php if ($currentModule === '' || !isset($moduleCatalog[$currentModule])): ?>
                         <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 py-10 text-center text-slate-500">Aucune formation disponible pour le moment.</div>
                     <?php else: ?>
@@ -1338,7 +1321,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                     <?php endif; ?>
                 </main>
 
-                <aside class="academy-doc-sidebar bg-slate-50/70 p-4">
+                <?php if ($academyMode === ''): ?><aside class="academy-doc-sidebar bg-slate-50/70 p-4">
                     <div class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Documents</div>
                     <div class="space-y-3">
                         <?php if (empty($currentDocs)): ?>
@@ -1535,7 +1518,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                         </form>
             </div>
         <?php endif; ?>
-        </aside>
+        </aside><?php endif; ?>
     </div>
     </section>
 </div>
