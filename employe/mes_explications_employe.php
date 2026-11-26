@@ -279,22 +279,22 @@ require_once __DIR__ . '/includes/navbar.php';
 ?>
 <style>
     .employee-glass-card {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.94) 100%);
-        border: 1px solid rgba(226, 232, 240, 0.95);
-        box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+        background: var(--emp-bg);
+        border: 1px solid var(--emp-line);
+        box-shadow: none;
     }
 
     .employee-shell {
-        border-radius: 2rem;
-        border: 1px solid rgba(226, 232, 240, 0.95);
-        background: rgba(255, 255, 255, 0.98);
-        box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+        border-radius: 12px;
+        border: 1px solid var(--emp-line);
+        background: var(--emp-bg);
+        box-shadow: none;
     }
 
     .employee-step-card {
-        border-radius: 1.6rem;
-        border: 1px solid rgba(226, 232, 240, 0.95);
-        background: white;
+        border-radius: 12px;
+        border: 1px solid var(--emp-line);
+        background: var(--emp-bg);
         padding: 1.25rem;
     }
 
@@ -316,16 +316,16 @@ require_once __DIR__ . '/includes/navbar.php';
     }
 
     .employee-sidebar-card {
-        border-radius: 1.5rem;
-        border: 1px solid rgba(226, 232, 240, 0.95);
-        background: rgba(248, 250, 252, 0.8);
+        border-radius: 12px;
+        border: 1px solid var(--emp-line);
+        background: var(--emp-bg);
         padding: 1rem;
     }
 
     .employee-note {
         border-radius: 1.2rem;
         border: 1px dashed rgba(148, 163, 184, 0.55);
-        background: rgba(248, 250, 252, 0.85);
+        background: var(--emp-bg);
         padding: 0.95rem 1rem;
         font-size: 0.88rem;
         color: rgb(71 85 105);
@@ -334,7 +334,7 @@ require_once __DIR__ . '/includes/navbar.php';
     .signature-pad-shell {
         position: relative;
         border: 1px dashed rgba(148, 163, 184, 0.85);
-        border-radius: 1.5rem;
+        border-radius: 12px;
         background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
         overflow: hidden;
     }
@@ -359,9 +359,9 @@ require_once __DIR__ . '/includes/navbar.php';
     }
 
     .employee-timeline-entry {
-        border-radius: 1.4rem;
-        border: 1px solid rgba(226, 232, 240, 0.95);
-        background: white;
+        border-radius: 12px;
+        border: 1px solid var(--emp-line);
+        background: var(--emp-bg);
         padding: 1rem 1rem 1.05rem;
     }
 
@@ -373,7 +373,7 @@ require_once __DIR__ . '/includes/navbar.php';
         width: 100%;
         border-radius: 1rem;
         border: 1px solid rgb(226 232 240);
-        background: rgb(248 250 252);
+        background: var(--emp-bg);
         padding: 0.85rem 1rem;
         font-size: 0.875rem;
         color: rgb(15 23 42);
@@ -382,7 +382,7 @@ require_once __DIR__ . '/includes/navbar.php';
 
     .personnel-picker-input:focus {
         border-color: rgb(79 70 229);
-        background: white;
+        background: var(--emp-bg);
     }
 
     .personnel-picker-panel {
@@ -394,8 +394,8 @@ require_once __DIR__ . '/includes/navbar.php';
         max-height: 18rem;
         overflow: auto;
         border-radius: 1rem;
-        border: 1px solid rgba(226, 232, 240, 0.98);
-        background: white;
+        border: 1px solid var(--emp-line);
+        background: var(--emp-bg);
         box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
     }
 
@@ -403,7 +403,7 @@ require_once __DIR__ . '/includes/navbar.php';
         width: 100%;
         border: 0;
         border-bottom: 1px solid rgba(226, 232, 240, 0.82);
-        background: white;
+        background: var(--emp-bg);
         padding: 0.85rem 1rem;
         text-align: left;
         color: rgb(15 23 42);
@@ -420,13 +420,13 @@ require_once __DIR__ . '/includes/navbar.php';
     }
 
     .employee-composer-card {
-        border-radius: 2rem;
-        border: 1px solid rgba(199, 210, 254, 0.95);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(238, 242, 255, 0.88) 100%);
-        box-shadow: 0 16px 42px rgba(79, 70, 229, 0.08);
+        border-radius: 12px;
+        border: 1px solid var(--emp-line);
+        background: var(--emp-bg);
+        box-shadow: none;
     }
 </style>
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(240,249,255,0.95),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(224,231,255,0.85),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<div class="min-h-screen employee-explanation-page pb-12">
     <div class="mx-auto max-w-6xl px-4 py-8">
         <div class="employee-glass-card rounded-[32px] p-6">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
