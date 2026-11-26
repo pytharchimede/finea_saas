@@ -542,12 +542,12 @@ class PortalModuleManager
     {
         $module = [
             'module_key' => 'module_divertissements',
-            'label' => 'Divertissements',
-            'icon' => 'fa-gamepad',
+            'label' => 'FINEA Life',
+            'icon' => 'fa-users',
             'color' => '#4F46E5',
             'target' => 'divertissements/divertissements.php',
             'slug' => 'divertissements',
-            'subtitle' => 'Mini-jeux (2+ joueurs) : duel de rapidité clavier, morpion, etc.',
+            'subtitle' => 'Vie d’entreprise, événements, reconnaissance et cohésion',
             'required_permissions_json' => json_encode([], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'sort_order' => 210,
             'is_active' => 1,

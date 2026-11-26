@@ -1,168 +1,18 @@
 <?php
-
-require_once __DIR__ . '/../auth_check.php';
-
-?>
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divertissements</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-
-<body>
-    <div class="min-h-screen py-10 px-6 bg-gradient-to-b from-yellow-50 via-emerald-50 to-sky-50">
-        <div class="max-w-5xl mx-auto">
-            <div class="flex items-center justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">Divertissements</h1>
-                    <p class="text-sm text-gray-700 mt-1">Mini-jeux internes · 2 joueurs · ultra rapide</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button type="button" id="helpBtn" class="px-3 py-2 text-sm font-semibold rounded-2xl bg-white border border-gray-200 hover:bg-gray-100 transition inline-flex items-center gap-2">
-                        <i class="fas fa-circle-question"></i>
-                        <span>Aide</span>
-                    </button>
-                    <a href="../selection_portail.php" class="px-3 py-2 text-sm font-semibold rounded-2xl bg-white border border-gray-200 hover:bg-gray-100 transition inline-flex items-center gap-2">
-                        <i class="fas fa-th-large"></i>
-                        <span>Portail</span>
-                    </a>
-                    <a href="../deconnex.php" class="px-3 py-2 text-sm font-semibold rounded-2xl bg-red-600 text-white hover:bg-red-700 transition inline-flex items-center gap-2">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Déconnexion</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="mt-8 bg-white/80 backdrop-blur border border-white/70 rounded-[2rem] p-6 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold text-gray-900">Choisis un jeu</div>
-                        <div class="text-xs text-gray-700">Astuce : sur clavier, J1 = A · J2 = L (quand c’est indiqué).</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                <a href="duel_clavier.php" class="relative bg-white rounded-[2rem] p-7 border-2 border-emerald-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group">
-                    <div class="w-14 h-14 mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-sm bg-gradient-to-br from-emerald-500 to-sky-500 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-keyboard"></i>
-                    </div>
-                    <h3 class="font-extrabold text-gray-900 text-base leading-tight">Duel clavier</h3>
-                    <p class="mt-2 text-xs text-gray-700">10 secondes. J1 tape <span class="font-mono">A</span>, J2 tape <span class="font-mono">L</span>. Le meilleur score gagne.</p>
-                    <div class="mt-6 w-full py-3 text-sm font-extrabold rounded-2xl bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span>Jouer</span>
-                        <i class="fas fa-bolt text-xs"></i>
-                    </div>
-                </a>
-
-                <a href="reflex_duel.php" class="relative bg-white rounded-[2rem] p-7 border-2 border-sky-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group">
-                    <div class="w-14 h-14 mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-sm bg-gradient-to-br from-sky-500 to-indigo-500 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-stopwatch"></i>
-                    </div>
-                    <h3 class="font-extrabold text-gray-900 text-base leading-tight">Duel réflexe</h3>
-                    <p class="mt-2 text-xs text-gray-700">Attends le “GO” puis appuie : J1 <span class="font-mono">A</span>, J2 <span class="font-mono">L</span>. Faux départ = perdu.</p>
-                    <div class="mt-6 w-full py-3 text-sm font-extrabold rounded-2xl bg-sky-600 text-white hover:bg-sky-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span>Jouer</span>
-                        <i class="fas fa-flag-checkered text-xs"></i>
-                    </div>
-                </a>
-
-                <a href="morpion.php" class="relative bg-white rounded-[2rem] p-7 border-2 border-amber-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group">
-                    <div class="w-14 h-14 mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-sm bg-gradient-to-br from-amber-500 to-rose-500 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-hashtag"></i>
-                    </div>
-                    <h3 class="font-extrabold text-gray-900 text-base leading-tight">Morpion</h3>
-                    <p class="mt-2 text-xs text-gray-700">Classique 3×3 en local. Tour par tour, premier alignement gagne.</p>
-                    <div class="mt-6 w-full py-3 text-sm font-extrabold rounded-2xl bg-amber-600 text-white hover:bg-amber-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span>Jouer</span>
-                        <i class="fas fa-table-cells text-xs"></i>
-                    </div>
-                </a>
-
-                <a href="quatre_indices_un_mot.php" class="relative bg-white rounded-[2rem] p-7 border-2 border-indigo-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group">
-                    <div class="w-14 h-14 mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-sm bg-gradient-to-br from-indigo-500 to-violet-500 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-images"></i>
-                    </div>
-                    <h3 class="font-extrabold text-gray-900 text-base leading-tight">4 indices 1 mot</h3>
-                    <p class="mt-2 text-xs text-gray-700">Devine le mot à partir de 4 “images” (emoji/icônes). Rapide, addictif, et 100% offline.</p>
-                    <div class="mt-6 w-full py-3 text-sm font-extrabold rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span>Jouer</span>
-                        <i class="fas fa-wand-magic-sparkles text-xs"></i>
-                    </div>
-                </a>
-
-                <a href="pierre_feuille_ciseaux.php" class="relative bg-white rounded-[2rem] p-7 border-2 border-emerald-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group">
-                    <div class="w-14 h-14 mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-sm bg-gradient-to-br from-emerald-500 to-teal-500 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-hand-fist"></i>
-                    </div>
-                    <h3 class="font-extrabold text-gray-900 text-base leading-tight">Pierre · Feuille · Ciseaux</h3>
-                    <p class="mt-2 text-xs text-gray-700">2 joueurs, manche rapide. Choisis en secret puis révèle en même temps.</p>
-                    <div class="mt-6 w-full py-3 text-sm font-extrabold rounded-2xl bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span>Jouer</span>
-                        <i class="fas fa-hand-scissors text-xs"></i>
-                    </div>
-                </a>
-
-                <a href="pendu.php" class="relative bg-white rounded-[2rem] p-7 border-2 border-rose-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group">
-                    <div class="w-14 h-14 mb-5 rounded-2xl flex items-center justify-center text-white text-xl shadow-sm bg-gradient-to-br from-rose-500 to-amber-500 group-hover:scale-110 transition-transform duration-300">
-                        <i class="fas fa-spell-check"></i>
-                    </div>
-                    <h3 class="font-extrabold text-gray-900 text-base leading-tight">Pendu</h3>
-                    <p class="mt-2 text-xs text-gray-700">Devine le mot lettre par lettre. Idéal en pause café.</p>
-                    <div class="mt-6 w-full py-3 text-sm font-extrabold rounded-2xl bg-rose-600 text-white hover:bg-rose-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span>Jouer</span>
-                        <i class="fas fa-keyboard text-xs"></i>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script src="../js/auth_guard.js"></script>
-    <script src="../js/help_tour.js"></script>
-    <script>
-        (function() {
-            if (!window.FineaHelpTour) return;
-
-            var tour = window.FineaHelpTour.create({
-                key: 'divertissements_home',
-                version: '1.0.0',
-                helpButtonId: 'helpBtn',
-                auto: true,
-                steps: [{
-                        title: 'Bienvenue 👋',
-                        text: 'Ici tu trouves des mini-jeux internes. Le guide ne s’affiche qu’une fois (ou quand il est mis à jour).'
-                    },
-                    {
-                        title: 'Choisir un jeu',
-                        text: 'Clique sur une carte pour démarrer. Chaque jeu a ses propres règles et son bouton “Aide”.',
-                        selector: '.grid'
-                    },
-                    {
-                        title: 'Raccourci',
-                        text: 'Astuce : certains jeux utilisent le clavier (J1=A · J2=L).',
-                        selector: '.mt-8.bg-white\\/80'
-                    },
-                    {
-                        title: 'Retour',
-                        text: 'Tu peux revenir au Portail ou te déconnecter à tout moment.',
-                        selector: 'a[href="../selection_portail.php"]'
-                    }
-                ]
-            });
-
-            tour.bindHelpButton();
-            tour.autoStartIfNeeded();
-        })();
-    </script>
-</body>
-
-</html>
+require_once __DIR__.'/Life.php';
+$db=Life::db();$uid=Life::uid();Life::install($db);$settings=Life::settings($db);$admin=Life::admin();$h=[Life::class,'h'];$error='';
+if($_SERVER['REQUEST_METHOD']==='POST'){Life::check();try{
+ $action=$_POST['action']??'';
+ if($action==='idea'&&!in_array('ideas',$settings['disabled'],true)){$body=trim((string)($_POST['body']??''));if(!$body||mb_strlen($body)>3000)throw new InvalidArgumentException('Suggestion invalide.');$db->prepare('INSERT INTO finea_life_ideas(user_id,body) VALUES(?,?)')->execute([$uid,$body]);}
+ elseif($action==='vote'&&!in_array('poll',$settings['disabled'],true)){$id=(int)($_POST['id']??0);$q=$db->prepare("SELECT options_json FROM finea_life_posts WHERE id=? AND kind='poll' AND published=1");$q->execute([$id]);$opts=json_decode($q->fetchColumn()?:'[]',true);$choice=filter_var($_POST['choice']??null,FILTER_VALIDATE_INT);if($choice===false||!isset($opts[$choice]))throw new InvalidArgumentException('Choix invalide.');$db->prepare('INSERT INTO finea_life_votes(post_id,user_id,choice) VALUES(?,?,?) ON DUPLICATE KEY UPDATE choice=choice')->execute([$id,$uid,$choice]);}
+ else throw new InvalidArgumentException('Action indisponible.');
+ header('Location: divertissements.php');exit;
+}catch(InvalidArgumentException $e){$error=$e->getMessage();}}
+$posts=$db->query('SELECT id,kind,title,body,event_date,mime,options_json FROM finea_life_posts WHERE published=1 ORDER BY created_at DESC LIMIT 200')->fetchAll(PDO::FETCH_ASSOC);
+$activeMenu='divertissements';$pageTitle='FINEA Life';require __DIR__.'/../decaissement/includes/header.php';require __DIR__.'/../decaissement/includes/navbar.php';
+?><link rel="stylesheet" href="life.css"><main class="life"><header class="life-banner"><div><small>FINEA · Espace collaborateur</small><h1>FINEA Life</h1><p>Vie d’entreprise, cohésion et reconnaissance.</p></div><?php if($admin):?><a class="life-btn" href="admin.php">Administration</a><?php endif;?></header>
+<nav class="life-nav"><?php foreach(Life::TYPES as $key=>$label):if(in_array($key,$settings['disabled'],true))continue;?><a href="#<?=$key?>"><?=$h($label)?></a><?php endforeach;?><?php if(!in_array('ideas',$settings['disabled'],true)):?><a href="#ideas">Boîte à idées</a><?php endif;?><?php if($settings['games']):?><a href="#games">Détente</a><?php endif;?></nav>
+<?php if($error):?><p role="alert"><?=$h($error)?></p><?php endif;?>
+<?php foreach(Life::TYPES as $key=>$label):if(in_array($key,$settings['disabled'],true))continue;$items=array_filter($posts,static fn($p)=>$p['kind']===$key);?><section id="<?=$key?>"><h2><?=$h($label)?></h2><div class="life-grid"><?php foreach($items as $p):?><article class="life-card"><?php if($p['mime']):?><img loading="lazy" src="image.php?id=<?=(int)$p['id']?>" alt="<?=$h($p['title'])?>"><?php endif;?><h3><?=$h($p['title'])?></h3><?php if($p['event_date']):?><small><?=$h($p['event_date'])?></small><?php endif;?><p><?=nl2br($h($p['body']))?></p><?php if($key==='poll'):$q=$db->prepare('SELECT choice FROM finea_life_votes WHERE post_id=? AND user_id=?');$q->execute([$p['id'],$uid]);$v=$q->fetchColumn();if($v!==false):?><p>Votre vote a été enregistré.</p><?php else:?><form method="post"><input type="hidden" name="csrf" value="<?=Life::csrf()?>"><input type="hidden" name="id" value="<?=(int)$p['id']?>"><?php foreach(json_decode($p['options_json']??'[]',true)?:[] as $n=>$option):?><label><input type="radio" name="choice" value="<?=$n?>" required> <?=$h($option)?></label><?php endforeach;?><button name="action" value="vote">Voter</button></form><?php endif;endif;?></article><?php endforeach;?><?php if(!$items):?><p class="life-muted">Aucune publication pour le moment.</p><?php endif;?></div></section><?php endforeach;?>
+<?php if(!in_array('ideas',$settings['disabled'],true)):?><section id="ideas" class="life-card"><h2>Boîte à idées</h2><p>Votre suggestion est transmise aux administrateurs avec votre identifiant.</p><form method="post"><input type="hidden" name="csrf" value="<?=Life::csrf()?>"><textarea name="body" required maxlength="3000" placeholder="Votre proposition"></textarea><button name="action" value="idea">Envoyer</button></form></section><?php endif;?>
+<?php if($settings['games']):?><section id="games"><h2>Espace détente</h2><div class="life-grid"><?php foreach(['duel_clavier'=>'Duel clavier','reflex_duel'=>'Réflexes','morpion'=>'Morpion','pendu'=>'Pendu','pierre_feuille_ciseaux'=>'Pierre feuille ciseaux','quatre_indices_un_mot'=>'4 indices 1 mot'] as $file=>$label):?><a class="life-card" href="<?=$file?>.php"><?=$h($label)?></a><?php endforeach;?></div></section><?php endif;?></main><?php require __DIR__.'/../decaissement/includes/footer.php';?>

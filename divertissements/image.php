@@ -1,0 +1,2 @@
+<?php
+require_once __DIR__.'/Life.php';Life::uid();$db=Life::db();$q=$db->prepare('SELECT kind,mime,image,published FROM finea_life_posts WHERE id=?');$q->execute([(int)($_GET['id']??0)]);$p=$q->fetch(PDO::FETCH_ASSOC);if(!$p||(!$p['published']&&!Life::admin())||(!Life::admin()&&in_array($p['kind'],Life::settings($db)['disabled'],true))||!in_array($p['mime'],['image/jpeg','image/png','image/webp'],true)){http_response_code(404);exit;}header('Content-Type: '.$p['mime']);header('X-Content-Type-Options: nosniff');header('Cache-Control: private, no-store');echo $p['image'];
