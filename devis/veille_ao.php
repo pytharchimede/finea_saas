@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'sync' && $canAdmin) {
             $stats = $controller->sync();
             $message = sprintf('%d annonce(s) lue(s), %d nouvelle(s), %d doublon(s) ignore(s).', $stats['found'], $stats['new'], $stats['duplicates']);
+            if ($stats['errors'] > 0) { $message .= ' '.$stats['errors'].' erreur(s) d’import.'; $messageType='error'; }
         } elseif ($action === 'status' && $id > 0 && $canManage) {
             $controller->updateStatus($id, (string) ($_POST['status'] ?? 'nouveau'));
             $message = 'Statut mis a jour.';
@@ -129,7 +130,7 @@ ob_start();
                 <form method="post">
                     <input type="hidden" name="csrf_token" value="<?= ao_h($_SESSION['ao_csrf']) ?>">
                     <input type="hidden" name="action" value="sync">
-                    <button class="rounded-lg bg-[#fabd02] px-4 py-2 text-sm font-black text-[#1d2b57]"><i class="fa-solid fa-rotate mr-2"></i>Synchroniser</button>
+                    <button class="rounded-lg bg-[#fabd02] px-4 py-2 text-sm font-black text-[#1d2b57]"><i class="fa-solid fa-rotate mr-2"></i>Actualiser le catalogue</button>
                 </form>
             <?php endif; ?>
         </div>
@@ -191,7 +192,7 @@ ob_start();
 
 <section class="mt-5 space-y-3">
     <?php if (!$view['items']): ?>
-        <div class="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">Aucun appel d offres ne correspond aux filtres.</div>
+        <div class="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">Aucun appel d’offres ne correspond aux filtres. Consultez tous les avis ou demandez à un administrateur d’actualiser le catalogue central.</div>
     <?php endif; ?>
     <?php foreach ($view['items'] as $item): ?>
         <?php

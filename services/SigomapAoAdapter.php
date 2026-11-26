@@ -130,10 +130,6 @@ class SigomapAoAdapter implements AoSourceAdapterInterface
                     CURLOPT_HTTPHEADER => ['Accept: text/html,application/xhtml+xml'],
                     CURLOPT_ENCODING => '',
                 ]);
-                if ($attempt === 2) {
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-                }
                 $body = curl_exec($curl);
                 $status = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 $lastError = (string) curl_error($curl);
