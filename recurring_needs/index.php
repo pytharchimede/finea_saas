@@ -94,6 +94,13 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
 .finea-dark-mode .rn-workspace :is([class~="text-orange-700"],[class~="text-orange-600"]){color:#fdba74!important}
 .finea-dark-mode .rn-workspace :is([class~="hover:bg-slate-50/70"],[class~="hover:bg-indigo-50"]):hover{background:#334155!important}
 .finea-dark-mode .rn-workspace [class~="divide-slate-100"]>*+*{border-color:#334155!important}
+/* Quick links must retain contrast regardless of the global anchor theme. */
+.rn-workspace .rn-quick a{color:#f8fafc!important;background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.22)!important}
+.rn-workspace .rn-quick a span{color:inherit!important}
+.rn-workspace .rn-quick a span.text-sm{color:#cbd5e1!important}
+.rn-workspace .rn-quick a i{color:#fde68a!important}
+.rn-workspace .rn-quick a:hover,.rn-workspace .rn-quick a:focus-visible{background:rgba(255,255,255,.18)!important;color:#fff!important}
+.rn-workspace .rn-quick a:focus-visible{outline:2px solid #fde68a;outline-offset:2px}
 </style>
 <div class="rn-workspace min-h-screen pb-12">
     <div class="container mx-auto px-4 py-8"><div class="mb-4 flex justify-end"><button type="button" id="rnThemeToggle" class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Mode sombre</button></div>
