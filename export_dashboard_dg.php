@@ -9,6 +9,8 @@ require_once __DIR__ . '/model/Database.php';
 require_once __DIR__ . '/model/AuditTrail.php';
 require_once __DIR__ . '/services/DgDashboardService.php';
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/model/CompanyPdfTemplate.php';
+require_once __DIR__ . '/model/CompanyExportBranding.php';
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -24,6 +26,9 @@ if (!in_array($format, ['pdf', 'xlsx'], true)) {
 $period = trim((string) ($_GET['period'] ?? date('Y-m')));
 $period = preg_match('/^\d{4}-\d{2}$/', $period) ? $period : date('Y-m');
 $pdo = Database::getConnection();
+$brand = CompanyBranding::get($pdo);
+$palette = CompanyBranding::palette($pdo);
+
 $dateFrom=trim((string)($_GET['date_from']??''))?:null;$dateTo=trim((string)($_GET['date_to']??''))?:null;
 $dashboard = (new DgDashboardService($pdo))->build((int) ($_SESSION['user_id'] ?? 0), $period,$dateFrom,$dateTo);
 $filename = 'pilotage_direction_' . str_replace('-', '', $period) . '_' . date('Ymd_His');
@@ -101,7 +106,7 @@ try {
 if ($format === 'xlsx') {
     $spreadsheet = new Spreadsheet();
     $spreadsheet->getProperties()
-        ->setCreator('BANAMUR - FINEA')
+        ->setCreator(CompanyExportBranding::creator())
         ->setTitle('Pilotage Direction Générale ' . $period)
         ->setSubject('Synthèse statistique et analytique');
 
@@ -127,7 +132,10 @@ if ($format === 'xlsx') {
     foreach ($datasets as $title => $rows) {
         $sheet = $first ? $spreadsheet->getActiveSheet() : $spreadsheet->createSheet();
         $first = false;
-        $sheet->setTitle(substr($title, 0, 31));
+        $sheet->setTitle(mb_substr($title, 0, 31));
+        $sheet->getTabColor()->setRGB(CompanyExportBranding::rgb('accent'));
+        $sheet->getHeaderFooter()->setOddHeader('&L'.str_replace('&','&&',(string)$brand['company_name']).'&RPilotage Direction Générale');
+        $sheet->getHeaderFooter()->setOddFooter('&L'.str_replace('&','&&',(string)$brand['company_name']).'&RPage &P / &N');
         $headers = $rows ? array_keys($rows[0]) : ['Information'];
         $sheet->fromArray($headers, null, 'A1');
         $line = 2;
@@ -142,8 +150,8 @@ if ($format === 'xlsx') {
         $lastColumn = Coordinate::stringFromColumnIndex(count($headers));
         $sheet->freezePane('A2');
         $sheet->setAutoFilter('A1:' . $lastColumn . max(1, $line - 1));
-        $sheet->getStyle('A1:' . $lastColumn . '1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-        $sheet->getStyle('A1:' . $lastColumn . '1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('1D2B57');
+        $sheet->getStyle('A1:' . $lastColumn . '1')->getFont()->setBold(true)->getColor()->setRGB(CompanyExportBranding::rgb('primary', true));
+        $sheet->getStyle('A1:' . $lastColumn . '1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
         $sheet->getStyle('A1:' . $lastColumn . max(1, $line - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN)->getColor()->setRGB('DFE6F1');
         $sheet->getStyle('A1:' . $lastColumn . max(1, $line - 1))->getAlignment()->setVertical(Alignment::VERTICAL_TOP)->setWrapText(true);
         for ($column = 1; $column <= count($headers); $column++) {
@@ -166,56 +174,30 @@ if (!class_exists('TCPDF')) {
 
 class DgDashboardPdf extends TCPDF
 {
-    public string $documentTitle = 'Pilotage Direction Générale';
-
-    public function Header(): void
-    {
-        $this->SetFillColor(255, 255, 255);
-        $this->Rect(0, 0, $this->getPageWidth(), 28, 'F');
-        $this->SetDrawColor(203, 213, 225);
-        $this->Line(12, 24.5, $this->getPageWidth() - 12, 24.5);
-        $this->SetFillColor(250, 189, 2);
-        $this->Rect(12, 24.5, 38, 1.1, 'F');
-        $this->SetXY(12, 7);
-        $this->SetFont('dejavusans', 'B', 15);
-        $this->SetTextColor(15, 23, 42);
-        $this->Cell(0, 6, 'BANAMUR', 0, 1, 'L');
-        $this->SetX(12);
-        $this->SetFont('dejavusans', '', 8.5);
-        $this->SetTextColor(71, 85, 105);
-        $this->Cell(0, 4.5, 'Direction Générale - FINEA', 0, 1, 'L');
-        $this->SetXY($this->getPageWidth() - 105, 8);
-        $this->SetFont('dejavusans', 'B', 9);
-        $this->Cell(93, 5, $this->documentTitle, 0, 1, 'R');
-    }
-
-    public function Footer(): void
-    {
-        $this->SetY(-15);
-        $this->SetDrawColor(214, 219, 228);
-        $this->Line(12, $this->GetY(), $this->getPageWidth() - 12, $this->GetY());
-        $this->Ln(2);
-        $this->SetFont('dejavusans', '', 7.5);
-        $this->SetTextColor(100, 116, 139);
-        $this->Cell(0, 5, 'BANAMUR - Pilotage Direction Générale - Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
-    }
+    use CompanyPdfTemplate;
+    public function Header(): void { $this->drawCompanyPdfHeader(); }
+    public function Footer(): void { $this->drawCompanyPdfFooter(); }
 }
 
 $pdf = new DgDashboardPdf('L', 'mm', 'A4', true, 'UTF-8', false);
-$pdf->SetCreator('BANAMUR - FINEA');
-$pdf->SetAuthor('Direction Générale');
+$pdf->SetCreator(CompanyExportBranding::creator());
+$pdf->SetAuthor((string)$brand['company_name']);
+$pdf->companyPdfTitle='Pilotage Direction Générale';
+$pdf->companyPdfType='Rapport de direction';
+$pdf->companyPdfId=$dashboard['start'].' / '.$dashboard['end'];
+$pdf->companyPdfShowQr=false;
 $pdf->SetTitle('Pilotage Direction Générale ' . $period);
-$pdf->SetMargins(12, 30, 12);
-$pdf->SetAutoPageBreak(true, 18);
+$pdf->SetMargins(12, 39, 12);
+$pdf->SetAutoPageBreak(true, 25);
 $pdf->AddPage();
 
 $headline = (string) ($dashboard['analysis']['headline'] ?? '');
 $pdf->SetFillColor(248, 250, 252);
 $pdf->SetDrawColor(226, 232, 240);
-$pdf->RoundedRect(12, 33, 273, 29, 4, '1111', 'DF');
-$pdf->SetFillColor(29, 43, 87);
-$pdf->RoundedRect(12, 33, 4, 29, 4, '1101', 'F');
-$pdf->SetXY(20, 37);
+$pdf->RoundedRect(12, 39, 273, 29, 4, '1111', 'DF');
+$pdf->SetFillColor(...$pdf->companyPdfRgb($palette['accent']));
+$pdf->RoundedRect(12, 39, 4, 29, 4, '1101', 'F');
+$pdf->SetXY(20, 43);
 $pdf->SetFont('dejavusans', 'B', 15);
 $pdf->SetTextColor(15, 23, 42);
 $pdf->Cell(0, 6, 'Note de pilotage - ' . date('m/Y', strtotime($period . '-01')), 0, 1, 'L');
@@ -225,28 +207,28 @@ $pdf->SetTextColor(71, 85, 105);
 $pdf->MultiCell(255, 4.8, $headline, 0, 'L', false, 1);
 
 $summaryRows = dgExportSummaryRows($dashboard);
-$html = '<h2 style="color:#1d2b57;font-size:12px;">Indicateurs de direction</h2><table cellpadding="5" cellspacing="0" style="width:100%;font-size:8px;border-collapse:collapse"><thead><tr>';
+$html = '<h2 style="color:' . $palette['text'] . ';font-size:12px;">Indicateurs de direction</h2><table cellpadding="5" cellspacing="0" style="width:100%;font-size:8px;border-collapse:collapse"><thead><tr>';
 foreach (array_keys($summaryRows[0]) as $header) {
-    $html .= '<th style="background-color:#fabd02;color:#000000;border:1px solid #000000;font-weight:bold;">' . htmlspecialchars($header, ENT_QUOTES, 'UTF-8') . '</th>';
+    $html .= '<th style="background-color:' . $palette['primary'] . ';color:' . CompanyBranding::contrastColor($palette['primary']) . ';border:1px solid #dfe6f1;font-weight:bold;">' . htmlspecialchars($header, ENT_QUOTES, 'UTF-8') . '</th>';
 }
 $html .= '</tr></thead><tbody>';
 foreach ($summaryRows as $index => $row) {
     $background = $index % 2 === 0 ? '#ffffff' : '#f8fafc';
     $html .= '<tr>';
     foreach ($row as $value) {
-        $html .= '<td style="background-color:' . $background . ';border:1px solid #dfe6f1;color:#172033;">' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') . '</td>';
+        $html .= '<td style="background-color:' . $background . ';border:1px solid #dfe6f1;color:' . $palette['text'] . ';">' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') . '</td>';
     }
     $html .= '</tr>';
 }
 $html .= '</tbody></table>';
-$pdf->SetY(68);
+$pdf->SetY(max(74,$pdf->GetY()+5));
 $pdf->writeHTML($html, true, false, true, false, '');
 
 $pdf->AddPage();
-$analysisHtml = '<h2 style="color:#1d2b57;font-size:13px;">Analyse en langage de direction</h2>';
+$analysisHtml = '<h2 style="color:' . $palette['text'] . ';font-size:13px;">Analyse en langage de direction</h2>';
 foreach (($dashboard['analysis']['insights'] ?? []) as $insight) {
     $analysisHtml .= '<div style="border:1px solid #dfe6f1;background-color:#f8fafc;padding:8px;margin-bottom:8px;">'
-        . '<strong style="color:#1d2b57;">' . htmlspecialchars((string) ($insight['title'] ?? ''), ENT_QUOTES, 'UTF-8') . '</strong><br>'
+        . '<strong style="color:' . $palette['text'] . ';">' . htmlspecialchars((string) ($insight['title'] ?? ''), ENT_QUOTES, 'UTF-8') . '</strong><br>'
         . htmlspecialchars((string) ($insight['statement'] ?? ''), ENT_QUOTES, 'UTF-8')
         . '<br><span style="color:#475569;"><strong>Action conseillée :</strong> ' . htmlspecialchars((string) ($insight['recommendation'] ?? ''), ENT_QUOTES, 'UTF-8') . '</span></div>';
 }

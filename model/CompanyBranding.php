@@ -4,6 +4,7 @@ declare(strict_types=1);
 final class CompanyBranding
 {
     private static ?array $cache=null;
+    public static function clearCache(): void { self::$cache=null; }
     public static function defaults(): array
     {
         return ['company_name'=>'FINEA','legal_name'=>'','capital'=>'','logo_path'=>'','icon_path'=>'','address'=>'','phone'=>'','email'=>'','rccm'=>'','tax_number'=>'','primary_color'=>'#081c65','accent_color'=>'#1746b0','surface_color'=>'#ffffff','text_color'=>'#17243d','muted_color'=>'#64748b'];
