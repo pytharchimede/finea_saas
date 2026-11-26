@@ -1,6 +1,13 @@
 <?php
 require_once __DIR__ . '/_dashboard_common.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../model/CompanyExportBranding.php';
+$companyName = (string)CompanyBranding::get($pdo)['company_name'];
+$logoPath = CompanyBranding::logoFile($pdo);
+$primary = CompanyExportBranding::rgb('primary');
+$onPrimary = CompanyExportBranding::rgb('primary', true);
+$accent = CompanyExportBranding::rgb('accent');
+$onAccent = CompanyExportBranding::rgb('accent', true);
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -9,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 if (!class_exists('LogisticsExportPdfDocument')) {
     class LogisticsExportPdfDocument extends \TCPDF
     {
-        public string $companyName = 'BANAMUR';
+        public string $companyName = 'FINEA';
         public string $documentTitle = 'Export logistique';
         public string $logoPath = '';
 
@@ -19,7 +26,7 @@ if (!class_exists('LogisticsExportPdfDocument')) {
             $this->Rect(0, 0, $this->getPageWidth(), 28, 'F');
             $this->SetDrawColor(203, 213, 225);
             $this->Line(12, 24.5, $this->getPageWidth() - 12, 24.5);
-            $this->SetFillColor(250, 189, 2);
+            $this->SetFillColor(...CompanyExportBranding::rgbArray('accent'));
             $this->Rect(12, 24.5, 34, 1.1, 'F');
 
             if ($this->logoPath !== '' && is_file($this->logoPath)) {
@@ -28,12 +35,12 @@ if (!class_exists('LogisticsExportPdfDocument')) {
 
             $this->SetXY(31, 7.4);
             $this->SetFont('dejavusans', 'B', 15.5);
-            $this->SetTextColor(15, 23, 42);
+            $this->SetTextColor(...CompanyExportBranding::rgbArray('primary'));
             $this->Cell(0, 5.8, $this->companyName, 0, 1, 'L');
             $this->SetX(31);
             $this->SetFont('dejavusans', '', 8.5);
             $this->SetTextColor(71, 85, 105);
-            $this->Cell(0, 4.4, 'Direction logistique - Document officiel', 0, 1, 'L');
+            $this->Cell(0, 4.4, CompanyExportBranding::identityLine() ?: 'Direction logistique - Document officiel', 0, 1, 'L');
 
             $this->SetXY($this->getPageWidth() - 88, 8.4);
             $this->SetFont('dejavusans', 'B', 8.6);
@@ -50,10 +57,12 @@ if (!class_exists('LogisticsExportPdfDocument')) {
             $this->SetY(-16);
             $this->SetDrawColor(214, 219, 228);
             $this->Line(12, $this->GetY(), $this->getPageWidth() - 12, $this->GetY());
-            $this->Ln(2.5);
+            $this->Ln(1);
+            $this->SetFont('dejavusans', '', 7);
+            $this->Cell(0, 4, CompanyExportBranding::contactLine(), 0, 1, 'C');
             $this->SetFont('dejavusans', '', 8);
             $this->SetTextColor(100, 116, 139);
-            $this->Cell(0, 5, 'BANAMUR - Export logistique securise - Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
+            $this->Cell(0, 5, $this->companyName . ' - Export logistique - Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
         }
     }
 }
@@ -81,7 +90,8 @@ $titleMap = [
     'trips' => 'Rotations de voyages',
 ];
 $title = $titleMap[$dataset] ?? 'Export logistique';
-$filenameBase = 'logistique_' . $dataset . '_' . date('Ymd_His');
+$companySlug = trim(preg_replace('/[^a-zA-Z0-9_-]+/', '_', $companyName), '_') ?: 'finea';
+$filenameBase = $companySlug . '_logistique_' . $dataset . '_' . date('Ymd_His');
 
 if (class_exists('AuditTrail')) {
     try {
@@ -108,7 +118,7 @@ if ($format === 'pdf') {
     $generatedAt = date('d/m/Y H:i');
     $reference = 'LOGI-' . date('Ymd-His');
     $qrPayload = implode("\n", array_filter([
-        'BANAMUR - Export logistique',
+        $companyName . ' - Export logistique',
         'Reference: ' . $reference,
         'Document: ' . $title,
         'Dataset: ' . $dataset,
@@ -118,11 +128,11 @@ if ($format === 'pdf') {
     ]));
 
     $pdf = new LogisticsExportPdfDocument('L', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->companyName = 'BANAMUR';
+    $pdf->companyName = $companyName;
     $pdf->documentTitle = $title;
-    $pdf->logoPath = __DIR__ . '/../logo/default_logo.jpg';
-    $pdf->SetCreator('BANAMUR');
-    $pdf->SetAuthor('BANAMUR Logistique');
+    $pdf->logoPath = $logoPath;
+    $pdf->SetCreator(CompanyExportBranding::creator());
+    $pdf->SetAuthor($companyName . ' - Logistique');
     $pdf->SetTitle($title);
     $pdf->SetSubject('Export logistique');
     $pdf->SetMargins(12, 30, 12);
@@ -139,11 +149,11 @@ if ($format === 'pdf') {
     $pdf->SetFillColor(248, 250, 252);
     $pdf->SetDrawColor(226, 232, 240);
     $pdf->RoundedRect(12, $heroY, $heroWidth, $heroHeight, 4, '1111', 'DF');
-    $pdf->SetFillColor(250, 189, 2);
+    $pdf->SetFillColor(...CompanyExportBranding::rgbArray('accent'));
     $pdf->RoundedRect(12, $heroY, 4, $heroHeight, 4, '1101', 'F');
     $pdf->SetXY(19, 37.5);
     $pdf->SetFont('dejavusans', 'B', 15.2);
-    $pdf->SetTextColor(15, 23, 42);
+    $pdf->SetTextColor(...CompanyExportBranding::rgbArray('primary'));
     $pdf->Cell($heroWidth - 16, 5.8, 'Export logistique', 0, 1, 'L');
     $pdf->SetFont('dejavusans', '', 9.3);
     $pdf->SetTextColor(71, 85, 105);
@@ -185,13 +195,13 @@ if ($format === 'pdf') {
         $pdf->Cell($boxWidth - 6.4, 3.8, $card['label'], 0, 2, 'L');
         $pdf->SetX($x + 3.2);
         $pdf->SetFont('dejavusans', 'B', 8.8);
-        $pdf->SetTextColor(15, 23, 42);
+        $pdf->SetTextColor(...CompanyExportBranding::rgbArray('primary'));
         $pdf->MultiCell($boxWidth - 6.4, 4.2, $card['value'], 0, 'L', false, 0);
     }
 
     $pdf->SetY(88);
     $pdf->SetFont('dejavusans', 'B', 11);
-    $pdf->SetTextColor(15, 23, 42);
+    $pdf->SetTextColor(...CompanyExportBranding::rgbArray('primary'));
     $pdf->Cell(0, 6, 'Donnees exportees', 0, 1, 'L');
     $pdf->Ln(1.5);
 
@@ -200,7 +210,7 @@ if ($format === 'pdf') {
     $html = '<table cellpadding="' . $cellPadding . '" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:' . $fontSize . 'px;">';
     $html .= '<thead><tr>';
     foreach ($headers as $header) {
-        $html .= '<th style="background-color:#fabd02;color:#000000;border:1px solid #000000;font-weight:bold;">' . htmlspecialchars((string) $header, ENT_QUOTES, 'UTF-8') . '</th>';
+        $html .= '<th style="background-color:#' . $primary . ';color:#' . $onPrimary . ';border:1px solid #' . $primary . ';font-weight:bold;">' . htmlspecialchars((string) $header, ENT_QUOTES, 'UTF-8') . '</th>';
     }
     $html .= '</tr></thead><tbody>';
     if ($rows) {
@@ -224,13 +234,29 @@ if ($format === 'pdf') {
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle(substr($title, 0, 31));
+$spreadsheet->getProperties()->setCreator(CompanyExportBranding::creator())->setTitle($title)->setCompany($companyName);
 $headers = $rows ? array_keys($rows[0]) : ['Information'];
+$lastCol = Coordinate::stringFromColumnIndex(count($headers));
+$bannerCol = Coordinate::stringFromColumnIndex(max(4, count($headers)));
+foreach ([1 => $companyName, 2 => $title, 3 => CompanyExportBranding::identityLine(), 4 => CompanyExportBranding::contactLine()] as $line => $value) {
+    $sheet->mergeCells('A'.$line.':'.$bannerCol.$line);
+    $sheet->setCellValueExplicit('A'.$line, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+}
+$sheet->getStyle('A1:'.$bannerCol.'2')->getFill()->setFillType('solid')->getStartColor()->setRGB($primary);
+$sheet->getStyle('A1:'.$bannerCol.'2')->getFont()->setBold(true)->getColor()->setRGB($onPrimary);
+$sheet->getRowDimension(1)->setRowHeight(30);
+$sheet->getRowDimension(2)->setRowHeight(24);
+$sheet->getStyle('A1:'.$bannerCol.'4')->getAlignment()->setHorizontal('center')->setVertical('center');
+if ($logoPath !== '' && is_file($logoPath) && in_array(strtolower(pathinfo($logoPath, PATHINFO_EXTENSION)), ['png','jpg','jpeg','gif'], true)) {
+    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+    $drawing->setName($companyName)->setPath($logoPath)->setHeight(34)->setCoordinates('A1')->setOffsetX(5)->setOffsetY(3)->setWorksheet($sheet);
+}
 $col = 1;
 foreach ($headers as $header) {
-    $sheet->setCellValue(Coordinate::stringFromColumnIndex($col) . '1', $header);
+    $sheet->setCellValue(Coordinate::stringFromColumnIndex($col) . '6', $header);
     $col++;
 }
-$rowIndex = 2;
+$rowIndex = 7;
 foreach ($rows as $row) {
     $col = 1;
     foreach ($headers as $header) {
@@ -242,7 +268,11 @@ foreach ($rows as $row) {
 foreach (range(1, count($headers)) as $columnIndex) {
     $sheet->getColumnDimensionByColumn($columnIndex)->setAutoSize(true);
 }
-$sheet->getStyle('1:1')->getFont()->setBold(true);
+$headerRange = 'A6:'.$lastCol.'6';
+$sheet->getStyle($headerRange)->getFill()->setFillType('solid')->getStartColor()->setRGB($accent);
+$sheet->getStyle($headerRange)->getFont()->setBold(true)->getColor()->setRGB($onAccent);
+$sheet->freezePane('A7');
+$sheet->setAutoFilter('A6:'.$lastCol.max(6,$rowIndex-1));
 
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment; filename="' . $filenameBase . '.xlsx"');
