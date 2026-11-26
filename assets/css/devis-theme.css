@@ -524,3 +524,15 @@
 .devis-page .ed-note{background:var(--dv-soft)!important;color:var(--dv-text)!important;border-left-color:var(--brand-accent)!important}
 .devis-page .ed-fill{background:var(--brand-primary)!important}
 .devis-page .ed-track{background:var(--dv-soft)!important}
+
+.devis-page :is(.uf-card,.cf-card,.cd-panel,.cd-summary,.reg-overview,.reg-help,.reg-selected-actions){background:var(--dv-card)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page :is(.uf-head h2,.uf-field label,.cd-panel-head,.cd-detail-head,.reg-title,.reg-code){color:var(--dv-text)!important}
+.devis-page :is(.uf-head p,.cd-muted,.cd-empty,.reg-client){color:var(--dv-muted)!important}
+.devis-page .uf-head span,.devis-page .uf-actions button{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.devis-page .uf-actions a{color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page .uf-field input{background:var(--dv-field)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .uf-error{background:#481f2b!important;color:#fecdd3!important;border-color:#fda4af!important}
+.devis-page .ao-hero{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.devis-page .ao-hero :is(h1,h2,p){color:inherit!important}
+.devis-page :is(.ao-date-box,.ao-scope-tab){background:var(--dv-soft)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page .ao-scope-tab:is(.active,.is-active){background:var(--brand-accent,#d71920)!important;color:var(--brand-on-accent,#fff)!important}

@@ -546,7 +546,7 @@ HTML;
 
         $themeAssets = '<link rel="stylesheet" href="' . $assetBase . 'branding_theme.php">'
             . '<link rel="stylesheet" href="' . $assetBase . 'assets/css/finea-theme.css?v=20261126">'
-            . '<link rel="stylesheet" href="' . $assetBase . 'assets/css/devis-legacy-theme.css?v=20261126">';
+            . '<link rel="stylesheet" href="' . $assetBase . 'assets/css/devis-legacy-theme.css?v=20261126b">';
         $html = preg_replace_callback('~</head>~i', static fn() => $themeAssets . '</head>', $html, 1) ?? $html;
         $html = preg_replace_callback('~<body\\b([^>]*)>~i', static function(array $m): string {
             $attrs = $m[1];

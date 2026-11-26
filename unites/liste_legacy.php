@@ -33,21 +33,9 @@ require_once 'header/header_liste_unite.php';
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="https://fidest.ci/logo/new_logo_banamur.jpg" alt="Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <?php include 'menu.php'; ?>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container">
+
+    <div class="container finea-units-list">
         <h1 class="text-center mb-4">Liste des Unités de Mesure (<span id="nbUnites"><?php echo (int)($nb_unites ?? count($unites ?? [])); ?></span>)</h1>
 
         <!-- Formulaire de recherche (temps réel) -->
@@ -68,7 +56,7 @@ require_once 'header/header_liste_unite.php';
 
         <!-- Bouton Ajouter -->
         <div class="mb-3 text-end">
-            <a href="unites/ajouter.php" class="btn btn-primary">
+            <a href="unites/ajouter.php" class="btn finea-unit-create">
                 <i class="fas fa-plus"></i> Ajouter une unité
             </a>
             <a href="exports/finea_module_export.php?module=unites&amp;format=pdf" data-finea-export data-filter-form="uniteSearchForm" class="btn btn-outline-danger ms-2"><i class="fas fa-file-pdf"></i> PDF</a>
@@ -127,11 +115,7 @@ require_once 'header/header_liste_unite.php';
         </div>
     </div>
 
-    <footer class="footer mt-5">
-        <div class="container text-center">
-            <p>&copy; <?= gmdate('Y') ?> BANAMUR INDUSTRIES & TECH. Tous droits réservés.</p>
-        </div>
-    </footer>
+
     <script src="assets/js/finea-filtered-export.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

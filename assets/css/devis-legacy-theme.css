@@ -25,3 +25,19 @@ body.finea-devis-legacy :is(a,button,input,select,textarea):focus-visible{outlin
 html.finea-dark-mode body.finea-devis-legacy :is(.text-success,#totalTtc){color:#86efac!important}
 html.finea-dark-mode body.finea-devis-legacy .text-danger{color:#fda4af!important}
 body.finea-devis-legacy .offer-project-header h2{color:var(--brand-on-primary,#fff)!important}
+
+/* Master lists: override local light-only backgrounds and Bootstrap cell overlays. */
+body.finea-devis-legacy form[id$="SearchForm"]{background:var(--dl-soft)!important;border-color:var(--dl-border)!important;color:var(--dl-text)!important}
+body.finea-devis-legacy form[id$="SearchForm"] label{color:var(--dl-text)!important}
+body.finea-devis-legacy form[id$="SearchForm"] :is(.form-control,.form-select){background:var(--dl-field)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy .table tbody tr>*{--bs-table-accent-bg:transparent!important;--bs-table-bg-type:transparent!important;background:var(--dl-card)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy .table-striped tbody tr:nth-of-type(odd)>*{background:var(--dl-soft)!important}
+body.finea-devis-legacy .table tbody tr:hover>*{background:var(--dl-soft)!important}
+body.finea-devis-legacy .table thead tr>*{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;box-shadow:none!important}
+body.finea-devis-legacy .card-header i{color:inherit!important}
+body.finea-devis-legacy :is(.btn-outline-danger,.btn-outline-success){background:var(--dl-card)!important}
+body.finea-devis-legacy .finea-unit-create{background:var(--brand-accent,#d71920)!important;color:var(--brand-on-accent,#fff)!important}
+body.finea-devis-legacy .finea-unit-create i{color:inherit!important}
+html.finea-dark-mode body.finea-devis-legacy .btn-outline-danger{color:#fda4af!important;border-color:#fda4af!important}
+html.finea-dark-mode body.finea-devis-legacy .btn-outline-success{color:#86efac!important;border-color:#86efac!important}
+body.finea-devis-legacy :is(.wizard-nav,.form-section,.debourse-issues,.quote-progress){background:var(--dl-card)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
