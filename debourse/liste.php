@@ -29,8 +29,11 @@ $query = http_build_query(array_filter([
 
 $pageTitle = 'Listing Déboursés';
 $activeMenu = 'module_debourse';
-require_once __DIR__ . '/../decaissement/includes/header.php';
-require_once __DIR__ . '/../decaissement/includes/navbar.php';
+$activeDevisModule='debourse';
+$moduleTitle='Liste des déboursés';
+$moduleSubtitle='Suivi des déboursés, des devis et des chantiers.';
+require_once __DIR__.'/../devis/includes/module_bootstrap.php';
+ob_start();
 
 $selectedChantierLabel = 'Tous les chantiers';
 foreach ($chantiers as $chantier) {
@@ -61,25 +64,8 @@ $selectedClientLabel = $client !== '' ? $client : 'Tous les clients';
         color: #155e75;
     }
 </style>
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(219,234,254,0.95),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(204,251,241,0.82),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
-    <div class="container mx-auto px-4 py-8">
-        <section class="relative overflow-hidden rounded-[32px] border border-cyan-100 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-900 px-8 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.30)]">
-            <div class="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-white/10 blur-2xl"></div>
-            <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <div class="max-w-3xl">
-                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan-200">Module déboursés</p>
-                    <h1 class="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Listing opérationnel</h1>
-                    <p class="mt-4 max-w-2xl text-sm text-slate-200 md:text-base">Recherchez, contrôlez et ouvrez rapidement les déboursés issus des devis et chantiers.</p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <a href="<?= htmlspecialchars($rootUrl('debourse/dashboard.php'), ENT_QUOTES, 'UTF-8') ?>" class="inline-flex items-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-cyan-50"><i class="fas fa-gauge-high mr-2 text-cyan-700"></i>Dashboard</a>
-                    <a href="<?= htmlspecialchars($rootUrl('devis/liste.php'), ENT_QUOTES, 'UTF-8') ?>" class="inline-flex items-center rounded-2xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-600/20 transition hover:-translate-y-0.5 hover:bg-cyan-600"><i class="fas fa-file-contract mr-2"></i>Devis</a>
-                    <a href="<?= htmlspecialchars($rootUrl('debourse/parametrage.php'), ENT_QUOTES, 'UTF-8') ?>" class="inline-flex items-center rounded-2xl border border-white/15 px-5 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10"><i class="fas fa-sliders mr-2"></i>Paramétrage</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="mt-6 grid gap-4 md:grid-cols-3">
+<div class="devis-debourse-content">
+<section class="mt-6 grid gap-4 md:grid-cols-3">
             <article class="rounded-[26px] border border-white/80 bg-white/95 p-5 shadow-[0_16px_45px_rgba(15,23,42,0.05)]">
                 <p class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Déboursés filtrés</p>
                 <div class="mt-3 text-3xl font-bold text-slate-950"><?= count($rows) ?></div>
@@ -95,7 +81,7 @@ $selectedClientLabel = $client !== '' ? $client : 'Tous les clients';
             </article>
         </section>
 
-        <div class="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div class="mt-8 grid gap-6 grid-cols-1">
             <main class="space-y-6">
                 <section class="rounded-[30px] border border-white/80 bg-white/95 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.06)]">
                     <form method="get" class="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
@@ -212,18 +198,8 @@ $selectedClientLabel = $client !== '' ? $client : 'Tous les clients';
                 </section>
             </main>
 
-            <aside class="rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)] xl:sticky xl:top-6 xl:self-start">
-                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Accès rapides</p>
-                <h2 class="mt-2 text-2xl font-semibold">Déboursés</h2>
-                <div class="mt-6 space-y-3">
-                    <a href="<?= htmlspecialchars($rootUrl('debourse/dashboard.php'), ENT_QUOTES, 'UTF-8') ?>" class="block rounded-2xl border border-cyan-400/20 bg-cyan-500/10 px-4 py-4 transition hover:bg-cyan-500/15"><div class="font-semibold text-cyan-200">Dashboard</div><div class="mt-1 text-sm text-slate-300">Vue synthèse, alertes et récents.</div></a>
-                    <a href="<?= htmlspecialchars($rootUrl('devis/liste.php'), ENT_QUOTES, 'UTF-8') ?>" class="block rounded-2xl border border-white/10 bg-white/5 px-4 py-4 transition hover:bg-white/10"><div class="font-semibold">Ouvrir un devis</div><div class="mt-1 text-sm text-slate-300">Point d’entrée naturel vers la page gérer.</div></a>
-                    <a href="<?= htmlspecialchars($rootUrl('chantiers/liste.php'), ENT_QUOTES, 'UTF-8') ?>" class="block rounded-2xl border border-white/10 bg-white/5 px-4 py-4 transition hover:bg-white/10"><div class="font-semibold">Chantiers</div><div class="mt-1 text-sm text-slate-300">Contrôler la génération depuis devis.</div></a>
-                    <a href="<?= htmlspecialchars($rootUrl('debourse/parametrage.php'), ENT_QUOTES, 'UTF-8') ?>" class="block rounded-2xl border border-indigo-400/40 bg-indigo-500/15 px-4 py-4 transition hover:bg-indigo-500/25"><div class="font-semibold text-indigo-200">Paramétrage</div><div class="mt-1 text-sm text-slate-300">Droits et règles du module.</div></a>
-                </div>
-            </aside>
+            
         </div>
-    </div>
 </div>
 <script>
     document.querySelectorAll('[data-combobox]').forEach((combo) => {
@@ -296,4 +272,4 @@ $selectedClientLabel = $client !== '' ? $client : 'Tous les clients';
         }
     });
 </script>
-<?php require_once __DIR__ . '/../decaissement/includes/footer.php'; ?>
+<?php $content=ob_get_clean(); require __DIR__.'/../devis/includes/module_layout.php'; ?>

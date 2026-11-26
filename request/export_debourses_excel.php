@@ -1,6 +1,9 @@
 <?php
-session_start();
+require_once __DIR__.'/../auth_check.php';
+AccessManager::requirePageAccess('liste_debourse.php');
+require_once __DIR__.'/../debourse/controllers/DebourseDashboardController.php';
 require_once '../vendor/autoload.php';
+require_once __DIR__.'/../model/CompanyExportBranding.php';
 require_once '../model/Database.php';
 require_once '../model/AuditTrail.php';
 require_once '../model/Devis.php';
@@ -21,9 +24,10 @@ $client = ($client !== null && trim((string)$client) !== '') ? trim((string)$cli
 $pdo = Database::getConnection();
 $devisModel = new Devis($pdo);
 
-$debourses = $devisModel->getDeboursesFiltres($chantierId, $search, $client);
+$debourses = (new \Debourse\Controllers\DebourseDashboardController($pdo))->listing($chantierId===null?null:(int)$chantierId,(string)$search,(string)$client)['rows'] ?? [];
 
 $spreadsheet = new Spreadsheet();
+$spreadsheet->getProperties()->setCreator(CompanyExportBranding::creator())->setTitle('Liste des déboursés');
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Debourses');
 
@@ -32,8 +36,10 @@ $headers = ['ID', 'Devis', 'Désignation', 'Chantier', 'Client', 'Date début', 
 $sheet->fromArray($headers, null, 'A1');
 
 $sheet->getStyle('A1:H1')->getFont()->setBold(true);
-$sheet->getStyle('A1:H1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('EEF2FF');
+$sheet->getStyle('A1:H1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
 
+$sheet->getStyle('A1:H1')->getFont()->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
+$sheet->freezePane('A2');
 $row = 2;
 $total = 0.0;
 foreach ($debourses as $d) {
@@ -41,12 +47,12 @@ foreach ($debourses as $d) {
     $total += $montant;
 
     $sheet->setCellValue('A' . $row, (int)($d['id'] ?? 0));
-    $sheet->setCellValue('B' . $row, (string)($d['numero_devis'] ?? ''));
-    $sheet->setCellValue('C' . $row, (string)($d['designation'] ?? ''));
-    $sheet->setCellValue('D' . $row, (string)($d['titre'] ?? ''));
-    $sheet->setCellValue('E' . $row, (string)($d['nom_client'] ?? ''));
-    $sheet->setCellValue('F' . $row, (string)($d['date_debut'] ?? ''));
-    $sheet->setCellValue('G' . $row, (string)($d['date_fin'] ?? ''));
+    $sheet->setCellValueExplicit('B' . $row, (string)($d['numero_devis'] ?? ''), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+    $sheet->setCellValueExplicit('C' . $row, (string)($d['designation'] ?? ''), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+    $sheet->setCellValueExplicit('D' . $row, (string)($d['titre'] ?? ''), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+    $sheet->setCellValueExplicit('E' . $row, (string)($d['nom_client'] ?? ''), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+    $sheet->setCellValueExplicit('F' . $row, (string)($d['date_debut'] ?? ''), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+    $sheet->setCellValueExplicit('G' . $row, (string)($d['date_fin'] ?? ''), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
     $sheet->setCellValue('H' . $row, $montant);
     $row++;
 }

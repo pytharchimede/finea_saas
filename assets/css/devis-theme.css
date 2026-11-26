@@ -555,3 +555,17 @@
 .devis-page .ed-panel small{color:var(--dv-muted)}
 @media(max-width:1200px){.devis-page .ed-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.devis-page .ed-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.devis-page .ed-kpis,.devis-page .ed-actions{grid-template-columns:1fr}.devis-page .ed-scope{align-items:flex-start;flex-direction:column}}
+
+/* Modern déboursés pages: same workspace, no independent gradient or sidebar. */
+.devis-page .devis-debourse-content{background:transparent;color:var(--dv-text);min-width:0}
+.devis-page .devis-debourse-content :is(section,article,div)[class*="bg-white"]{background:var(--dv-card)!important;border-color:var(--devis-border)!important;color:var(--dv-text)!important}
+.devis-page .devis-debourse-content :is(.text-slate-950,.text-slate-900,.text-slate-700,.text-cyan-700,.text-cyan-800,.text-cyan-600){color:var(--dv-text)!important}
+.devis-page .devis-debourse-content :is(.text-slate-600,.text-slate-500,.text-slate-400){color:var(--dv-muted)!important}
+.devis-page .devis-debourse-content :is(.bg-slate-50,.bg-slate-100,.bg-cyan-50){background:var(--dv-soft)!important;border-color:var(--devis-border)!important}
+.devis-page .devis-debourse-content :is(a,button,div).bg-slate-950{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.devis-page .devis-debourse-content .bg-slate-950 *{color:inherit!important}
+.devis-page .devis-debourse-content :is(a,button).bg-white,.devis-page .debourse-combobox-panel{background:var(--dv-field)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page .debourse-combobox-option:hover,.devis-page .debourse-combobox-option[aria-selected="true"]{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.devis-page .devis-debourse-content .bg-gradient-to-r{background:var(--brand-accent,#d71920)!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-debourse-content :is(.bg-rose-50,.bg-amber-50){background:#481f2b!important;color:#fecdd3!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-debourse-content .bg-emerald-50{background:#123c32!important;color:#a7f3d0!important}

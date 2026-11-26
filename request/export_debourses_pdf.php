@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__.'/../auth_check.php';
+AccessManager::requirePageAccess('liste_debourse.php');
+require_once __DIR__.'/../debourse/controllers/DebourseDashboardController.php';
 require_once __DIR__.'/../model/CompanyExportBranding.php';
 require_once __DIR__.'/../model/EnvConfig.php';
 require_once '../vendor/autoload.php';
@@ -17,16 +19,21 @@ $client = ($client !== null && trim((string)$client) !== '') ? trim((string)$cli
 
 $pdo = Database::getConnection();
 $devisModel = new Devis($pdo);
-$debourses = $devisModel->getDeboursesFiltres($chantierId, $search, $client);
+$debourses = (new \Debourse\Controllers\DebourseDashboardController($pdo))->listing($chantierId===null?null:(int)$chantierId,(string)$search,(string)$client)['rows'] ?? [];
 
 $primary=CompanyBranding::palette()['primary'];
 $foreground=CompanyBranding::contrastColor($primary);
-$pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
+require_once __DIR__.'/../model/CompanyPdfTemplate.php';
+class DebourseListPdf extends TCPDF { use CompanyPdfTemplate; public function Header(): void {$this->drawCompanyPdfHeader();} public function Footer(): void {$this->drawCompanyPdfFooter();} }
+$pdf = new DebourseListPdf('L', 'mm', 'A4', true, 'UTF-8', false);
 $pdf->SetCreator(CompanyExportBranding::creator());
 $pdf->SetAuthor(CompanyExportBranding::creator());
 $pdf->SetTitle('Liste des déboursés');
-$pdf->SetMargins(10, 10, 10);
-$pdf->SetAutoPageBreak(true, 12);
+$pdf->companyPdfTitle='Liste des déboursés';
+$pdf->companyPdfType='Rapport financier';
+$pdf->companyPdfShowQr=false;
+$pdf->SetMargins(11, 39, 11);
+$pdf->SetAutoPageBreak(true, 25);
 $pdf->AddPage();
 
 $pdf->SetFont('helvetica', 'B', 14);
@@ -61,14 +68,14 @@ foreach ($debourses as $d) {
   $dateFin = htmlspecialchars((string)($d['date_fin'] ?? ''), ENT_QUOTES, 'UTF-8');
 
   $rowsHtml .= '<tr>';
-  $rowsHtml .= '<td style="width:28px;text-align:right;">' . $id . '</td>';
-  $rowsHtml .= '<td style="width:60px;">' . $numeroDevis . '</td>';
-  $rowsHtml .= '<td style="width:210px;">' . $designation . '</td>';
-  $rowsHtml .= '<td style="width:170px;">' . $chantier . '</td>';
-  $rowsHtml .= '<td style="width:170px;">' . $nomClient . '</td>';
-  $rowsHtml .= '<td style="width:60px;">' . $dateDebut . '</td>';
-  $rowsHtml .= '<td style="width:60px;">' . $dateFin . '</td>';
-  $rowsHtml .= '<td style="width:70px;text-align:right;">' . number_format($montant, 0, ',', ' ') . '</td>';
+  $rowsHtml .= '<td style="width:4%;text-align:right;">' . $id . '</td>';
+  $rowsHtml .= '<td style="width:9%;">' . $numeroDevis . '</td>';
+  $rowsHtml .= '<td style="width:24%;">' . $designation . '</td>';
+  $rowsHtml .= '<td style="width:18%;">' . $chantier . '</td>';
+  $rowsHtml .= '<td style="width:18%;">' . $nomClient . '</td>';
+  $rowsHtml .= '<td style="width:9%;">' . $dateDebut . '</td>';
+  $rowsHtml .= '<td style="width:9%;">' . $dateFin . '</td>';
+  $rowsHtml .= '<td style="width:9%;text-align:right;">' . number_format($montant, 0, ',', ' ') . '</td>';
   $rowsHtml .= '</tr>';
 }
 
@@ -76,19 +83,19 @@ $html = '
 <style>
   table { border-collapse: collapse; width: 100%; }
   th, td { border: 1px solid #bfc7d1; padding: 4px; }
-  th { background-color:{$primary}; color:{$foreground}; font-weight:bold; }
+  th { background-color:' . $primary . '; color:' . $foreground . '; font-weight:bold; }
 </style>
 <table>
   <thead>
     <tr>
-      <th style="width:28px;">ID</th>
-      <th style="width:60px;">Devis</th>
-      <th style="width:210px;">Désignation</th>
-      <th style="width:170px;">Chantier</th>
-      <th style="width:170px;">Client</th>
-      <th style="width:60px;">Début</th>
-      <th style="width:60px;">Fin</th>
-      <th style="width:70px;text-align:right;">Montant</th>
+      <th style="width:4%;">ID</th>
+      <th style="width:9%;">Devis</th>
+      <th style="width:24%;">Désignation</th>
+      <th style="width:18%;">Chantier</th>
+      <th style="width:18%;">Client</th>
+      <th style="width:9%;">Début</th>
+      <th style="width:9%;">Fin</th>
+      <th style="width:9%;text-align:right;">Montant</th>
     </tr>
   </thead>
   <tbody>
