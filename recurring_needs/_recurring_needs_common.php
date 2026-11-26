@@ -106,14 +106,14 @@ if (!function_exists('rn_dashboard_tabs')) {
             ['key' => 'history', 'label' => 'Historique', 'href' => 'index.php?view=history#historique-generations', 'icon' => 'fa-clock-rotate-left'],
         ];
 
-        $html = '<nav class="mt-6 flex gap-3 overflow-x-auto rounded-[26px] border border-white/80 bg-white/80 p-2 shadow-sm backdrop-blur">';
+        $html = '<nav aria-label="Navigation des besoins récurrents" class="rn-tabs mt-6 flex gap-3 overflow-x-auto rounded-[26px] border border-white/80 bg-white/80 p-2 shadow-sm backdrop-blur">';
 
         foreach ($tabs as $tab) {
             $class = $active === $tab['key']
                 ? 'bg-[var(--brand-primary)] text-white shadow-lg shadow-slate-900/15'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950';
 
-            $html .= '<a href="' . rn_h($tab['href']) . '" class="inline-flex shrink-0 items-center rounded-2xl px-4 py-3 text-sm font-semibold transition ' . $class . '">';
+            $html .= '<a href="' . rn_h($tab['href']) . '"' . ($active === $tab['key'] ? ' aria-current="page"' : '') . ' class="inline-flex shrink-0 items-center rounded-2xl px-4 py-3 text-sm font-semibold transition ' . $class . '">';
             $html .= '<i class="fas ' . rn_h($tab['icon']) . ' mr-2"></i>' . rn_h($tab['label']);
             $html .= '</a>';
         }
