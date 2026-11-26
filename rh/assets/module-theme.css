@@ -30,3 +30,12 @@ html.finea-dark-mode body.finea-rh-module .rh-approval-step.is-complete .rh-appr
 /* Signature ink and document previews deliberately keep a white paper surface. */
 html.finea-dark-mode body.finea-rh-module :is(.signature-pad-shell,.rh-approval-signature){background:#fff!important;color:#334155!important}
 }
+
+@media screen {
+html body.finea-rh-module a.rh-payroll-signatures,
+html.finea-dark-mode body.finea-rh-module a.rh-payroll-signatures {
+ background:var(--brand-accent)!important;color:var(--brand-on-accent)!important;border:1px solid var(--brand-accent)!important;
+}
+html body.finea-rh-module a.rh-payroll-signatures:is(:hover,:focus-visible){background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border-color:var(--brand-primary)!important;}
+html body.finea-rh-module a.rh-payroll-signatures i{color:inherit!important;}
+}
