@@ -110,7 +110,7 @@ if (!function_exists('rn_dashboard_tabs')) {
 
         foreach ($tabs as $tab) {
             $class = $active === $tab['key']
-                ? 'bg-[#1d2b57] text-white shadow-lg shadow-slate-900/15'
+                ? 'bg-[var(--brand-primary)] text-white shadow-lg shadow-slate-900/15'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950';
 
             $html .= '<a href="' . rn_h($tab['href']) . '" class="inline-flex shrink-0 items-center rounded-2xl px-4 py-3 text-sm font-semibold transition ' . $class . '">';
