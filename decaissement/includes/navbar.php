@@ -897,6 +897,17 @@ html body .rh-quick-nav a.rh-quick-link:focus-visible{outline:2px solid var(--br
                 <span class="finea-brand-accent-box flex h-8 w-8 items-center justify-center rounded-xl"><i class="fas fa-people-group"></i></span>
                 <div><div class="finea-brand-label text-[10px] font-bold uppercase tracking-[0.22em]">Finea</div><div class="text-xs font-semibold">Ressources humaines</div></div>
             </div>
+            <button type="button" id="rhModuleThemeToggle" class="inline-flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold" aria-label="Changer le thème">Mode sombre</button>
+            <script>
+            (function(){
+              const root=document.documentElement,button=document.getElementById('rhModuleThemeToggle');
+              function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);button.textContent=dark?'☀ Mode clair':'☾ Mode sombre';button.setAttribute('aria-pressed',String(dark));}
+              sync();
+              new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});
+              button.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);sync();try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});
+              window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))root.classList.toggle('finea-dark-mode',e.newValue==='dark');});
+            })();
+            </script>
             <?php foreach ($rhQuickLinks as [$rhHref, $rhIcon, $rhLabel]): ?>
                 <?php $rhIsActive = $rhCurrentPage === $rhHref; ?>
                 <a href="<?= htmlspecialchars($layoutRootBase . 'rh/' . $rhHref) ?>" <?= $rhIsActive ? 'aria-current="page"' : '' ?> class="rh-quick-link inline-flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition <?= $rhIsActive ? 'finea-brand-portal shadow-md' : 'text-slate-200 hover:bg-white/10 hover:text-white' ?>">
