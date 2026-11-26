@@ -4,6 +4,7 @@ require_once __DIR__ . '/auth_check.php';
 
 require_once __DIR__ . '/model/Database.php';
 require_once __DIR__ . '/model/AddressBookDirectory.php';
+require_once __DIR__ . '/model/CompanyBranding.php';
 
 $pageTitle = 'Carnet d\'adresse';
 $activeMenu = '';
@@ -11,6 +12,8 @@ $activeMenu = '';
 $pdo = \Database::getConnection();
 $directory = new \AddressBookDirectory($pdo);
 $contacts = $directory->listContacts();
+$abCompanyName = (string) (CompanyBranding::get($pdo)['company_name'] ?? 'FINEA');
+$abExportSlug = trim(preg_replace('/[^a-zA-Z0-9_-]+/', '_', $abCompanyName), '_') ?: 'finea';
 
 $export = trim((string)($_GET['export'] ?? ''));
 $scope = trim((string)($_GET['scope'] ?? 'all'));
@@ -19,7 +22,7 @@ if (in_array($export, ['vcf', 'csv'], true)) {
     $contactsToExport = $directory->filterContactsForExport($contacts, $scope);
 
     if ($export === 'vcf') {
-        $filename = 'carnet_adresses_' . $scope . '_banamur.vcf';
+        $filename = 'carnet_adresses_' . preg_replace('/[^a-zA-Z0-9_-]/', '', $scope) . '_' . $abExportSlug . '.vcf';
         $content = $directory->exportContactsAsVcard($contactsToExport);
 
         header('Content-Type: text/vcard; charset=utf-8');
@@ -30,7 +33,7 @@ if (in_array($export, ['vcf', 'csv'], true)) {
     }
 
     if ($export === 'csv') {
-        $filename = 'carnet_adresses_' . $scope . '_banamur.csv';
+        $filename = 'carnet_adresses_' . preg_replace('/[^a-zA-Z0-9_-]/', '', $scope) . '_' . $abExportSlug . '.csv';
         $content = $directory->exportContactsAsCsv($contactsToExport);
 
         header('Content-Type: text/csv; charset=utf-8');
@@ -116,23 +119,27 @@ require_once __DIR__ . '/decaissement/includes/header.php';
 require_once __DIR__ . '/decaissement/includes/navbar.php';
 ?>
 
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.18),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(139,92,246,0.14),_transparent_26%),linear-gradient(180deg,_#f8fbff_0%,_#eef4ff_42%,_#f8fafc_100%)]">
+<link rel="stylesheet" href="assets/css/address-book-theme.css?v=<?= filemtime(__DIR__.'/assets/css/address-book-theme.css') ?>">
+<script>document.body.classList.add('address-book-screen');</script>
+<div class="ab-workspace min-h-screen">
     <div class="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:px-8">
-        <section class="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/80 shadow-[0_30px_80px_rgba(15,23,42,0.10)] backdrop-blur">
-            <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(30,64,175,0.92)_45%,rgba(14,165,233,0.82))]"></div>
+        <section class="ab-hero relative overflow-hidden rounded-[32px] border border-white/70 bg-white/80 shadow-[0_30px_80px_rgba(15,23,42,0.10)] backdrop-blur">
+            <div class="ab-hero-bg absolute inset-0"></div>
             <div class="absolute -left-24 top-10 h-52 w-52 rounded-full bg-white/10 blur-3xl"></div>
             <div class="absolute right-0 top-0 h-44 w-44 translate-x-1/3 -translate-y-1/3 rounded-full bg-cyan-300/20 blur-3xl"></div>
             <div class="relative grid gap-8 px-6 py-8 md:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-10 lg:py-10">
                 <div>
-                    <div class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-sky-100">
+                    <div class="ab-hero-label inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-sky-100">
                         Répertoire opérationnel
                     </div>
-                    <h1 class="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white md:text-5xl">Carnet d'adresse Banamur</h1>
+                    <h1 class="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white md:text-5xl">Carnet d'adresse <?= htmlspecialchars($abCompanyName, ENT_QUOTES, 'UTF-8') ?></h1>
                     <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-200 md:text-base">
                         Un annuaire unifié pour retrouver rapidement les contacts internes, fournisseurs et prestataires, avec actions immédiates pour email, SMS et appel direct.
                     </p>
 
                     <div class="mt-7 flex flex-wrap gap-3">
+<button type="button" id="abThemeToggle" class="inline-flex items-center rounded-2xl border px-4 py-3 text-sm font-semibold">Mode sombre</button>
+<script>(function(){const root=document.documentElement,b=document.getElementById('abThemeToggle');function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}sync();new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);sync();try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))root.classList.toggle('finea-dark-mode',e.newValue==='dark');});})();</script>
                         <a href="selection_portail.php" class="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15">
                             <i class="fas fa-grid-2"></i>
                             Portail
@@ -201,19 +208,19 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
                     <h2 class="mt-2 text-xl font-semibold text-slate-950">Filtrer le répertoire</h2>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <button type="button" data-filter="all" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-900 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm">
+                    <button type="button" data-filter="all" aria-pressed="true" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-900 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm">
                         <span>Tous</span>
                         <span class="rounded-full bg-white/15 px-2 py-0.5 text-xs"><?= (int) $stats['all'] ?></span>
                     </button>
-                    <button type="button" data-filter="internal" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50">
+                    <button type="button" data-filter="internal" aria-pressed="false" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50">
                         <span>Interne</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs"><?= (int) $stats['internal'] ?></span>
                     </button>
-                    <button type="button" data-filter="supplier" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50">
+                    <button type="button" data-filter="supplier" aria-pressed="false" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50">
                         <span>Fournisseurs</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs"><?= (int) $stats['supplier'] ?></span>
                     </button>
-                    <button type="button" data-filter="provider" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-violet-200 hover:bg-violet-50">
+                    <button type="button" data-filter="provider" aria-pressed="false" class="directory-filter inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-violet-200 hover:bg-violet-50">
                         <span>Prestataires</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs"><?= (int) $stats['provider'] ?></span>
                     </button>
@@ -273,11 +280,11 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
                         data-has-email="<?= $email !== '' ? '1' : '0' ?>"
                         data-has-phone="<?= $phone !== '' ? '1' : '0' ?>"
                         data-search="<?= htmlspecialchars($searchBlob, ENT_QUOTES, 'UTF-8') ?>">
-                        <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-br <?= htmlspecialchars($palette['glow'], ENT_QUOTES, 'UTF-8') ?>"></div>
+                        <div class="ab-card-glow absolute inset-x-0 top-0 h-28 bg-gradient-to-br <?= htmlspecialchars($palette['glow'], ENT_QUOTES, 'UTF-8') ?>"></div>
                         <div class="relative p-6">
                             <div class="flex items-start justify-between gap-4">
                                 <div class="flex min-w-0 items-center gap-4">
-                                    <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br <?= htmlspecialchars($palette['accent'], ENT_QUOTES, 'UTF-8') ?> text-lg font-semibold text-white shadow-lg shadow-slate-900/10">
+                                    <div class="ab-avatar flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br <?= htmlspecialchars($palette['accent'], ENT_QUOTES, 'UTF-8') ?> text-lg font-semibold text-white shadow-lg shadow-slate-900/10">
                                         <?php if ($photoSrc !== ''): ?>
                                             <img src="<?= htmlspecialchars($photoSrc, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8') ?>" class="h-full w-full object-cover" />
                                         <?php else: ?>
@@ -432,6 +439,7 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
                 activeFilter = button.getAttribute('data-filter') || 'all';
                 filterButtons.forEach(function(candidate) {
                     var selected = candidate === button;
+                    candidate.setAttribute("aria-pressed", String(selected));
                     candidate.classList.toggle('bg-slate-900', selected);
                     candidate.classList.toggle('text-white', selected);
                     candidate.classList.toggle('border-slate-900', selected);
