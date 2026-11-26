@@ -3071,7 +3071,13 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
     }
 </style>
 
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(240,249,255,0.95),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(224,231,255,0.85),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<link rel="stylesheet" href="assets/css/feb-validation-theme.css?v=<?=filemtime(__DIR__.'/assets/css/feb-validation-theme.css')?>">
+<script>document.body.classList.add('feb-validation-theme');</script>
+<div class="feb-workspace min-h-screen pb-12">
+<div class="mx-auto flex max-w-[1600px] justify-end px-4 pt-4"><button type="button" id="fvThemeToggle" class="rounded-xl px-4 py-2 text-sm font-bold">Mode sombre</button></div>
+<script>
+(function(){const root=document.documentElement,b=document.getElementById('fvThemeToggle');function apply(dark){root.classList.toggle('finea-dark-mode',dark);document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}apply(root.classList.contains('finea-dark-mode'));b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');apply(dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))apply(e.newValue==='dark');});})();
+</script>
     <div class="mx-auto max-w-[1600px] px-4 py-6 2xl:px-8">
         <?php if($viewRhPoint): $_SESSION['rh_financial_csrf']??=bin2hex(random_bytes(32)); ?>
         <section class="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-6"><h2 class="text-xl font-bold">Point financier RH signé par le DG</h2><p class="mt-2">Les montants, le bénéficiaire RH et les détails individuels sont fixés par le récapitulatif signé. Toute modification nécessite une réouverture par les RH.</p><a class="mt-3 inline-block font-bold underline" target="_blank" href="request/download_rh_financial_point.php?point_id=<?=(int)$view['payload']['rh_financial_point_id']?>&amp;revision=<?=(int)$view['payload']['rh_financial_revision']?>">Consulter le PDF signé</a>
@@ -3146,7 +3152,7 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
                     <div class="mb-2 flex items-center gap-2 text-xs font-black uppercase text-slate-500"><i class="fas fa-layer-group text-indigo-600"></i>Choisir une vue</div>
                     <div class="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
                         <?php $activeGroup=null; foreach($tabGroups as $group): $groupIsActive=in_array($tab,$group['tabs'],true); if($groupIsActive)$activeGroup=$group; $target=$group['tabs'][0]; $groupUrl='validation_demandes_finances.php?'.http_build_query(array_merge($baseListParams,['tab'=>$target])); ?>
-                            <a href="<?=htmlspecialchars($groupUrl)?>" class="flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 transition <?=$groupIsActive?$group['active']:$group['idle']?>">
+                            <a href="<?=htmlspecialchars($groupUrl)?>" data-fv-active="<?=$groupIsActive?1:0?>" class="flex min-h-16 items-center gap-3 rounded-lg border px-3 py-3 transition <?=$groupIsActive?$group['active']:$group['idle']?>">
                                 <i class="fas <?=htmlspecialchars($group['icon'])?> w-5 text-center text-base"></i>
                                 <span class="min-w-0 flex-1"><span class="block text-sm font-black"><?=htmlspecialchars($group['title'])?></span><span class="mt-0.5 block truncate text-[11px] opacity-80"><?=htmlspecialchars($group['hint'])?></span></span>
                                 <span class="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-full border border-current/20 bg-white/20 px-2 text-xs font-black"><?=(int)$group['count']?></span>
@@ -3157,7 +3163,7 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
                         <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3">
                             <span class="mr-1 text-xs font-bold text-slate-500">Afficher :</span>
                             <?php foreach($activeGroup['tabs'] as $k):$info=$tabDef[$k];$isActive=$tab===$k;$tabUrl='validation_demandes_finances.php?'.http_build_query(array_merge($baseListParams,['tab'=>$k])); ?>
-                                <a href="<?=htmlspecialchars($tabUrl)?>" class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold <?=$isActive?'border-slate-800 bg-slate-800 text-white':'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'?>"><?=htmlspecialchars($info['label'])?><span class="opacity-70"><?=(int)$info['count']?></span></a>
+                                <a href="<?=htmlspecialchars($tabUrl)?>" data-fv-active="<?=$isActive?1:0?>" class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold <?=$isActive?'border-slate-800 bg-slate-800 text-white':'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'?>"><?=htmlspecialchars($info['label'])?><span class="opacity-70"><?=(int)$info['count']?></span></a>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
