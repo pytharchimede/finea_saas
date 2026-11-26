@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../auth_check.php';
 // Connexions & modèles internes
 require_once __DIR__ . '/model/Database.php';
+require_once __DIR__ . '/../model/CompanyBranding.php';
 require_once __DIR__ . '/model/Dashboard.php';
 require_once __DIR__ . '/model/Fiche.php';
 require_once __DIR__ . '/model/Chantier.php';
@@ -245,7 +246,7 @@ $dashboardLayoutRootBase = dashboardLayoutRelativeRoot();
 $dashUserName = trim((string)(($_SESSION['prenom'] ?? '') . ' ' . ($_SESSION['nom'] ?? '')));
 $dashUserName = $_SESSION['user_name'] ?? ($dashUserName !== '' ? $dashUserName : ($_SESSION['login'] ?? 'Utilisateur FINEA'));
 $dashUserRole = $_SESSION['role_raw'] ?? $_SESSION['role'] ?? $_SESSION['fonction'] ?? $_SESSION['poste'] ?? 'Collaborateur';
-$dashUserService = $_SESSION['service'] ?? $_SESSION['departement'] ?? 'Banamur Industries';
+$dashUserService = $_SESSION['service'] ?? $_SESSION['departement'] ?? (string)CompanyBranding::get()['company_name'];
 $dashUserPhotoRaw = (string)($_SESSION['photo'] ?? $_SESSION['avatar'] ?? $_SESSION['photo_profil'] ?? $_SESSION['profile_photo'] ?? $_SESSION['image'] ?? '');
 $dashUserPhoto = dashboardResolveUserPhotoUrl($dashUserPhotoRaw, $dashboardLayoutRootBase);
 $dashValidationsTotal = is_array($financeBacklog ?? null) ? (int)array_sum($financeBacklog) : 0;

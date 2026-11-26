@@ -1,8 +1,11 @@
 <?php
-session_start();
+require_once __DIR__ . '/../../auth_check.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../model/CompanyExportBranding.php';
+require_once __DIR__ . '/../../model/CompanyPdfTemplate.php';
 require_once __DIR__ . '/../model/Database.php';
 require_once __DIR__ . '/../model/Dashboard.php';
-require_once __DIR__ . '/../model/AuditTrail.php';
+require_once __DIR__ . '/../../model/AuditTrail.php';
 
 $pdo = Database::getConnection();
 $dashboardModel = new Dashboard($pdo);
@@ -74,7 +77,7 @@ function exportPDF($donnees, $alertes, $dateExport)
 
     <head>
         <meta charset="UTF-8">
-        <title>Rapport Dashboard BANAMUR</title>
+        <title>Tableau de bord des décaissements</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -139,7 +142,7 @@ function exportPDF($donnees, $alertes, $dateExport)
 
     <body>
         <div class="header">
-            <h1>📊 RAPPORT TABLEAU DE BORD BANAMUR</h1>
+            <h1>TABLEAU DE BORD DES DÉCAISSEMENTS</h1>
             <p>Généré le <?= date('d/m/Y à H:i:s') ?></p>
         </div>
 
@@ -148,9 +151,9 @@ function exportPDF($donnees, $alertes, $dateExport)
             <div class="section">
                 <h2>🚨 Alertes</h2>
                 <?php foreach ($alertes as $alerte): ?>
-                    <div class="alert alert-<?= $alerte['type'] ?>">
-                        <strong><?= $alerte['titre'] ?></strong><br>
-                        <?= $alerte['message'] ?>
+                    <div class="alert alert-<?= htmlspecialchars((string)$alerte['type'],ENT_QUOTES,'UTF-8') ?>">
+                        <strong><?= htmlspecialchars((string)$alerte['titre'],ENT_QUOTES,'UTF-8') ?></strong><br>
+                        <?= htmlspecialchars((string)$alerte['message'],ENT_QUOTES,'UTF-8') ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -244,7 +247,7 @@ function exportPDF($donnees, $alertes, $dateExport)
         </div>
 
         <div class="section">
-            <p><em>Rapport généré automatiquement par le système BANAMUR DécaissApp</em></p>
+            <p><em>Rapport généré par FINEA</em></p>
         </div>
     </body>
 
@@ -254,33 +257,55 @@ function exportPDF($donnees, $alertes, $dateExport)
 
     // Pour une vraie implémentation PDF, vous devriez utiliser une librairie comme TCPDF
     // Pour l'instant, on retourne le HTML
-    echo $html;
+    $pdf = new class('L','mm','A4') extends TCPDF {
+        use CompanyPdfTemplate;
+        public function Header(){ $this->drawCompanyPdfHeader(); }
+        public function Footer(){ $this->drawCompanyPdfFooter(); }
+    };
+    $pdf->SetCreator(CompanyExportBranding::creator());
+    $pdf->SetAuthor((string)CompanyBranding::get()['company_name']);
+    $pdf->SetTitle('Tableau de bord des décaissements');
+    $pdf->companyPdfTitle = 'Tableau de bord des décaissements';
+    $pdf->companyPdfType = 'Synthèse financière';
+    $pdf->companyPdfId = 'FIN-DASH-'.date('Ymd-His');
+    $pdf->SetMargins(11,38,11);
+    $pdf->SetAutoPageBreak(true,25);
+    $pdf->AddPage();
+    $pdf->SetFont('dejavusans','',9);
+    $pdf->writeHTML($html,true,false,true,false,'');
+    $pdf->Output('tableau_de_bord_'.$dateExport.'.pdf','D');
 }
 
 function exportExcel($donnees, $dateExport)
 {
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment; filename="tableau_de_bord_' . $dateExport . '.xls"');
-
-    echo "Rapport Dashboard BANAMUR\n";
-    echo "Généré le " . date('d/m/Y H:i:s') . "\n\n";
-
-    echo "STATISTIQUES PRINCIPALES\n";
-    echo "Total Fiches\t" . $donnees['stats_fiches']['total_fiches'] . "\n";
-    echo "Fiches Approuvées\t" . $donnees['stats_fiches']['fiches_approuvees'] . "\n";
-    echo "Chantiers Actifs\t" . $donnees['stats_chantiers']['total_chantiers'] . "\n";
-    echo "Montant Total\t" . $donnees['stats_fiches']['montant_total'] . "\n";
-    echo "\n";
-
-    echo "DÉTAIL CHANTIERS\n";
-    echo "Chantier\tBudget\tDépensé\tProgression\tFiches\n";
-    foreach ($donnees['chantiers_budgets'] as $chantier) {
-        echo htmlspecialchars($chantier['lib_chantier']) . "\t";
-        echo $chantier['budget_total'] . "\t";
-        echo $chantier['total_depenses'] . "\t";
-        echo $chantier['pourcentage_consomme'] . "%\t";
-        echo $chantier['nombre_fiches'] . "\n";
+    $book = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $book->getProperties()->setCreator(CompanyExportBranding::creator())->setTitle('Tableau de bord des décaissements');
+    $sheet = $book->getActiveSheet();
+    $sheet->setTitle('Chantiers');
+    $sheet->mergeCells('A1:F1');
+    $sheet->setCellValueExplicit('A1',CompanyExportBranding::identityLine(),\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+    $sheet->fromArray(['Chantier','Référence','Budget (FCFA)','Dépensé (FCFA)','Consommation','Fiches'],null,'A3');
+    $row=4;
+    foreach($donnees['chantiers_budgets'] as $c){
+        $sheet->setCellValueExplicit('A'.$row,(string)$c['lib_chantier'],\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('B'.$row,(string)$c['num_chantier'],\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        $sheet->fromArray([(float)$c['budget_total'],(float)$c['total_depenses'],(float)$c['pourcentage_consomme']/100,(int)$c['nombre_fiches']],null,'C'.$row,true);
+        $row++;
     }
+    if($row>4){$sheet->getStyle('C4:D'.($row-1))->getNumberFormat()->setFormatCode('#,##0');$sheet->getStyle('E4:E'.($row-1))->getNumberFormat()->setFormatCode('0.0%');}
+    $sheet->freezePane('C4');
+    $sheet->setAutoFilter('A3:F'.max(3,$row-1));
+    $summary=$book->createSheet();$summary->setTitle('Synthèse');
+    $summary->fromArray([['Indicateur','Valeur'],['Total fiches',(int)$donnees['stats_fiches']['total_fiches']],['Fiches approuvées',(int)$donnees['stats_fiches']['fiches_approuvees']],['Chantiers actifs',(int)$donnees['stats_chantiers']['total_chantiers']],['Montant total (FCFA)',(float)$donnees['stats_fiches']['montant_total']],['Montant décaissé (FCFA)',(float)$donnees['stats_fiches']['montant_decaisse']]],null,'A1',true);
+    foreach([[$sheet,'A3:F3'],[$summary,'A1:B1']] as [$tab,$range]){
+        $style=$tab->getStyle($range);$style->getFont()->setBold(true)->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
+        $style->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
+        foreach(range('A',$tab===$sheet?'F':'B') as $col)$tab->getColumnDimension($col)->setAutoSize(true);
+    }
+    $book->setActiveSheetIndex(1);
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="tableau_de_bord_'.$dateExport.'.xlsx"');
+    (new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($book))->save('php://output');
 }
 
 function exportCSV($donnees, $dateExport)

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../auth_check.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../model/CompanyExportBranding.php';
 require_once __DIR__ . '/../model/Database.php';
 require_once __DIR__ . '/../../model/AuditTrail.php';
 require_once __DIR__ . '/../includes/fiche_label_helper.php';
@@ -86,6 +87,7 @@ try {
     }
 
     $xlsx = new Spreadsheet();
+    $xlsx->getProperties()->setCreator(CompanyExportBranding::creator());
     $sheet = $xlsx->getActiveSheet();
     $r = 1;
     $sheet->setCellValue('A' . $r, 'Export fiches approbation');
@@ -99,7 +101,8 @@ try {
         $sheet->setCellValue($cols[$i] . $r, $h);
     }
     $sheet->getStyle("A{$r}:J{$r}")->getFont()->setBold(true);
-    $sheet->getStyle("A{$r}:J{$r}")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('E5E7EB');
+    $sheet->getStyle("A{$r}:J{$r}")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
+    $sheet->getStyle("A{$r}:J{$r}")->getFont()->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
     $r++;
 
     $total = 0.0;

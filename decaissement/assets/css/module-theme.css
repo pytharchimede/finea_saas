@@ -1,0 +1,42 @@
+body.disbursement-screen{background:var(--finea-page)!important;color:var(--finea-text)}
+.disbursement-screen .xdash-premium{color:var(--finea-text)}
+.disbursement-screen .xdash-hero{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border-radius:14px;padding:22px;box-shadow:none}
+.disbursement-screen .xdash-hero::before,.disbursement-screen .xdash-widget::after,.disbursement-screen .xdash-sky{display:none}
+.disbursement-screen .xdash-title{font-size:clamp(26px,3vw,38px);letter-spacing:-.035em;line-height:1.15}
+.disbursement-screen .xdash-sub,.disbursement-screen .xdash-mini small{color:inherit;opacity:.85}
+.disbursement-screen .xdash-hero :is(.xdash-eyebrow,.xdash-profile,.xdash-mini,.xdash-actions a,.xdash-actions button){background:transparent;border:1px solid currentColor;color:inherit;box-shadow:none;backdrop-filter:none;border-radius:10px}
+.disbursement-screen .xdash-widget{background:var(--finea-surface-raised)!important;border:1px solid var(--finea-border);color:var(--finea-text);box-shadow:none;border-radius:12px;padding:16px}
+.disbursement-screen .xdash-widget:hover{transform:none;box-shadow:none}
+.disbursement-screen :is(.xdash-widget-head h3,.xdash-widget-head h3 i,.xdash-metric,.xdash-temp,.xdash-note-tab strong,.xdash-note-title,.xdash-note-body){color:var(--finea-text)}
+.disbursement-screen :is(.xdash-muted,.xdash-note-tab small,.xdash-cal-grid span,.xdash-note-body:empty::before){color:var(--finea-muted)}
+.disbursement-screen :is(.xdash-row,.xdash-pill,.xdash-weather-mini div,.xdash-note-tab,.xdash-editor,.xdash-tools,.xdash-tools button,.xdash-calc-display,.xdash-calc-grid button,.xdash-cal-grid button){background:var(--finea-surface-soft);color:var(--finea-text);border-color:var(--finea-border);border-radius:8px;box-shadow:none}
+.disbursement-screen .xdash-note-tab.active{background:var(--finea-surface-raised);outline:1px solid var(--finea-border);box-shadow:none}
+.disbursement-screen :is(.xdash-add-note,.xdash-calc-grid .op,.xdash-cal-grid button.today,.xdash-tools button:hover){background:var(--brand-primary);color:var(--brand-on-primary)}
+.disbursement-screen .xdash-calc-grid .accent{background:var(--brand-accent);color:var(--brand-on-accent)}
+.disbursement-screen .xdash-grid{gap:12px}
+.disbursement-screen :is(.card,.feb-card,.dashboard-card,.stat-card){box-shadow:none!important;border-radius:12px}
+html.finea-dark-mode .disbursement-screen .fiche-selected{background:var(--finea-surface-soft)!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-gray-200,.bg-slate-200,.bg-zinc-100,.bg-neutral-100){background:var(--finea-surface-soft)!important}
+html.finea-dark-mode .disbursement-screen :is(.text-gray-400,.text-zinc-600,.text-neutral-600){color:var(--finea-muted)!important}
+html.finea-dark-mode .disbursement-screen :is(.text-zinc-900,.text-neutral-900,.text-zinc-800){color:var(--finea-text)!important}
+html.finea-dark-mode .disbursement-screen :is(.hover\\:bg-gray-50,.hover\\:bg-slate-50,.hover\\:bg-white):hover{background:var(--finea-surface-soft)!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-red-50,.bg-red-100){background-color:#3b2225!important}
+html.finea-dark-mode .disbursement-screen :is(.text-red-700,.text-red-800,.text-red-900){color:#fecaca!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-rose-50,.bg-rose-100){background-color:#3b222e!important}
+html.finea-dark-mode .disbursement-screen :is(.text-rose-700,.text-rose-800,.text-rose-900){color:#fecdd3!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-green-50,.bg-green-100){background-color:#173523!important}
+html.finea-dark-mode .disbursement-screen :is(.text-green-700,.text-green-800,.text-green-900){color:#bbf7d0!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-emerald-50,.bg-emerald-100){background-color:#15352c!important}
+html.finea-dark-mode .disbursement-screen :is(.text-emerald-700,.text-emerald-800,.text-emerald-900){color:#a7f3d0!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-amber-50,.bg-amber-100){background-color:#382b17!important}
+html.finea-dark-mode .disbursement-screen :is(.text-amber-700,.text-amber-800,.text-amber-900){color:#fde68a!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-yellow-50,.bg-yellow-100){background-color:#34301a!important}
+html.finea-dark-mode .disbursement-screen :is(.text-yellow-700,.text-yellow-800,.text-yellow-900){color:#fde68a!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-blue-50,.bg-blue-100){background-color:#1b304b!important}
+html.finea-dark-mode .disbursement-screen :is(.text-blue-700,.text-blue-800,.text-blue-900){color:#bfdbfe!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-indigo-50,.bg-indigo-100){background-color:#292d49!important}
+html.finea-dark-mode .disbursement-screen :is(.text-indigo-700,.text-indigo-800,.text-indigo-900){color:#c7d2fe!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-violet-50,.bg-violet-100){background-color:#302747!important}
+html.finea-dark-mode .disbursement-screen :is(.text-violet-700,.text-violet-800,.text-violet-900){color:#ddd6fe!important}
+html.finea-dark-mode .disbursement-screen :is(.bg-orange-50,.bg-orange-100){background-color:#38271c!important}
+html.finea-dark-mode .disbursement-screen :is(.text-orange-700,.text-orange-800,.text-orange-900){color:#fdba74!important}

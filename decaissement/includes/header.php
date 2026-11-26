@@ -53,6 +53,7 @@ $layoutIsRhModule = preg_match('~(?:^|/)rh/[^/]+\\.php$~i', str_replace('\\\\', 
 $layoutDirectoryScript = str_replace(chr(92), '/', (string)($_SERVER['SCRIPT_NAME'] ?? ''));
 $layoutIsSupplierDirectory = preg_match('~(?:^|/)fournisseur/[^/]+[.]php$~i', $layoutDirectoryScript) === 1;
 $layoutIsAddressBook = in_array(basename($layoutDirectoryScript), ['carnet_adresse.php','fiche_contact.php'], true);
+$layoutIsDisbursement = preg_match('~(?:^|/)decaissement/[^/]+[.]php$~i', $layoutDirectoryScript) === 1;
 $layoutIsLogistics = preg_match('~(?:^|/)logi/[^/]+[.]php$~i', $layoutDirectoryScript) === 1;
 ?>
 <!DOCTYPE html>
@@ -174,7 +175,10 @@ $layoutIsLogistics = preg_match('~(?:^|/)logi/[^/]+[.]php$~i', $layoutDirectoryS
 <?php if ($layoutIsLogistics): ?>
 <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>logi/module-theme.css?v=<?= filemtime(__DIR__.'/../../logi/module-theme.css') ?>">
 <?php endif; ?>
+<?php if ($layoutIsDisbursement): ?>
+<link rel="stylesheet" href="<?= htmlspecialchars($layoutModuleBase, ENT_QUOTES, 'UTF-8') ?>assets/css/module-theme.css?v=<?= filemtime(__DIR__.'/../assets/css/module-theme.css') ?>">
+<?php endif; ?>
 </head>
 
-<body class="min-h-screen<?= $layoutIsRhModule ? ' finea-rh-module' : '' ?><?= $layoutIsSupplierDirectory ? ' supplier-module-screen' : '' ?><?= $layoutIsAddressBook ? ' address-book-screen' : '' ?><?= $layoutIsLogistics ? ' logi-screen' : '' ?>" style="background: radial-gradient(1200px 600px at 0% 0%, rgb(var(--brand-accent-rgb, 255 204 32) / .10) 0%, transparent 70%), radial-gradient(1200px 600px at 100% 0%, rgb(var(--brand-primary-rgb, 5 5 5) / .06) 0%, transparent 70%), linear-gradient(180deg, var(--brand-surface, #ffffff) 0%, color-mix(in srgb, var(--brand-surface, #ffffff) 96%, var(--brand-primary, #050505)) 100%);">
+<body class="min-h-screen<?= $layoutIsDisbursement ? ' disbursement-screen' : '' ?><?= $layoutIsRhModule ? ' finea-rh-module' : '' ?><?= $layoutIsSupplierDirectory ? ' supplier-module-screen' : '' ?><?= $layoutIsAddressBook ? ' address-book-screen' : '' ?><?= $layoutIsLogistics ? ' logi-screen' : '' ?>" style="background: radial-gradient(1200px 600px at 0% 0%, rgb(var(--brand-accent-rgb, 255 204 32) / .10) 0%, transparent 70%), radial-gradient(1200px 600px at 100% 0%, rgb(var(--brand-primary-rgb, 5 5 5) / .06) 0%, transparent 70%), linear-gradient(180deg, var(--brand-surface, #ffffff) 0%, color-mix(in srgb, var(--brand-surface, #ffffff) 96%, var(--brand-primary, #050505)) 100%);">
 
