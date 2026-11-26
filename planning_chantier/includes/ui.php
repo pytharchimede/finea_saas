@@ -9,7 +9,7 @@ function pc_render_module_assets(): void
     }
     $done = true;
     ?>
-    <link rel="stylesheet" href="assets/css/planning.css?v=20261126-plannings">
+    <link rel="stylesheet" href="assets/css/planning.css?v=20261126-contrast">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <?php
 }
@@ -56,7 +56,7 @@ function pc_render_page_start(string $title, string $subtitle = '', string $eyeb
                         <?php endif; ?>
                     </div>
                     <div class="flex flex-wrap gap-3">
-                        <a href="dashboard.php" class="inline-flex items-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-amber-50">
+                        <a href="dashboard.php" class="pc-hero-dashboard inline-flex items-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-amber-50">
                             <i class="fas fa-chart-line mr-2 text-orange-600"></i>Vue globale
                         </a>
                         <a href="reunion.php" class="inline-flex items-center rounded-2xl bg-[#fabd02] px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">

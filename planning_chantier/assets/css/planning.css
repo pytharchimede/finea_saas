@@ -4244,3 +4244,11 @@ body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-pre
 .pc-workspace .pc-plannings-list .pc-btn-soft:hover{background:var(--pc-soft)!important;border-color:var(--brand-accent,#d71920)!important}
 .pc-workspace .pc-plannings-list .pc-btn i{color:inherit!important}
 :is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace .pc-plannings-list .pc-card-head i{color:#a5c7ff!important}
+
+/* Hero dashboard action must not inherit the banner foreground. */
+.pc-workspace a.pc-hero-dashboard.pc-hero-dashboard {
+    background:var(--pc-card)!important;color:var(--pc-text)!important;
+    border:1px solid var(--pc-border)!important;
+}
+.pc-workspace a.pc-hero-dashboard.pc-hero-dashboard i{color:inherit!important}
+.pc-workspace a.pc-hero-dashboard.pc-hero-dashboard:hover{background:var(--pc-soft)!important;color:var(--pc-text)!important}

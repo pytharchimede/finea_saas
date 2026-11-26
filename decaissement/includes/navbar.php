@@ -816,9 +816,16 @@ function navCanAccess($permission): bool
         </div>
 
         <!-- Desktop menu (wrap pour éviter tout débordement) -->
-        <div class="finea-brand-strip mt-3 hidden items-center gap-2 border-t pt-3 md:flex">
+        <style>
+a.finea-engine-link.finea-engine-link {background:#f1f5f9!important;color:#17243d!important;border-color:#cbd5e1!important}
+a.finea-engine-link.finea-engine-link i {color:inherit!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) a.finea-engine-link.finea-engine-link {background:#172337!important;color:#f5f8fc!important;border-color:#52647e!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) a.finea-engine-link.finea-engine-link:hover {background:#202e43!important;color:#f5f8fc!important}
+a.finea-engine-link.finea-engine-link:focus-visible {outline:2px solid #6495ed;outline-offset:2px}
+</style>
+<div class="finea-brand-strip mt-3 hidden items-center gap-2 border-t pt-3 md:flex">
             <a href="<?=htmlspecialchars($layoutRootBase.'selection_portail.php',ENT_QUOTES,'UTF-8')?>" class="finea-brand-portal inline-flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-black shadow-sm"><i class="fa-solid fa-grip"></i>Portail</a>
-            <a href="<?=htmlspecialchars($layoutRootBase.'moteur.php',ENT_QUOTES,'UTF-8')?>" class="inline-flex shrink-0 items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-black text-slate-900 shadow-sm transition hover:border-amber-300 hover:bg-amber-100"><i class="fa-solid fa-magnifying-glass text-amber-600"></i>Moteur</a>
+            <a href="<?=htmlspecialchars($layoutRootBase.'moteur.php',ENT_QUOTES,'UTF-8')?>" class="finea-engine-link inline-flex shrink-0 items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-black text-slate-900 shadow-sm transition hover:border-amber-300 hover:bg-amber-100"><i class="fa-solid fa-magnifying-glass text-amber-600"></i>Moteur</a>
             <div class="flex min-w-0 flex-1 flex-wrap items-center gap-1 overflow-visible">
             <?php foreach ($visibleNavGroups as $categoryLabel=>$categoryItems): ?>
             <?php $categoryBadge=array_sum(array_map(static fn($link)=>(int)($link['badge']??0),$categoryItems)); ?>
@@ -956,7 +963,7 @@ function navCanAccess($permission): bool
 
         <div class="flex-1 overflow-y-auto p-3 grid gap-2">
             <a href="<?=htmlspecialchars($layoutRootBase.'selection_portail.php',ENT_QUOTES,'UTF-8')?>" class="flex items-center gap-3 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-black text-white" data-nav-close-mobile><i class="fa-solid fa-grip"></i>Portail<i class="fa-solid fa-chevron-right ml-auto text-slate-400"></i></a>
-            <a href="<?=htmlspecialchars($layoutRootBase.'moteur.php',ENT_QUOTES,'UTF-8')?>" class="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-black text-slate-900" data-nav-close-mobile><i class="fa-solid fa-magnifying-glass text-amber-600"></i>Moteur Finéa<i class="fa-solid fa-chevron-right ml-auto text-amber-500"></i></a>
+            <a href="<?=htmlspecialchars($layoutRootBase.'moteur.php',ENT_QUOTES,'UTF-8')?>" class="finea-engine-link flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-black text-slate-900" data-nav-close-mobile><i class="fa-solid fa-magnifying-glass text-amber-600"></i>Moteur Finéa<i class="fa-solid fa-chevron-right ml-auto text-amber-500"></i></a>
             <?php foreach ($visibleNavGroups as $categoryLabel=>$categoryItems): ?>
                 <div class="px-3 pb-1 pt-4 text-[11px] font-black uppercase tracking-[.16em] text-amber-600"><i class="fa-solid <?=htmlspecialchars($navCategoryIcons[$categoryLabel]??'fa-folder')?> mr-2"></i><?=htmlspecialchars($categoryLabel)?></div>
             <?php foreach ($categoryItems as $item): ?>
