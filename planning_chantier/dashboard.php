@@ -19,8 +19,8 @@ if (!planning_chantier_include_layout('header')) {
 }
 planning_chantier_include_layout('navbar');
 pc_render_page_start(
-    'Tableau de bord des réunions chantier',
-    'Retrouvez les réunions passées, leurs participants et l’état des points décidés.',
+    'Pilotage des chantiers et réunions',
+    'Accédez aux plannings, à l’avancement des travaux et au suivi des décisions de réunion.',
     'Suivi des réunions'
 );
 
@@ -35,6 +35,13 @@ $cards = [
 ];
 ?>
 
+<nav class="pc-dashboard-shortcuts" aria-label="Accès opérationnels">
+    <a href="plannings.php"><i class="fas fa-chart-gantt"></i> Plannings des chantiers</a>
+    <a href="work_progress.php"><i class="fas fa-chart-column"></i> Avancement des travaux</a>
+    <a href="tasks.php"><i class="fas fa-list-check"></i> Tâches à suivre</a>
+    <a href="blockages.php"><i class="fas fa-triangle-exclamation"></i> Blocages</a>
+    <a href="meeting_followups.php"><i class="fas fa-bell"></i> Engagements et relances</a>
+</nav>
 <section class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
     <?php foreach ($cards as $card): ?>
         <article class="rounded-3xl border border-white/70 bg-white/95 p-6 shadow-[0_16px_45px_rgba(15,23,42,.07)]">
@@ -54,7 +61,7 @@ $cards = [
 
 <section class="pc-dashboard-main-grid mt-8">
     <div class="pc-dashboard-action-column" role="complementary" aria-label="Actions et participation">
-        <article class="rounded-[30px] bg-gradient-to-br from-slate-950 via-[#1d2b57] to-indigo-950 p-7 text-white shadow-[0_22px_60px_rgba(15,23,42,.24)]">
+        <article class="rounded-[30px] pc-brand-banner p-7 text-white shadow-[0_22px_60px_rgba(15,23,42,.24)]">
             <p class="text-xs font-semibold uppercase tracking-[.22em] text-amber-200">Prochaine action</p>
             <h2 class="mt-2 text-2xl font-semibold">Préparer la prochaine réunion</h2>
             <p class="mt-3 text-sm leading-6 text-slate-200">Choisissez une réunion Bureau ou chantier, définissez l’ordre du jour, les éléments concernés et les participants.</p>

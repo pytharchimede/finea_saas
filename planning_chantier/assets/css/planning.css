@@ -4187,3 +4187,29 @@ body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-pre
 [data-financial-pilot][data-unified-render="1"] .pc-checklist-item.is-pending {
     opacity: .65;
 }
+
+/* Tenant workspace: opaque surfaces and semantic contrast. */
+.pc-workspace{--pc-bg:#fff;--pc-card:#fff;--pc-soft:#f1f5f9;--pc-text:#17243d;--pc-muted:#475569;--pc-border:#cbd5e1;--pc-field:#fff;--finea-blue:var(--brand-primary,#081c65);--finea-yellow:var(--brand-accent,#d71920);background:var(--pc-bg)!important;color:var(--pc-text)}
+:is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace{--pc-bg:#08111f;--pc-card:#172337;--pc-soft:#202e43;--pc-text:#f5f8fc;--pc-muted:#c6d0de;--pc-border:#52647e;--pc-field:#0d1727;color-scheme:dark}
+.pc-workspace .pc-page-hero,.pc-workspace .pc-brand-banner,.pc-workspace .pc-financial-toolbar{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;border-bottom:4px solid var(--brand-accent,#d71920);box-shadow:none!important}
+.pc-workspace :is(.pc-page-hero,.pc-brand-banner,.pc-financial-toolbar) :is(h1,h2,p,.text-amber-200,.text-slate-200){color:inherit!important}
+.pc-workspace .pc-module-nav a{background:var(--pc-card)!important;color:var(--pc-text)!important;border:1px solid var(--pc-border)!important;border-radius:10px;box-shadow:none}
+.pc-workspace .pc-module-nav a i{color:inherit!important}
+.pc-workspace .pc-module-nav a[aria-current="page"]{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;border-bottom:3px solid var(--brand-accent,#d71920)!important}
+.pc-workspace :is(.pc-btn-primary,[class~="bg-[#fabd02]"],.bg-indigo-700){background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;border-color:var(--brand-primary,#081c65)!important}
+.pc-workspace :is(.pc-btn-soft,.pc-financial-pilot,.pc-line-detail-head,.pc-quote-line,.pc-debourse summary,.pc-meeting-finish,.pc-office-point,.bg-white,[class~="bg-white/95"],[class~="bg-white/85"],[class~="bg-white/90"]){background:var(--pc-card)!important;color:var(--pc-text)!important;border-color:var(--pc-border)!important}
+.pc-workspace :is(.bg-slate-50,.bg-slate-100,.bg-indigo-50,.pc-financial-summary,.pc-financial-lines,.pc-debourse-body,.pc-line-planning,.pc-debourse-comment,.pc-preparation-summary,.pc-office-points,.pc-preparation-people label,.pc-preparation-project-card span){background:var(--pc-soft)!important;color:var(--pc-text)!important;border-color:var(--pc-border)!important}
+.pc-workspace :is(.text-slate-950,.text-slate-900,.text-slate-800,.text-slate-700,.pc-quote-line-body strong,.pc-line-detail-head h3,.pc-financial-summary strong,.pc-meeting-finish h2,.pc-preparation-summary h2){color:var(--pc-text)!important}
+.pc-workspace :is(.text-slate-600,.text-slate-500,.text-slate-400,.pc-section-kicker,.pc-quote-line-body small,.pc-line-detail-head p,.pc-financial-summary span,.pc-debourse summary small){color:var(--pc-muted)!important}
+.pc-workspace :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea){background:var(--pc-field)!important;color:var(--pc-text)!important;border-color:var(--pc-border)!important}
+.pc-workspace :is(input,textarea)::placeholder{color:var(--pc-muted)!important}
+.pc-workspace :is(a,button,input,select,textarea):focus-visible{outline:2px solid #6495ed;outline-offset:2px}
+.pc-workspace :is(.pc-btn-primary,[class~="bg-[#fabd02]"],.bg-indigo-700) i{color:inherit!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace :is(.bg-amber-50,[class~="bg-amber-50/90"],.bg-amber-100,.bg-orange-50){background:#49351e!important;color:#fde68a!important;border-color:#88683d!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace :is(.bg-emerald-50,.bg-emerald-100){background:#123c32!important;color:#a7f3d0!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace :is(.bg-red-50,.bg-red-100){background:#481f2b!important;color:#fecdd3!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace :is(.text-indigo-700,.text-indigo-600,.text-sky-700,.text-orange-600,.text-orange-700){color:#a5c7ff!important}
+.pc-workspace :is(.pc-btn-primary,.pc-brand-banner,.pc-page-hero) :is(.text-slate-950,.text-slate-900){color:inherit!important}
+.pc-workspace .pc-dashboard-shortcuts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:20px}
+.pc-workspace .pc-dashboard-shortcuts a{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--pc-border);border-radius:12px;background:var(--pc-card);color:var(--pc-text);font-weight:700}
+.pc-workspace .pc-dashboard-shortcuts i{color:var(--pc-muted)}
