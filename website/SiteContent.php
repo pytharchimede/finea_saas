@@ -2,7 +2,7 @@
 declare(strict_types=1);
 final class SiteContent {
  public static function defaults(array $brand):array {
- return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[]];
+ return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[],'slides'=>[],'partners'=>[],'careers'=>[],'contact_form'=>false];
  }
  public static function install(PDO $db):void {
  $db->exec("CREATE TABLE IF NOT EXISTS finea_website_content (id TINYINT UNSIGNED PRIMARY KEY,draft_json LONGTEXT NOT NULL,published_json LONGTEXT NULL,published_at DATETIME NULL,updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
@@ -25,9 +25,25 @@ final class SiteContent {
  public static function fromPost(array $post):array {
  $out=[];foreach(['headline'=>190,'intro'=>1000,'about'=>10000,'seo_title'=>190,'seo_description'=>320,'tagline'=>120] as $key=>$max){$v=trim((string)($post[$key]??''));if(mb_strlen($v)>$max)throw new InvalidArgumentException('Texte trop long : '.$key);$out[$key]=$v;}
  if($out['headline']==='')throw new InvalidArgumentException('Le titre est obligatoire.');
- foreach(['services','projects','news','values','figures'] as $key){$out[$key]=[];$raw=trim((string)($post[$key]??''));if(mb_strlen($raw)>20000)throw new InvalidArgumentException('Contenu trop long.');foreach(preg_split('/\R/u',$raw) as $line){if(trim($line)==='')continue;[$title,$body]=array_pad(explode('|',$line,2),2,'');if(trim($title)===''||mb_strlen(trim($title))>190||mb_strlen(trim($body))>2000)throw new InvalidArgumentException('Vérifiez les titres et descriptions.');$out[$key][]=['title'=>trim($title),'body'=>trim($body)];}if(count($out[$key])>50)throw new InvalidArgumentException('50 éléments maximum par rubrique.');}
+ foreach(['values','figures'] as $key){$out[$key]=[];$raw=trim((string)($post[$key]??''));if(mb_strlen($raw)>20000)throw new InvalidArgumentException('Contenu trop long.');foreach(preg_split('/\R/u',$raw) as $line){if(trim($line)==='')continue;[$title,$body]=array_pad(explode('|',$line,2),2,'');if(trim($title)===''||mb_strlen(trim($title))>190||mb_strlen(trim($body))>2000)throw new InvalidArgumentException('Vérifiez les titres et descriptions.');$out[$key][]=['title'=>trim($title),'body'=>trim($body)];}if(count($out[$key])>50)throw new InvalidArgumentException('50 éléments maximum par rubrique.');}
  foreach(['hero_image','about_image'] as $key){$out[$key]=self::imageId((string)($post[$key]??''));}
+ foreach(['services','projects','news','slides','partners','careers'] as $key){
+ $out[$key]=[];$rows=$post['entries'][$key]??[];if(!is_array($rows)||count($rows)>50)throw new InvalidArgumentException('50 éléments maximum.');
+ foreach($rows as $item){if(!is_array($item)||!empty($item['remove']))continue;$title=trim((string)($item['title']??''));if($title==='')continue;
+ $entry=['title'=>$title,'body'=>trim((string)($item['body']??'')),'location'=>trim((string)($item['location']??'')),'category'=>trim((string)($item['category']??'')),'image'=>self::imageId((string)($item['image']??''))];
+ foreach(['title'=>190,'body'=>15000,'location'=>190,'category'=>100] as $field=>$max)if(mb_strlen($entry[$field])>$max)throw new InvalidArgumentException('Contenu trop long.');
+ $out[$key][]=$entry;
+ }}
+ $out['contact_form']=!empty($post['contact_form']);
  $out['show_contact']=!empty($post['show_contact']);return $out;
+ }
+ public static function imageIds(array $data):array {
+ $ids=[$data['hero_image']??'', $data['about_image']??''];
+ foreach(['services','projects','news','slides','partners','careers'] as $key)foreach($data[$key]??[] as $item)$ids[]=$item['image']??'';
+ return array_values(array_unique(array_filter($ids)));
+ }
+ public static function installInbox(PDO $db):void {
+ $db->exec("CREATE TABLE IF NOT EXISTS finea_website_inbox (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, name VARCHAR(190) NOT NULL,email VARCHAR(190) NOT NULL,phone VARCHAR(80) NOT NULL,subject VARCHAR(190) NOT NULL,message TEXT NOT NULL,status ENUM('new','read','closed') DEFAULT 'new',created_at DATETIME DEFAULT CURRENT_TIMESTAMP,client_hash CHAR(64) NOT NULL,INDEX(client_hash,created_at)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
  }
  public static function imageId(string $id):string {if($id!==''&&!preg_match('/^[a-f0-9]{32}$/D',$id))throw new InvalidArgumentException('Image invalide.');return $id;}
  public static function save(PDO $db,array $data,bool $publish):void {

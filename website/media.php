@@ -6,6 +6,6 @@ require_once __DIR__.'/../model/Database.php';
 require_once __DIR__.'/SiteContent.php';
 $id=(string)($_GET['id']??'');if(!preg_match('/^[a-f0-9]{32}$/D',$id)){http_response_code(404);exit;}
 $db=Database::getConnection();
-try{$row=SiteContent::read($db);$data=json_decode($row[$preview?'draft_json':'published_json']??'',true);if(!is_array($data)||!in_array($id,[$data['hero_image']??'', $data['about_image']??''],true)){http_response_code(404);exit;}$q=$db->prepare('SELECT mime,content FROM finea_website_media WHERE id=?');$q->execute([$id]);$image=$q->fetch(PDO::FETCH_ASSOC);}catch(PDOException $e){$image=false;}
+try{$row=SiteContent::read($db);$data=json_decode($row[$preview?'draft_json':'published_json']??'',true);if(!$preview&&(!is_array($data)||!in_array($id,SiteContent::imageIds($data),true))){http_response_code(404);exit;}$q=$db->prepare('SELECT mime,content FROM finea_website_media WHERE id=?');$q->execute([$id]);$image=$q->fetch(PDO::FETCH_ASSOC);}catch(PDOException $e){$image=false;}
 if(!$image||!in_array($image['mime'],['image/jpeg','image/png','image/webp'],true)){http_response_code(404);exit;}
 header('Content-Type: '.$image['mime']);header('X-Content-Type-Options: nosniff');header('Cache-Control: no-store');echo $image['content'];
