@@ -461,7 +461,8 @@ $origMessageIdHidden = $original ? trim((string)($original['message_id'] ?? ''))
 $origReferencesHidden = $original ? trim((string)($original['references'] ?? '')) : '';
 
 ?>
-<div class="container mx-auto px-4 pb-10">
+<link rel="stylesheet" href="mail-theme.css?v=<?= filemtime(__DIR__.'/mail-theme.css') ?>">
+<div class="finea-mail container mx-auto px-4 pb-10">
 
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
