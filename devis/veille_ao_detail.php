@@ -103,8 +103,8 @@ ob_start();
         gap: 8px;
         padding: 7px 10px;
         border-radius: 7px;
-        background: #fff6d8;
-        color: #6d5100;
+        background: var(--dv-soft);
+        color: var(--dv-text);
         font-size: 11px;
         font-weight: 850;
         text-transform: uppercase;
@@ -131,7 +131,7 @@ ob_start();
         height: 108px;
         place-items: center;
         border: 8px solid #eef2f7;
-        border-top-color: #fabd02;
+        border-top-color: var(--brand-accent);
         border-radius: 50%;
         color: #172348;
         text-align: center;
@@ -335,10 +335,27 @@ ob_start();
     .ao-reasons { display:flex; flex-wrap:wrap; gap:7px; }
     .ao-reasons span { padding:7px 9px; border-radius:7px; background:#edf3fc; color:#244b91; font-size:11px; font-weight:750; }
 
+    .devis-page .ao-detail-actions a {
+        background: var(--dv-card) !important;
+        color: var(--dv-text) !important;
+        border-color: var(--devis-border) !important;
+    }
+    .devis-page .ao-detail-actions a i { color: inherit !important; }
+    .devis-page .ao-detail-actions a.is-primary {
+        background: var(--brand-accent) !important;
+        color: var(--brand-on-accent) !important;
+        border-color: var(--brand-accent) !important;
+    }
+    :is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .ao-detail-actions a:not(.is-primary) {
+        background: #172337 !important;
+        color: #f5f8fc !important;
+        border-color: #52647e !important;
+    }
+    .devis-page .ao-detail-actions a:focus-visible { outline: 2px solid var(--dv-focus); outline-offset: 2px; }
     .ao-detail-actions a.is-primary {
-        border-color: #fabd02;
-        background: #fabd02;
-        color: #172348;
+        border-color: var(--brand-accent);
+        background: var(--brand-accent);
+        color: var(--brand-on-accent);
     }
 
     body.finea-dark-mode .ao-detail-card {
@@ -433,9 +450,9 @@ ob_start();
         </section>
 
         <section class="ao-detail-section">
-            <h3>Compatibilite BANAMUR</h3>
+            <h3>Compatibilité entreprise</h3>
             <div class="ao-compatibility">
-                <div class="ao-compatibility-score"><strong><?= (int) ($compatibility['score'] ?? 0) ?>%</strong><small>Score BANAMUR</small></div>
+                <div class="ao-compatibility-score"><strong><?= (int) ($compatibility['score'] ?? 0) ?>%</strong><small>Score entreprise</small></div>
                 <div class="ao-reasons">
                     <?php foreach (($compatibility['reasons'] ?? []) as $reason): ?><span><i class="fa-solid fa-check mr-1"></i><?= $h($reason) ?></span><?php endforeach; ?>
                     <?php if (empty($compatibility['reasons'])): ?><span>Aucun motif BTP fort detecte</span><?php endif; ?>
@@ -512,7 +529,7 @@ ob_start();
                 <input type="hidden" name="id" value="<?= (int) $item['id'] ?>">
                 <input type="hidden" name="csrf_token" value="<?= $h($_SESSION['ao_csrf']) ?>">
                 <input type="hidden" name="action" value="crm">
-                <button style="min-height:43px;padding:9px 15px;border:0;border-radius:8px;background:#fabd02;color:#172348;font-weight:850;"><i class="fa-solid fa-handshake mr-2"></i><?= !empty($item['crm_opportunity_id']) ? 'Ouvrir / verifier l opportunite CRM #' . (int) $item['crm_opportunity_id'] : 'Creer l opportunite CRM' ?></button>
+                <button style="min-height:43px;padding:9px 15px;border:0;border-radius:8px;background:var(--brand-accent);color:var(--brand-on-accent);font-weight:850;"><i class="fa-solid fa-handshake mr-2"></i><?= !empty($item['crm_opportunity_id']) ? 'Ouvrir / verifier l opportunite CRM #' . (int) $item['crm_opportunity_id'] : 'Creer l opportunite CRM' ?></button>
             </form>
         <?php endif; ?>
         <?php if (($item['dg_decision'] ?? 'pending') === 'interested'): ?>
