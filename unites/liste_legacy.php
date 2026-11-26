@@ -59,8 +59,8 @@ require_once 'header/header_liste_unite.php';
             <a href="unites/ajouter.php" class="btn finea-unit-create">
                 <i class="fas fa-plus"></i> Ajouter une unité
             </a>
-            <a href="exports/finea_module_export.php?module=unites&amp;format=pdf" data-finea-export data-filter-form="uniteSearchForm" class="btn btn-outline-danger ms-2"><i class="fas fa-file-pdf"></i> PDF</a>
-            <a href="exports/finea_module_export.php?module=unites&amp;format=xlsx" data-finea-export data-filter-form="uniteSearchForm" class="btn btn-outline-success ms-2"><i class="fas fa-file-excel"></i> Excel</a>
+            <a href="<?= htmlspecialchars(devis_module_root_url('exports/finea_module_export.php'), ENT_QUOTES, 'UTF-8') ?>?module=unites&amp;format=pdf" data-finea-export data-filter-form="uniteSearchForm" class="btn btn-outline-danger ms-2"><i class="fas fa-file-pdf"></i> PDF</a>
+            <a href="<?= htmlspecialchars(devis_module_root_url('exports/finea_module_export.php'), ENT_QUOTES, 'UTF-8') ?>?module=unites&amp;format=xlsx" data-finea-export data-filter-form="uniteSearchForm" class="btn btn-outline-success ms-2"><i class="fas fa-file-excel"></i> Excel</a>
         </div>
         <div class="card">
             <div class="card-header">
