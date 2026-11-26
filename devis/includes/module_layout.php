@@ -94,9 +94,9 @@ require_once dirname(__DIR__, 2) . '/decaissement/includes/navbar.php';
 
 <style>
     :root {
-        --devis-ink: #172348;
+        --devis-ink: var(--brand-primary,#081c65);
         --devis-ink-deep: #101a38;
-        --devis-accent: #fabd02;
+        --devis-accent: var(--brand-accent,#1746b0);
         --devis-bg: #f3f6fb;
         --devis-border: #dfe6f0;
         --devis-muted: #64748b;
@@ -578,6 +578,14 @@ require_once dirname(__DIR__, 2) . '/decaissement/includes/navbar.php';
             flex: 0 0 185px;
         }
     }
+
+.devis-page .devis-hero{background:var(--brand-primary,#081c65);color:var(--brand-on-primary,#fff)}
+.devis-page .devis-hero :is(h1,p,.devis-kicker){color:var(--brand-on-primary,#fff)}
+.devis-page .devis-hero .devis-action:not(.is-accent){color:var(--brand-on-primary,#fff)!important;border-color:currentColor}
+.devis-page :is(.devis-action.is-accent,.devis-nav-link.is-active){color:var(--brand-on-accent,#fff)!important}
+.devis-page :is(.devis-action.is-accent,.devis-nav-link.is-active) :is(i,svg,strong,small){color:inherit!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-page{--devis-bg:#08111f;--devis-border:#52647e;--devis-muted:#c6d0de;background:var(--devis-bg);color:#f5f8fc}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .devis-aside{background:#172337;border:1px solid #52647e}
 </style>
 
 <div class="devis-page">

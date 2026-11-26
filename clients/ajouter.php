@@ -28,6 +28,23 @@ ob_start(); ?>
 <link rel="stylesheet" href="<?=htmlspecialchars($root('assets/css/client-platform.css'),ENT_QUOTES,'UTF-8')?>">
 <style>
 .cf-card{max-width:980px;border:1px solid #dfe6f0;border-radius:16px;background:#fff;padding:24px;box-shadow:0 12px 30px rgba(23,35,72,.06)}.cf-head{display:flex;gap:14px;align-items:center}.cf-head h2{margin:0;color:#172348;font-size:18px}.cf-head p{margin:5px 0 0;color:#64748b;font-size:12px}.cf-icon{display:grid;width:48px;height:48px;place-items:center;border-radius:13px;background:#e6fffb;color:#0f766e;font-size:19px}.cf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:23px}.cf-field label{display:block;margin-bottom:6px;color:#34425a;font-size:11px;font-weight:900}.cf-field input{width:100%;border:1px solid #cfd8e6;border-radius:9px;padding:11px 12px;outline:none}.cf-field input:focus{border-color:#1d4ed8;box-shadow:0 0 0 4px #dbeafe}.cf-field input[readonly]{background:#f7f9fc;color:#475569}.cf-wide{grid-column:1/-1}.cf-ncc-row{display:flex;align-items:center;gap:10px}.cf-ncc-row input{min-width:0;flex:1}.cf-load{flex:none;border:0;border-radius:9px;background:#0f766e;color:#fff;padding:12px 16px;font-size:12px;font-weight:900;cursor:pointer}.cf-load:hover{background:#115e59}.cf-load:disabled{cursor:wait;opacity:.6}.cf-actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px}.cf-actions a,.cf-actions button{border:0;border-radius:9px;padding:11px 15px;font-size:12px;font-weight:900;text-decoration:none}.cf-actions a{border:1px solid #d7e0ec;color:#475569}.cf-actions button{background:#172348;color:#fff}.cf-actions button:disabled{cursor:not-allowed;opacity:.45}.cf-state{display:none;margin-top:10px;border-radius:9px;padding:10px 12px;font-size:12px}.cf-state.show{display:block}.cf-state.ok{background:#dcfce7;color:#166534}.cf-state.error{background:#fff1f2;color:#9f1239}.cf-error{margin-bottom:15px;border:1px solid #fecaca;border-radius:9px;background:#fff1f2;padding:12px;color:#9f1239;font-size:12px}@media(max-width:700px){.cf-grid{grid-template-columns:1fr}.cf-wide{grid-column:auto}.cf-ncc-row{align-items:stretch;flex-direction:column}.cf-wide .cf-load{width:100%}.cf-actions{align-items:stretch;flex-direction:column}}
+
+.cf-card{max-width:none;background:var(--finea-surface-raised,#fff);border-color:var(--finea-border,#dfe6f0);color:var(--finea-text,#172033);border-radius:24px;padding:clamp(16px,3vw,28px)}
+.cf-head{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--finea-border)}
+.cf-head h2,.cf-field label{color:var(--finea-text)}
+.cf-head p{color:var(--finea-muted)}
+.cf-field label{font-size:13px;font-weight:700}
+.cf-field input{background:var(--finea-input-surface,#f8fafc);color:var(--finea-text);border-color:var(--finea-input-border,#cbd5e1);min-height:44px;border-radius:12px}
+.cf-field input[readonly]{background:var(--finea-surface-soft);color:var(--finea-muted)}
+.cf-actions{border-top:1px solid var(--finea-border);padding-top:20px}
+.cf-actions a{color:var(--finea-text);border-color:var(--finea-border)}
+.cf-card .cf-actions button,.cf-card .cf-load{background:var(--brand-primary);color:var(--brand-on-primary);border:1px solid transparent}
+.cf-card .cf-load:hover{background:var(--brand-primary);filter:brightness(.95)}
+:is(html.finea-dark-mode,body.finea-dark-mode) .cf-card{--finea-text:#f5f8fc;--finea-muted:#c6d0de;--finea-border:#52647e;--finea-surface-raised:#172337;--finea-surface-soft:#202e43}
+:is(html.finea-dark-mode,body.finea-dark-mode) .cf-card :is(.cf-load,.cf-actions button){border-color:#8199c0}
+:is(html.finea-dark-mode,body.finea-dark-mode) .cf-card .cf-icon{background:#123c32;color:#a7f3d0}
+:is(html.finea-dark-mode,body.finea-dark-mode) .cf-state.ok{background:#123c32;color:#a7f3d0}
+:is(html.finea-dark-mode,body.finea-dark-mode) :is(.cf-state.error,.cf-error){background:#481f2b;color:#fecdd3;border-color:#a85a70}
 </style>
 <?php if ($error): ?><div class="cf-error"><?=htmlspecialchars($error,ENT_QUOTES,'UTF-8')?></div><?php endif; ?>
 <section class="cf-card" data-platform="<?=($_POST['tax_platform']??'fne')==='impots'?'impots':'fne'?>">

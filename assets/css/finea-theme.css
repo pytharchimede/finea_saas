@@ -345,3 +345,20 @@ body .finea-brand-accent-box :where(i,svg) {
   color:#aab9ce!important;
   opacity:1;
 }
+
+/* Shared fiscal identity panels: clients and suppliers. */
+:is(html.finea-dark-mode,body.finea-dark-mode) :is([data-party-entry],[data-business-identity]) {
+  background:#202e43!important;color:#f5f8fc!important;border-color:#52647e!important;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) :is([data-party-entry],[data-business-identity]) :is(legend,label,p,[data-identity-summary]) {
+  color:#e2e8f0!important;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) :is([data-party-entry],[data-business-identity]) :is(select,input:not([type=hidden]):not([type=checkbox]):not([type=radio]),textarea) {
+  background:#0d1727!important;color:#f5f8fc!important;border-color:#52647e!important;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) .client-platform-choice span {
+  background:#172337!important;color:#f5f8fc!important;border-color:#52647e!important;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) .client-platform-choice input:checked + span {
+  background:#263c56!important;border-color:#a5c7ff!important;box-shadow:0 0 0 2px #52647e;
+}
