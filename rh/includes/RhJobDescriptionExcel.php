@@ -40,9 +40,24 @@ final class RhJobDescriptionExcel
             $ref->setCellValueExplicit('B'.($i+2), (string)$f['lib_fonction'], DataType::TYPE_STRING);
         }
         $ref->getColumnDimension('B')->setWidth(55);
+        // Exemples pédagogiques séparés : ils ne sont jamais importés automatiquement.
+        $examples = $book->createSheet();
+        $examples->setTitle('Exemples');
+        $examples->fromArray(self::HEADERS, null, 'A1');
+        $examples->fromArray([
+            ['À remplacer','Conducteur de travaux','Piloter les travaux dans le respect du budget, des délais et de la qualité.',"Coordonner les équipes\nContrôler les dépenses","Planifier les travaux\nOrganiser les réunions de chantier","Lecture de plans\nGestion de projet",'Formation BTP et expérience chantier',"Respect des délais\nÉcart budgétaire",'Directeur technique','Déplacements sur chantier','1.0',''],
+            ['À remplacer','Comptable','Assurer la fiabilité des écritures et du suivi financier.',"Contrôler les pièces\nTenir les comptes","Saisir les écritures\nEffectuer les rapprochements bancaires","SYSCOHADA\nMaîtrise Excel",'Formation en comptabilité',"Clôtures à temps\nTaux de rapprochement",'Directeur administratif et financier','Travail de bureau','1.0','']
+        ], null, 'A2');
+        $examples->getStyle('A1:L1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
+        $examples->getStyle('A1:L1')->getFill()->setFillType('solid')->getStartColor()->setRGB('081C65');
+        $examples->getStyle('A2:L3')->getAlignment()->setWrapText(true)->setVertical('top');
+        foreach(range('A','L') as $col) $examples->getColumnDimension($col)->setWidth(30);
+        $examples->getRowDimension(2)->setRowHeight(85);
+        $examples->getRowDimension(3)->setRowHeight(85);
+        $examples->freezePane('C2');
         $guide = $book->createSheet();
         $guide->setTitle('Instructions');
-        $guide->fromArray([['Une ligne par fiche. Utiliser les identifiants de l’onglet Fonctions.'],['fonction_id et intitule obligatoires. Version par défaut : 1.0.'],['Date facultative au format AAAA-MM-JJ (texte).'],['Les listes peuvent contenir plusieurs lignes dans une cellule.'],['Les fiches sont importées en brouillon. Aucun remplacement automatique.'],['Maximum 500 lignes. Ne pas modifier les en-têtes.']], null, 'A1');
+        $guide->fromArray([['Consultez les deux fiches remplies dans Exemples. Copiez et adaptez dans Fiches, avec un identifiant réel de Fonctions.'],['Seul l’onglet Fiches est importé. Les exemples ne sont pas importés.'],['Une ligne par fiche. Utiliser les identifiants de l’onglet Fonctions.'],['fonction_id et intitule obligatoires. Version par défaut : 1.0.'],['Date facultative au format AAAA-MM-JJ (texte).'],['Les listes peuvent contenir plusieurs lignes dans une cellule.'],['Les fiches sont importées en brouillon. Aucun remplacement automatique.'],['Maximum 500 lignes. Ne pas modifier les en-têtes.']], null, 'A1');
         $guide->getColumnDimension('A')->setWidth(100);
         $book->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
