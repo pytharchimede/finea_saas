@@ -33,3 +33,14 @@ html.finea-dark-mode body .rn-workspace :is(.text-orange-600,.text-orange-700,.t
 html.finea-dark-mode body .rn-workspace :is(.bg-orange-50,.bg-amber-50){background:#334155!important;color:#e2e8f0!important}
 body .rn-workspace :is(a,button)[class~="bg-[var(--brand-primary)]"]{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
 body .rn-workspace :is(a,button)[class~="bg-[var(--brand-primary)]"] i{color:inherit!important}
+
+/* Shared module tabs, including inactive links in dark mode. */
+body .rn-workspace nav.rn-tabs{background:var(--brand-surface)!important;border-color:rgb(var(--brand-primary-rgb) / .22)!important}
+body .rn-workspace nav.rn-tabs a{color:var(--brand-primary)!important;background:transparent!important}
+body .rn-workspace nav.rn-tabs a:hover{background:rgb(var(--brand-primary-rgb) / .10)!important}
+html.finea-dark-mode body .rn-workspace nav.rn-tabs{background:#1e293b!important;border-color:#475569!important}
+html.finea-dark-mode body .rn-workspace nav.rn-tabs a{color:#e2e8f0!important}
+html.finea-dark-mode body .rn-workspace nav.rn-tabs a:hover{background:#334155!important}
+html body .rn-workspace nav.rn-tabs a[aria-current="page"],html body .rn-workspace nav.rn-tabs a[aria-current="page"]:hover{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+body .rn-workspace nav.rn-tabs a i{color:inherit!important}
+body .rn-workspace nav.rn-tabs a:focus-visible{outline:2px solid var(--brand-accent);outline-offset:-2px}
