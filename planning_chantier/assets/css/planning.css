@@ -4233,3 +4233,14 @@ body.pc-presentation-open [data-financial-pilot][data-unified-render="1"].is-pre
     color:var(--pc-text)!important;box-shadow:inset 0 0 0 1px var(--brand-accent,#d71920)!important;
 }
 .pc-workspace .pc-preparation-project-card>input:focus-visible+span{outline:2px solid #6495ed;outline-offset:2px}
+
+/* Planning directory: explicit opaque surfaces, including badges and empty states. */
+.pc-workspace .pc-plannings-list .pc-card-pro{background:var(--pc-card)!important;border-color:var(--pc-border)!important;color:var(--pc-text)!important}
+.pc-workspace .pc-plannings-list .pc-planning-entry{background:var(--pc-soft)!important;border-color:var(--pc-border)!important;color:var(--pc-text)!important}
+.pc-workspace .pc-plannings-list .pc-card-head{background:transparent!important;border-color:var(--pc-border)!important;color:var(--pc-text)!important}
+.pc-workspace .pc-plannings-list :is(.pc-card-head h2,.pc-planning-entry strong){color:var(--pc-text)!important}
+.pc-workspace .pc-plannings-list :is(.pc-badge-slate,.pc-pilot-note){background:var(--pc-soft)!important;color:var(--pc-muted)!important;border-color:var(--pc-border)!important}
+.pc-workspace .pc-plannings-list .pc-btn-soft{background:var(--pc-card)!important;color:var(--pc-text)!important;border-color:var(--pc-border)!important}
+.pc-workspace .pc-plannings-list .pc-btn-soft:hover{background:var(--pc-soft)!important;border-color:var(--brand-accent,#d71920)!important}
+.pc-workspace .pc-plannings-list .pc-btn i{color:inherit!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .pc-workspace .pc-plannings-list .pc-card-head i{color:#a5c7ff!important}

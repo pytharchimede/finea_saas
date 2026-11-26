@@ -37,14 +37,14 @@ if(!planning_chantier_include_layout('header'))pc_render_fallback_header($pageTi
 planning_chantier_include_layout('navbar');
 pc_render_page_start('Plannings & derniers CR','Consultez à tout moment l’organisation actuelle de chaque chantier et de chaque service Bureau.','Consultation permanente');
 ?>
-<section class="mt-8 grid gap-7 xl:grid-cols-2">
+<section class="pc-plannings-list mt-8 grid gap-7 xl:grid-cols-2">
 <?php foreach([['title'=>'Chantiers','icon'=>'fa-helmet-safety','rows'=>$sites,'office'=>false],['title'=>'Services Bureau','icon'=>'fa-building-user','rows'=>$services,'office'=>true]] as $group):?>
 <article class="pc-card-pro">
     <div class="pc-card-head"><div><p class="pc-section-kicker">Organisation</p><h2><i class="fas <?=$group['icon']?> mr-2 text-indigo-700"></i><?=$group['title']?></h2></div><span class="pc-badge-slate"><?=count($group['rows'])?> élément(s)</span></div>
     <div class="mt-5 grid gap-3">
     <?php foreach($group['rows'] as $row):?>
         <?php $entityId=(int)($group['office']?$row['ligne_id']:$row['id']);$latest=$group['office']?($latestByService[$entityId]??null):($latestByProject[$entityId]??null);?>
-        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+        <div class="pc-planning-entry rounded-2xl border p-4">
             <div class="flex flex-wrap items-start justify-between gap-3"><div><strong class="text-slate-950"><?=pc_e((string)($group['office']?$row['designation']:$row['titre']))?></strong><small class="mt-1 block text-slate-500"><?=pc_e((string)($row['code']??''))?><?=$latest?' · Dernier CR le '.pc_date((string)$latest['meeting_date']):' · Aucun CR antérieur'?></small></div>
             <div class="flex flex-wrap gap-2"><a class="pc-btn pc-btn-soft" href="planning_view.php?type=<?=$group['office']?'office':'site'?>&amp;id=<?=$entityId?>"><i class="fas fa-eye"></i> Planning complet</a>
             <?php if($latest):?><a class="pc-btn pc-btn-soft" href="meeting.php?id=<?=(int)$latest['id']?>"><i class="fas fa-clock-rotate-left"></i> Dernier CR</a><a class="pc-btn pc-btn-primary" target="_blank" href="request/meeting_gantt_pdf.php?preparation_id=<?=(int)$latest['preparation_id']?>&amp;all=1&amp;<?=$group['office']?'line_id='.$entityId:'chantier_id='.$entityId?>"><i class="fas fa-file-pdf"></i> Gantt</a><?php endif;?></div></div>
