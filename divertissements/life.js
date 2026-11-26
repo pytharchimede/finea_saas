@@ -1,0 +1,1 @@
+(()=>{const k=location.hash.slice(1);if(!k||new URLSearchParams(location.search).has('view'))return;const a=[...document.querySelectorAll('.life-sidebar a')].find(a=>a.getAttribute('href')==='?view='+k);if(a)location.replace(a.href)})();

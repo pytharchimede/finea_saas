@@ -91,6 +91,25 @@ class PortalUserPreferences
         ]);
     }
 
+    public function getDisplay(int $userId): array
+    {
+        $q=$this->pdo->prepare('SELECT display_json FROM portal_user_preferences WHERE user_id=?');
+        $q->execute([$userId]);
+        return self::normalizeDisplay(json_decode((string)$q->fetchColumn(),true) ?: []);
+    }
+    public static function normalizeDisplay(array $data): array
+    {
+        $out=['layout'=>in_array($data['layout']??'', ['cards','compact','list'],true)?$data['layout']:'cards'];
+        foreach(['weather','title','stats','summary','favorites','sidebar'] as $key)$out[$key]=!array_key_exists($key,$data)||$data[$key]===true;
+        return $out;
+    }
+    public function saveDisplay(int $userId,array $data): void
+    {
+        if($userId<=0)throw new InvalidArgumentException('Utilisateur invalide');
+        $q=$this->pdo->prepare('INSERT INTO portal_user_preferences(user_id,display_json) VALUES(?,?) ON DUPLICATE KEY UPDATE display_json=VALUES(display_json)');
+        $q->execute([$userId,json_encode(self::normalizeDisplay($data),JSON_THROW_ON_ERROR)]);
+    }
+
     private function sanitizeFavoriteModules(array $moduleIds): array
     {
         $clean = [];
@@ -147,6 +166,7 @@ class PortalUserPreferences
             $this->pdo->exec('ALTER TABLE portal_user_preferences ADD COLUMN module_launcher_enabled TINYINT(1) NOT NULL DEFAULT 1 AFTER favorite_modules_json');
         }
 
+        if (!isset($columns['display_json'])) $this->pdo->exec('ALTER TABLE portal_user_preferences ADD COLUMN IF NOT EXISTS display_json TEXT NULL');
         $tableReady = true;
     }
 }

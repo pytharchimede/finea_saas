@@ -280,6 +280,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['save_portal_preference
     exit;
 }
 
+$portalDisplayCsrf=$_SESSION['portal_display_csrf']??=bin2hex(random_bytes(32));
+if($_SERVER['REQUEST_METHOD']==='POST'&&isset($_GET['save_display'])){
+ if(!$currentUserId||!hash_equals($portalDisplayCsrf,(string)($_POST['csrf']??''))){http_response_code(403);exit;}
+ $display=['layout'=>(string)($_POST['layout']??'cards')];
+ foreach(['weather','title','stats','summary','favorites','sidebar'] as $key)$display[$key]=isset($_POST[$key]);
+ $portalUserPreferences->saveDisplay($currentUserId,$display);
+ header('Location: selection_portail.php');exit;
+}
+$portalDisplay=$portalUserPreferences->getDisplay((int)$currentUserId);
 $globalModuleUsageStats = loadPortalModuleUsageStats($pdo);
 $personalModuleUsageStats = loadPortalModuleUsageStats($pdo, $currentUserId);
 $portalPendingBadges = $portalBadgeManager->getBadges();
@@ -2896,7 +2905,8 @@ require_once __DIR__ . '/decaissement/includes/header.php';
     body:not(.portal-theme-dark) :is(.portal-module-group-pill,.portal-group-count){background:#f1f5f9!important;color:#17243d!important}
     body.portal-theme-dark :is(.portal-module-group-pill,.portal-group-count){background:#202e43!important;color:#f5f8fc!important}
 </style>
-<div class="portal-page">
+<link rel="stylesheet" href="assets/css/portal-display.css">
+<div class="portal-page portal-layout-<?=$portalDisplay['layout']?> <?php foreach(['weather','title','stats','summary','favorites','sidebar'] as $key)if(!$portalDisplay[$key])echo 'portal-hide-'.$key.' ';?>">
     <div class="portal-shell">
         <section class="portal-hero">
             <div class="portal-hero-main">
@@ -2927,6 +2937,7 @@ require_once __DIR__ . '/decaissement/includes/header.php';
                             <i class="fas fa-bolt"></i>
                             <span>Choix module</span>
                         </button>
+                        <button type="button" class="portal-chip-action" onclick="document.getElementById('portalDisplayDialog').showModal()"><i class="fas fa-sliders"></i><span>Personnaliser</span></button>
                         <button id="portalThemeToggle" type="button" class="portal-chip-action portal-theme-toggle" aria-label="Activer le mode sombre" aria-pressed="false">
                             <span class="portal-theme-orbit" aria-hidden="true"></span>
                             <i class="fas fa-sun" aria-hidden="true"></i>
@@ -3098,6 +3109,7 @@ require_once __DIR__ . '/decaissement/includes/header.php';
         </section>
     </div>
 </div>
+<dialog id="portalDisplayDialog" class="portal-display-dialog"><form method="post" action="?save_display=1"><input type="hidden" name="csrf" value="<?=htmlspecialchars($portalDisplayCsrf,ENT_QUOTES,'UTF-8')?>"><h2>Personnaliser mon portail</h2><p>Ces réglages sont propres à votre compte.</p><label>Présentation des modules<select name="layout"><?php foreach(['cards'=>'Cartes','compact'=>'Grille compacte','list'=>'Liste'] as $key=>$label):?><option value="<?=$key?>" <?=$portalDisplay['layout']===$key?'selected':''?>><?=$label?></option><?php endforeach;?></select></label><?php foreach(['weather'=>'Météo','title'=>'Grand titre et introduction','stats'=>'Statistiques','summary'=>'Résumé latéral','favorites'=>'Modules épinglés','sidebar'=>'Panneau Organisation'] as $key=>$label):?><label><input type="checkbox" name="<?=$key?>" value="1" <?=$portalDisplay[$key]?'checked':''?>> <?=$label?></label><?php endforeach;?><div class="portal-display-actions"><button type="button" onclick="this.closest('dialog').close()">Annuler</button><button type="submit">Enregistrer</button></div></form></dialog>
 <div id="portalModuleLauncherBackdrop" class="portal-module-launcher-backdrop" aria-hidden="true">
     <section class="portal-module-launcher" role="dialog" aria-modal="true" aria-labelledby="portalModuleLauncherTitle">
         <div class="portal-module-launcher-head">
@@ -4762,7 +4774,7 @@ require_once __DIR__ . '/decaissement/includes/header.php';
     }
 
     initPortalThemeMode();
-    initPortalWeather();
+    <?php if($portalDisplay['weather']&&$portalDisplay['summary']):?>initPortalWeather();<?php endif;?>
     initModuleLauncher();
 
     fetch('request/user_permissions.php')
