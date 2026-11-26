@@ -18,7 +18,7 @@ if (!$contact) {
     require_once __DIR__ . '/decaissement/includes/header.php';
     require_once __DIR__ . '/decaissement/includes/navbar.php';
 ?>
-    <div class="mx-auto max-w-3xl px-4 py-16">
+    <div class="ab-workspace mx-auto max-w-3xl px-4 py-16">
         <div class="rounded-3xl border border-rose-200 bg-rose-50 px-6 py-10 text-center">
             <h1 class="text-2xl font-semibold text-rose-900">Contact introuvable</h1>
             <p class="mt-3 text-sm text-rose-700">Le contact demandé n’existe pas ou n’est plus disponible dans le carnet d’adresse.</p>
