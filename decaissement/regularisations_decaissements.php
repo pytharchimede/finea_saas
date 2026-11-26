@@ -5,7 +5,8 @@ require_once __DIR__ . '/../model/Database.php';
 require_once __DIR__ . '/../model/DisbursementRegularizationManager.php';
 
 $pdo = Database::getConnection();
-$manager = new DisbursementRegularizationManager($pdo);
+// Listing and accounting approval do not upload payment proofs.
+$manager = new DisbursementRegularizationManager($pdo, false);
 $userId = (int)($_SESSION['user_id'] ?? 0);
 $canViewAll = hasPermission('acces_compta') || hasPermission('acces_tresorerie') || hasPermission('acces_direction') || hasPermission('acces_admin');
 $canBulkApprove = hasPermission('acces_compta') || hasPermission('acces_tresorerie') || hasPermission('acces_admin');
