@@ -92,7 +92,7 @@ require_once dirname(__DIR__, 2) . '/decaissement/includes/header.php';
 require_once dirname(__DIR__, 2) . '/decaissement/includes/navbar.php';
 ?>
 
-<link rel="stylesheet" href="<?= htmlspecialchars($rootUrl('assets/css/devis-theme.css'), ENT_QUOTES, 'UTF-8') ?>?v=20261126i">
+<link rel="stylesheet" href="<?= htmlspecialchars($rootUrl('assets/css/devis-theme.css'), ENT_QUOTES, 'UTF-8') ?>?v=20261126j">
 
 <div class="devis-page">
     <div class="devis-container">

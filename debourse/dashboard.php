@@ -125,7 +125,7 @@ ob_start();
                 </section>
             </main>
 
-            
+
         </div>
 </div>
 <?php $content=ob_get_clean(); require __DIR__.'/../devis/includes/module_layout.php'; ?>

@@ -198,7 +198,7 @@ $selectedClientLabel = $client !== '' ? $client : 'Tous les clients';
                 </section>
             </main>
 
-            
+
         </div>
 </div>
 <script>

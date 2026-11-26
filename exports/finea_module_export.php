@@ -9,11 +9,11 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 
 $module = $_GET['module'] ?? '';
 $format = $_GET['format'] ?? '';
-if (!in_array($module, ['unites','clients','offres'], true) || !in_array($format, ['pdf','xlsx'], true)) {
+if (!in_array($module, ['unites','clients','offres','chantiers'], true) || !in_array($format, ['pdf','xlsx'], true)) {
     http_response_code(400);
     exit('Export non pris en charge.');
 }
-$permission = ['clients'=>'acces_liste_client','unites'=>'acces_liste_unite','offres'=>'acces_liste_offre'][$module];
+$permission = ['clients'=>'acces_liste_client','unites'=>'acces_liste_unite','offres'=>'acces_liste_offre','chantiers'=>'acces_liste_chantier'][$module];
 if (!AccessManager::hasPermission($permission)) {
     AccessManager::denyAccess($permission,'exports/finea_module_export.php');
     exit;
@@ -65,6 +65,15 @@ if ($module === 'clients') {
         if (($scope==='active' && !$sites)||($scope==='none' && $sites)) continue;
         $rows[]=[(string)$project['num_offre'],(string)$project['reference_offre'],(string)($m['nom_client']??''),(string)$project['commercial_dedie'],(string)$project['date_offre'],(int)$m['quote_count'],$sites,(float)$m['project_value']];
     }
+} elseif ($module === 'chantiers') {
+    require_once dirname(__DIR__).'/services/ChantierDashboardReport.php';
+    $scope=$_GET['scope']??(!empty($_GET['include_archived'])?'all':(!empty($_GET['archives'])?'archived':'active'));
+    $client=$_GET['client_id']??'0';
+    if(!in_array($scope,['active','archived','all'],true)||(!is_string($client))||($client!==''&&!ctype_digit($client))){http_response_code(400);exit('Filtre invalide.');}
+    $data=ChantierDashboardReport::rows(Database::getConnection(),$scope,$filters['q'],(int)$client);
+    $headers=['Code','Chantier','Client','Devis','État','Conformité','Devis TTC (FCFA)','Déboursé prévu (FCFA)'];
+    $widths=[10,21,15,12,10,10,11,11];
+    $rows=array_map(static fn($r)=>[(string)$r['code'],(string)$r['titre'],(string)$r['nom_client'],(string)$r['numero_devis'],ChantierDashboardReport::state($r),$r['financial_data_status']==='compliant'?'Conforme':'À vérifier',$r['total_ttc']===null?'Non renseigné':(float)$r['total_ttc'],$r['budget']===null?'Non renseigné':(float)$r['budget']],$data);
 } else {
     $usage=$_GET['usage']??'';
     if(!in_array($usage,['','used','unused'],true)){http_response_code(400);exit('Filtre invalide.');}
@@ -76,12 +85,12 @@ if ($module === 'clients') {
 $lastColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(count($headers));
 $brand = CompanyBranding::get();
 $palette = CompanyBranding::palette();
-$title = ['clients'=>'Liste des clients','unites'=>'Liste des unités de mesure','offres'=>'Portefeuille des projets'][$module];
+$title = ['clients'=>'Liste des clients','unites'=>'Liste des unités de mesure','offres'=>'Portefeuille des projets','chantiers'=>'Suivi des chantiers'][$module];
 if ($format === 'xlsx') {
     $book = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
     $book->getProperties()->setCreator(CompanyExportBranding::creator())->setTitle($title);
     $sheet = $book->getActiveSheet();
-    $sheet->setTitle(['clients'=>'Clients','unites'=>'Unités','offres'=>'Projets'][$module]);
+    $sheet->setTitle(['clients'=>'Clients','unites'=>'Unités','offres'=>'Projets','chantiers'=>'Chantiers'][$module]);
     $sheet->fromArray($headers,null,'A1');
     $sheet->getStyle('A1:'.$lastColumn.'1')->applyFromArray([
         'font'=>['bold'=>true,'color'=>['rgb'=>CompanyExportBranding::rgb('primary',true)]],
