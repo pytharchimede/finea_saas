@@ -50,30 +50,36 @@ $activeMenu = 'rh';
 require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
-<div class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(240,253,244,0.95),_transparent_35%),radial-gradient(circle_at_right,_rgba(219,234,254,0.85),_transparent_30%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<link rel="stylesheet" href="dashboard-theme.css?v=<?=filemtime(__DIR__.'/dashboard-theme.css')?>">
+<link rel="stylesheet" href="personnel-theme.css?v=<?=filemtime(__DIR__.'/personnel-theme.css')?>">
+<div class="rh-workspace rh-directory min-h-screen pb-12">
+<div class="flex justify-end px-4 pt-4"><button type="button" id="rhThemeToggle" class="rounded-xl px-4 py-2 text-sm font-bold">Mode sombre</button></div>
+<script>
+(function(){const root=document.documentElement,b=document.getElementById('rhThemeToggle');function apply(dark){root.classList.toggle('finea-dark-mode',dark);document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}apply(root.classList.contains('finea-dark-mode'));b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');apply(dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))apply(e.newValue==='dark');});})();
+</script>
     <div class="container mx-auto px-4 py-8">
 <?php if ($identityPending): ?><div role="alert" class="my-4 rounded-xl border border-amber-300 bg-amber-50 p-4"><strong>Pièces d’identité RH à régulariser : <?= count($identityPending) ?> dossiers.</strong><p>Chaque salarié doit avoir un numéro de pièce valide et sa copie jointe. Complétez ces dossiers pour fiabiliser le blocage des salariés dans le référentiel fournisseur. Les paiements RH suivent leur circuit habituel.</p><details class="mt-3"><summary class="cursor-pointer font-semibold">Afficher tous les dossiers à compléter</summary><?php foreach($identityPending as $pending): ?><a class="mt-2 block underline" href="modifier_dossier_personnel_rh.php?id=<?= (int)$pending['id_personnel_soignant'] ?>"><?= htmlspecialchars($pending['nom_personnel_soignant']) ?></a><small><?= htmlspecialchars($pending['identity_missing_reason']??'Numéro et pièce jointe à vérifier.') ?></small><?php endforeach; ?></details></div><?php endif; ?>
 
         <?php if($categoryFlash):?><div class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 font-bold text-emerald-800"><?=htmlspecialchars($categoryFlash)?></div><?php endif;?><?php if($categoryError):?><div class="mb-5 rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-800"><?=htmlspecialchars($categoryError)?></div><?php endif;?>
         <div class="overflow-hidden rounded-[32px] border border-slate-200 bg-white/95 shadow-[0_18px_60px_rgba(15,23,42,0.09)] backdrop-blur">
-            <div class="relative flex flex-col gap-6 overflow-hidden bg-black p-8 text-white lg:flex-row lg:items-end lg:justify-between">
+            <div class="rh-directory-hero relative flex flex-col gap-6 overflow-hidden bg-black p-8 text-white lg:flex-row lg:items-end lg:justify-between">
                 <div class="absolute -right-20 -top-28 h-72 w-72 rounded-full bg-[var(--brand-accent)]/20 blur-3xl"></div>
                 <div class="absolute bottom-0 right-[34%] h-1 w-48 bg-[var(--brand-primary)]"></div>
                 <div class="relative flex items-center gap-5">
-                    <div class="hidden h-24 w-24 shrink-0 items-center justify-center rounded-[26px] bg-white p-2 shadow-xl sm:flex">
+                    <div class="rh-logo-box hidden h-24 w-24 shrink-0 items-center justify-center rounded-[26px] bg-white p-2 shadow-xl sm:flex">
                         <?php if (!empty($layoutBrandLogoUrl)): ?>
                         <img src="<?= htmlspecialchars($layoutBrandLogoUrl, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$layoutCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8') ?>" class="h-full w-full rounded-2xl object-contain bg-white p-2">
                         <?php else: ?><span class="font-bold text-slate-900"><?= htmlspecialchars((string)$layoutCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8') ?></span><?php endif; ?>
                     </div>
                     <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.32em] text-white">Finea · Ressources humaines</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.32em] text-white"><?= htmlspecialchars((string)($layoutCompanyBranding['company_name'] ?? 'FINEA'), ENT_QUOTES, 'UTF-8') ?> · Ressources humaines</p>
                     <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl"><?=$isProviderDirectory?'Prestataires et consultants':'Personnel interne'?></h1>
                     <p class="mt-3 max-w-3xl text-sm text-slate-300 md:text-base">
                         <?=$isProviderDirectory?'Annuaire séparé des intervenants externes gérés par les RH.':'Salariés, stagiaires et collaborateurs internes, hors prestataires et consultants.'?>
                     </p>
                     <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="dashboard_rh.php" class="inline-flex items-center rounded-xl bg-[var(--brand-primary)] px-4 py-2 text-sm font-bold text-white transition hover:opacity-90"><i class="fas fa-arrow-left mr-2"></i>Dashboard RH</a>
-                        <a href="integration_personnel_rh.php?category=<?=htmlspecialchars($rhPersonnelCategory)?>" class="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"><i class="fas fa-user-plus mr-2 text-white"></i><?=$isProviderDirectory?'Ajouter un prestataire':'Ajouter un collaborateur'?></a>
+                        <a href="dashboard_rh.php" class="rh-directory-primary inline-flex items-center rounded-xl bg-[var(--brand-primary)] px-4 py-2 text-sm font-bold text-white transition hover:opacity-90"><i class="fas fa-arrow-left mr-2"></i>Dashboard RH</a>
+                        <a href="integration_personnel_rh.php?category=<?=htmlspecialchars($rhPersonnelCategory)?>" class="rh-directory-add inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"><i class="fas fa-user-plus mr-2 text-white"></i><?=$isProviderDirectory?'Ajouter un prestataire':'Ajouter un collaborateur'?></a>
                     </div>
                     </div>
                 </div>
@@ -169,7 +175,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     </select>
                 </div>
                 <div class="flex items-end gap-3 xl:col-span-4">
-                    <button type="submit" class="inline-flex items-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+                    <button type="submit" class="rh-directory-primary inline-flex items-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
                         <i class="fas fa-search mr-2"></i>
                         Rechercher
                     </button>
@@ -181,11 +187,11 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                         <i class="fas fa-file-excel mr-2"></i>
                         Export Excel
                     </a>
-                    <a href="organigramme_rh.php" class="inline-flex items-center rounded-2xl border border-sky-200 bg-sky-50 px-5 py-3 text-sm font-semibold text-sky-700 transition hover:bg-sky-100">
+                    <a href="organigramme_rh.php" class="rh-directory-secondary inline-flex items-center rounded-2xl border border-sky-200 bg-sky-50 px-5 py-3 text-sm font-semibold text-sky-700 transition hover:bg-sky-100">
                         <i class="fas fa-sitemap mr-2"></i>
                         Organigramme
                     </a>
-                    <button type="button" id="open-card-export" class="inline-flex items-center rounded-2xl border border-[var(--brand-primary)] bg-[var(--brand-primary)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90">
+                    <button type="button" id="open-card-export" class="rh-directory-primary inline-flex items-center rounded-2xl border border-[var(--brand-primary)] bg-[var(--brand-primary)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90">
                         <i class="fas fa-address-card mr-2"></i>
                         Cartes pro A4
                     </button>
@@ -202,9 +208,9 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                 resultat(s) trouves, page <?= (int) $result['page'] ?> sur <?= (int) $result['totalPages'] ?>.
             </div>
             <div class="flex flex-wrap gap-2">
-                <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['scope' => 'active', 'page' => null])) ?>" class="rounded-full px-4 py-2 text-sm font-semibold <?= $filters['scope'] === 'active' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-700 border border-slate-200' ?>">Actifs</a>
-                <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['scope' => 'all', 'page' => null])) ?>" class="rounded-full px-4 py-2 text-sm font-semibold <?= $filters['scope'] === 'all' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 border border-slate-200' ?>">Tous</a>
-                <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['scope' => 'inactive', 'page' => null])) ?>" class="rounded-full px-4 py-2 text-sm font-semibold <?= $filters['scope'] === 'inactive' ? 'bg-amber-500 text-white' : 'bg-white text-slate-700 border border-slate-200' ?>">Sortis</a>
+                <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['scope' => 'active', 'page' => null])) ?>" class="rounded-full px-4 py-2 text-sm font-semibold <?= $filters['scope'] === 'active' ? 'rh-directory-primary bg-[var(--brand-primary)] text-white' : 'rh-directory-secondary bg-white text-slate-700 border border-slate-200' ?>">Actifs</a>
+                <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['scope' => 'all', 'page' => null])) ?>" class="rounded-full px-4 py-2 text-sm font-semibold <?= $filters['scope'] === 'all' ? 'rh-directory-primary bg-[var(--brand-primary)] text-white' : 'rh-directory-secondary bg-white text-slate-700 border border-slate-200' ?>">Tous</a>
+                <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['scope' => 'inactive', 'page' => null])) ?>" class="rounded-full px-4 py-2 text-sm font-semibold <?= $filters['scope'] === 'inactive' ? 'rh-directory-primary bg-[var(--brand-primary)] text-white' : 'rh-directory-secondary bg-white text-slate-700 border border-slate-200' ?>">Sortis</a>
             </div>
         </div>
 
@@ -279,7 +285,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                             <div class="mt-4 rounded-2xl border p-4 <?=$employeeJobDescription?'border-emerald-200 bg-emerald-50':'border-amber-300 bg-amber-50'?>"><div class="flex min-w-0 items-start gap-3"><i class="fas <?=$employeeJobDescription?'fa-clipboard-check text-emerald-700':'fa-triangle-exclamation text-amber-700'?> mt-1 shrink-0"></i><div class="min-w-0"><b class="block break-words <?=$employeeJobDescription?'text-emerald-900':'text-amber-950'?>"><?=$employeeJobDescription?'Fiche de poste disponible':'Fiche de poste à éditer'?></b><p class="mt-1 break-words text-xs <?=$employeeJobDescription?'text-emerald-700':'text-amber-800'?>"><?=$employeeJobDescription?htmlspecialchars((string)$employeeJobDescription['intitule']).' · version '.htmlspecialchars((string)$employeeJobDescription['version']):'Aucune fiche active ne couvre actuellement cette fonction.'?></p></div></div><a href="fiches_poste_rh.php<?=$employeeJobDescription?'?edit='.(int)$employeeJobDescription['id']:'?fonction_id='.(int)($employee['fonction_id']??0)?>" class="mt-3 flex w-full items-center justify-center rounded-xl <?=$employeeJobDescription?'bg-emerald-700 text-white':'bg-[var(--brand-primary)] text-white'?> px-4 py-2 text-sm font-black"><?=$employeeJobDescription?'Consulter / modifier':'Créer maintenant'?></a></div>
 
                             <div class="mt-6 grid min-w-0 gap-3 sm:grid-cols-2">
-                                <button type="button" class="toggle-details inline-flex items-center justify-center rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800" data-target="<?= htmlspecialchars($detailsId) ?>">
+                                <button type="button" class="rh-directory-primary toggle-details inline-flex items-center justify-center rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800" data-target="<?= htmlspecialchars($detailsId) ?>">
                                     <i class="fas fa-circle-info mr-2"></i>
                                     Infos rapides
                                 </button>
@@ -295,7 +301,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                                     <i class="fas fa-people-arrows mr-2"></i>
                                     Mutation
                                 </a>
-                                <a href="pointage_journalier_rh.php" class="inline-flex items-center justify-center rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-100">
+                                <a href="pointage_journalier_rh.php" class="rh-directory-secondary inline-flex items-center justify-center rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-100">
                                     <i class="fas fa-user-check mr-2"></i>
                                     Pointage
                                 </a>
@@ -371,7 +377,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
 
                     <?php for ($i = 1; $i <= (int) $result['totalPages']; $i++): ?>
                         <?php if ($i === 1 || $i === (int) $result['totalPages'] || abs($i - (int) $result['page']) <= 1): ?>
-                            <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['page' => $i])) ?>" class="rounded-2xl px-4 py-3 text-sm font-semibold <?= $i === (int) $result['page'] ? 'bg-slate-950 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50' ?>">
+                            <a href="<?=$listPage?>?<?= htmlspecialchars(rhQuery($filters, ['page' => $i])) ?>" class="rounded-2xl px-4 py-3 text-sm font-semibold <?= $i === (int) $result['page'] ? 'rh-directory-primary bg-[var(--brand-primary)] text-white' : 'rh-directory-secondary border border-slate-200 bg-white text-slate-700 hover:bg-slate-50' ?>">
                                 <?= $i ?>
                             </a>
                         <?php elseif ($i === 2 || $i === (int) $result['totalPages'] - 1): ?>
@@ -386,11 +392,10 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <?php endif; ?>
         <?php endif; ?>
     </div>
-</div>
 
 <div id="card-export-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="card-export-title">
     <div class="w-full max-w-lg overflow-hidden rounded-[28px] bg-white shadow-2xl">
-        <div class="bg-black px-7 py-6 text-white">
+        <div class="rh-export-header bg-black px-7 py-6 text-white">
             <div class="flex items-start justify-between gap-5">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white"><?= htmlspecialchars((string)$layoutCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8') ?> · Impression</p>
@@ -424,11 +429,12 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </label>
             <p class="rounded-2xl bg-yellow-50 px-4 py-3 text-xs leading-5 text-yellow-900">PDF A4 de 10 cartes par feuille. Imprimez en taille réelle, recto-verso, retournement sur le bord long.</p>
             <div id="card-export-error" class="hidden rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
-            <button type="button" id="run-card-export" class="flex w-full items-center justify-center rounded-2xl bg-[var(--brand-primary)] px-5 py-3.5 text-sm font-bold text-white hover:opacity-90">
+            <button type="button" id="run-card-export" class="rh-directory-primary flex w-full items-center justify-center rounded-2xl bg-[var(--brand-primary)] px-5 py-3.5 text-sm font-bold text-white hover:opacity-90">
                 <i class="fas fa-file-pdf mr-2"></i>Générer le PDF recto-verso
             </button>
         </div>
     </div>
+</div>
 </div>
 
 <script>
