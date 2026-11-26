@@ -235,6 +235,17 @@ final class AccountingService
         });
     }
 
+    /** Resolve only fixed, local business referentials; never accept a table name from a request. */
+    public function accountParties(string $kind): array
+    {
+        return match ($kind) {
+            'supplier' => $this->rows("SELECT id_fournisseur AS id, COALESCE(NULLIF(raison_sociale,''),nom_commercial) AS label FROM fournisseur_banamur ORDER BY label"),
+            'client' => $this->rows("SELECT id_client AS id, nom_client AS label FROM client_banamur ORDER BY label"),
+            'employee' => $this->rows("SELECT id_personnel_soignant AS id, nom_personnel_soignant AS label FROM personnel ORDER BY label"),
+            default => throw new DomainException('Nature de tiers invalide.'),
+        };
+    }
+
     /** Additions only: existing and historical account definitions cannot be overwritten. */
     public function importAccounts(array $accounts, int $user): int
     {
