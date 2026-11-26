@@ -356,6 +356,14 @@ $navLinks = [
         'icon' => 'fa-solid fa-chart-column',
     ],
     [
+        'label' => 'Site web',
+        'sublabel' => 'Site institutionnel et publication',
+        'href' => $layoutRootBase . 'website/index.php',
+        'perm' => 'acces_admin',
+        'active' => 'website',
+        'icon' => 'fa-solid fa-globe',
+    ],
+    [
         'label' => 'Formation',
         'href' => $layoutRootBase . 'formation/index.php',
         'perm' => ['acces_formation', 'formation_admin', 'acces_admin'],
@@ -513,7 +521,7 @@ $navCategoryMap = [
     'module_devis'=>'Commercial','module_devis_create'=>'Commercial','module_devis_list'=>'Commercial','module_clients'=>'Commercial','module_offres'=>'Commercial','module_unites'=>'Commercial','crm'=>'Commercial',
     'module_debourse'=>'Finance & décisions','budgets'=>'Finance & décisions','feb_finance'=>'Finance & décisions','contestations'=>'Finance & décisions','conformite'=>'Finance & décisions','approbation'=>'Finance & décisions','achat'=>'Finance & décisions','urgences'=>'Finance & décisions','regularisations_urgentes'=>'Finance & décisions','pointfinancier'=>'Finance & décisions','depenses_planifiees'=>'Finance & décisions','compta'=>'Finance & décisions','regularisation_decaissements'=>'Finance & décisions','facturation'=>'Finance & décisions','fournisseur'=>'Finance & décisions','historique'=>'Finance & décisions','relink_debourse'=>'Finance & décisions','besoins_recurrents'=>'Finance & décisions',
     'dashboard_dg'=>'Direction Générale','feb_price_challenge_control'=>'Direction Générale','tresorerie_pilotage'=>'Direction Générale',
-    'ticketing'=>'Organisation & collaboration','formation'=>'Organisation & collaboration','documentation'=>'Organisation & collaboration','emploi_du_temps'=>'Organisation & collaboration',
+    'website'=>'Organisation & collaboration','ticketing'=>'Organisation & collaboration','formation'=>'Organisation & collaboration','documentation'=>'Organisation & collaboration','emploi_du_temps'=>'Organisation & collaboration',
     'feb_price_challengers'=>'Administration','admin'=>'Administration','parc_informatique'=>'Administration',
     'Portail'=>'Portail',
 ];
