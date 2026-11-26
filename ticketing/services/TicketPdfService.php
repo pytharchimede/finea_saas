@@ -6,28 +6,37 @@ final class TicketPdfService
     public function render(array $ticket, array $executors, bool $print = false): string
     {
         require_once dirname(__DIR__, 2).'/vendor/autoload.php';
+        require_once dirname(__DIR__, 2).'/model/CompanyExportBranding.php';
+        $branding = \CompanyBranding::get();
+        $company = (string)$branding['company_name'];
         $pdf = new class extends \TCPDF {
             public string $reference = '';
+            public string $company = '';
+            public string $logo = '';
             public function Header() {
-                $this->SetFillColor(29,43,87); $this->Rect(0,0,210,5,'F');
-                $this->Image(dirname(__DIR__,2).'/logo/default_logo.jpg',14,9,23,23);
-                $this->SetFont('dejavusans','B',17); $this->SetTextColor(29,43,87);
-                $this->SetXY(43,12); $this->Cell(150,8,'FINEA  /  BANAMUR',0,1);
+                $this->SetFillColor(...\CompanyExportBranding::rgbArray('primary')); $this->Rect(0,0,210,5,'F');
+                if ($this->logo !== '' && is_file($this->logo)) $this->Image($this->logo,14,9,23,23);
+                $this->SetFont('dejavusans','B',17); $this->SetTextColor(...\CompanyExportBranding::rgbArray('primary'));
+                $this->SetXY(43,12); $this->Cell(150,8,$this->company,0,1);
                 $this->SetFont('dejavusans','',8); $this->SetXY(43,22); $this->Cell(150,6,'CENTRE DE SERVICES • BORDEREAU DE TRANSMISSION',0,1);
-                $this->SetDrawColor(250,189,2); $this->SetLineWidth(1); $this->Line(14,36,196,36);
+                $this->SetXY(43,28); $this->SetFont('dejavusans','',6.5); $this->Cell(150,5,\CompanyExportBranding::identityLine(),0,1);
+                $this->SetDrawColor(...\CompanyExportBranding::rgbArray('accent')); $this->SetLineWidth(1); $this->Line(14,36,196,36);
             }
             public function Footer() {
                 $this->SetY(-16); $this->SetDrawColor(220,225,235); $this->Line(14,$this->GetY(),196,$this->GetY());
                 $this->SetFont('dejavusans','',7); $this->SetTextColor(100,116,139);
-                $this->Cell(150,9,'BANAMUR • FINEA   |   '.$this->reference.'   |   Document interne');
+                $this->SetXY(14,-15); $this->Cell(182,4,\CompanyExportBranding::contactLine(),0,1,'C');
+                $this->SetX(14); $this->Cell(150,7,$this->company.' • FINEA   |   '.$this->reference.'   |   Document interne');
                 $this->Cell(32,9,$this->getAliasNumPage().' / '.$this->getAliasNbPages(),0,0,'R');
             }
         };
+        $pdf->company=$company;
+        $pdf->logo=\CompanyBranding::logoFile();
         $pdf->reference=(string)$ticket['ticket_no'];
-        $pdf->SetCreator('FINEA • Banamur'); $pdf->SetAuthor((string)$ticket['requester_name']);
+        $pdf->SetCreator(\CompanyExportBranding::creator()); $pdf->SetAuthor((string)$ticket['requester_name']);
         $pdf->SetTitle('Ticket '.$ticket['ticket_no']);
         $pdf->SetMargins(14,43,14); $pdf->SetAutoPageBreak(true,22); $pdf->AddPage();
-        $pdf->SetFont('dejavusans','',10); $pdf->SetTextColor(29,43,87);
+        $pdf->SetFont('dejavusans','',10); $pdf->SetTextColor(...\CompanyExportBranding::rgbArray('primary'));
         $e=static fn($v)=>htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');
         $date=static fn($v)=>$v ? date('d/m/Y à H:i',strtotime((string)$v)) : 'À confirmer';
         $status=\Ticketing\Models\Ticket::STATUSES[$ticket['status']] ?? $ticket['status'];
@@ -67,7 +76,7 @@ final class TicketPdfService
                 $pdf->SetDrawColor(210,218,232); $pdf->RoundedRect($x,$y,88,45,3);
                 $pdf->SetXY($x+4,$y+3); $pdf->SetFont('dejavusans','B',9); $pdf->MultiCell(80,5,(string)$person['name'],0,'L',false,1,'','',true,0,false,true,13,'T',true);
                 $pdf->SetXY($x+4,$y+17); $pdf->SetFont('dejavusans','',8); $pdf->Cell(80,5,'Reçu le : ____ / ____ / ______    à ____ : ____');
-                $pdf->SetXY($x+4,$y+25); $pdf->SetTextColor(100,116,139); $pdf->Cell(80,5,'Signature manuscrite'); $pdf->SetTextColor(29,43,87);
+                $pdf->SetXY($x+4,$y+25); $pdf->SetTextColor(100,116,139); $pdf->Cell(80,5,'Signature manuscrite'); $pdf->SetTextColor(...\CompanyExportBranding::rgbArray('primary'));
             }
             $pdf->SetY($y+49);
         }
