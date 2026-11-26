@@ -320,16 +320,9 @@ class PortalModuleManager
 
         $stmt->execute($module);
 
-        // Corrige aussi l'ancien module "Suivi Planning Chantier" s'il existe déjà en base.
-        try {
-            $legacy = $module;
-            $legacy['module_key'] = 'module_planning';
-            $legacy['label'] = 'Planning Chantier';
-            $legacy['sort_order'] = 27;
-            $stmt->execute($legacy);
-        } catch (Throwable $e) {
-            // Ne bloque pas le portail si l'ancien module n'existe pas ou si une contrainte diffère.
-        }
+        // Retain the historical key for audit references, but never recreate its card.
+        $retire = $this->pdo->prepare('UPDATE ' . self::TABLE . ' SET is_active = 0 WHERE module_key = :key AND is_active = 1');
+        $retire->execute(['key' => 'module_planning']);
     }
 
 
@@ -836,8 +829,8 @@ class PortalModuleManager
                 'is_active' => 1,
             ],
             [
-                'module_key' => 'module_planning',
-                'label' => 'Suivi Planning Chantier',
+                'module_key' => 'module_planning_chantier',
+                'label' => 'Planning Chantier',
                 'icon' => 'fa-calendar-check',
                 'color' => '#0f766e',
                 'target' => 'planning_chantier/dashboard.php',
