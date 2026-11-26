@@ -77,3 +77,10 @@ if ($academyMode === 'dashboard') { usort($visibleCourses, static fn($a,$b)=>(fl
         </div>
     <?php endif; ?>
 </section>
+
+<?php if(isset($academyPdo)): require_once dirname(__DIR__).'/model/AcademyPaths.php'; $paths=academyPaths($academyPdo,$currentUserId,array_map('intval',array_column($courses,'id'))); ?>
+<section class="academy-soft-panel"><h3>Parcours de certification</h3>
+<?php foreach($paths as $path): ?><article class="academy-block"><h4><?= htmlspecialchars($path['title'],ENT_QUOTES,'UTF-8') ?></h4><p><?= htmlspecialchars($path['description']??'',ENT_QUOTES,'UTF-8') ?></p><p><?= (int)$path['completed'] ?> / <?= count($path['courses']) ?> cours validés</p>
+<?php foreach($path['courses'] as $c): ?><p><a href="<?= htmlspecialchars(formationBuildUrl(['academy'=>'course','course'=>$c['slug']]),ENT_QUOTES,'UTF-8') ?>"><?= $c['score']!==null?'✓':'○' ?> <?= htmlspecialchars($c['title'],ENT_QUOTES,'UTF-8') ?></a></p><?php endforeach; ?>
+<?php if($path['completed']===count($path['courses'])): ?><form method="post" action="<?= htmlspecialchars($appBasePath.'/formation/certificate.php',ENT_QUOTES,'UTF-8') ?>"><input type="hidden" name="academy_csrf" value="<?= htmlspecialchars($_SESSION['academy_csrf'],ENT_QUOTES,'UTF-8') ?>"><input type="hidden" name="path" value="<?= (int)$path['id'] ?>"><button class="finea-action-btn finea-action-btn--primary">Télécharger le certificat de parcours</button></form><?php endif; ?></article><?php endforeach; ?>
+<?php if(!$paths): ?><p>Aucun parcours multicours disponible.</p><?php endif; ?></section><?php endif; ?>

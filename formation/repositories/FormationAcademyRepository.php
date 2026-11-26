@@ -242,6 +242,32 @@ CREATE TABLE IF NOT EXISTS formation_certificates (
     CONSTRAINT fk_certificates_course FOREIGN KEY (course_id) REFERENCES formation_courses(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS formation_paths (
+ id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+ title VARCHAR(190) NOT NULL,
+ description TEXT NULL,
+ is_active TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS formation_path_courses (
+ path_id INT UNSIGNED NOT NULL,
+ course_id INT UNSIGNED NOT NULL,
+ PRIMARY KEY(path_id,course_id),
+ FOREIGN KEY(path_id) REFERENCES formation_paths(id) ON DELETE CASCADE,
+ FOREIGN KEY(course_id) REFERENCES formation_courses(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS formation_path_certificates (
+ id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+ path_id INT UNSIGNED NOT NULL,
+ user_id INT UNSIGNED NOT NULL,
+ title VARCHAR(190) NOT NULL,
+ score DECIMAL(5,2) NOT NULL,
+ level_label VARCHAR(80) NOT NULL,
+ certificate_ref VARCHAR(80) NOT NULL UNIQUE,
+ verification_code VARCHAR(120) NOT NULL UNIQUE,
+ issued_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE KEY uq_path_user(path_id,user_id),
+ FOREIGN KEY(path_id) REFERENCES formation_paths(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE IF NOT EXISTS formation_requirements (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     course_id INT UNSIGNED NOT NULL,

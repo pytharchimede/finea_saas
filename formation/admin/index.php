@@ -94,6 +94,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (!hash_equals($_SESSION['academy_csrf'], (string)($_POST['academy_csrf'] ?? ''))) throw new RuntimeException('Session expirée.');
         $postAction = (string)($_POST['admin_action'] ?? '');
+        if ($postAction === 'save_path') {
+            $title=trim((string)($_POST['title']??''));
+            $ids=array_values(array_unique(array_filter(array_map('intval',(array)($_POST['courses']??[])),static fn($id)=>$id>0)));
+            if ($title==='' || mb_strlen($title)>190 || count($ids)<2) throw new RuntimeException('Titre et deux cours au minimum requis.');
+            $pdo->beginTransaction();
+            try {
+                $q=$pdo->prepare('INSERT INTO formation_paths(title,description) VALUES(?,?)');$q->execute([$title,trim((string)($_POST['description']??''))]);$id=(int)$pdo->lastInsertId();
+                $q=$pdo->prepare('INSERT INTO formation_path_courses(path_id,course_id) SELECT ?,id FROM formation_courses WHERE id=? AND is_active=1');
+                foreach($ids as $cid){$q->execute([$id,$cid]);if($q->rowCount()!==1)throw new RuntimeException('Cours indisponible.');}
+                $pdo->commit();
+            } catch(Throwable $e){$pdo->rollBack();throw $e;}
+            academy_admin_flash(['type'=>'ok','message'=>'Parcours multicours publié.']);academy_admin_redirect($adminUrl.'?action=paths');
+        }
         if ($postAction === 'save_course') {
             $id = $controller->saveAdminCourse($_POST);
             academy_admin_flash(['type'=>'ok','message'=>'Parcours enregistré avec succès.']);
@@ -147,7 +160,7 @@ $courses = $admin['courses'] ?? [];
 $moduleOptions = array_values(array_unique(array_filter(array_map(static fn($c) => (string)($c['module_slug'] ?? ''), $courses))));
 $permissionOptions = ['acces_decaissement','acces_tickets','acces_rh','acces_logistique','acces_crm','acces_dashboard','acces_portail','formation_admin','acces_admin'];
 $navItems = [
-    ['dashboard','Tableau de bord','Vue synthétique'], ['courses','Parcours','Catalogue MOOC'], ['edit_course','Formulaires','Créer / éditer'], ['reports','Exports & rapports','CSV et suivi'],
+    ['dashboard','Tableau de bord','Vue synthétique'], ['paths','Parcours multicours','Certifications globales'], ['courses','Parcours','Catalogue MOOC'], ['edit_course','Formulaires','Créer / éditer'], ['reports','Exports & rapports','CSV et suivi'],
 ];
 $hasPortalChrome = file_exists($projectRoot . '/decaissement/includes/header.php') && file_exists($projectRoot . '/decaissement/includes/navbar.php');
 if ($hasPortalChrome) { require_once $projectRoot . '/decaissement/includes/header.php'; require_once $projectRoot . '/decaissement/includes/navbar.php'; }
@@ -225,7 +238,10 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
                 </section>
             </section>
             <?php if (!empty($course['id'])): ?><section id="requirements" class="academy-panel academy-form-card"><div class="academy-panel-head"><h2>Obligations progressives</h2><span>Recommandée, obligatoire ou bloquante ciblée</span></div><form method="post" class="academy-form-grid"><input type="hidden" name="academy_csrf" value="<?= $h($_SESSION['academy_csrf']) ?>"><input type="hidden" name="admin_action" value="save_requirement"><input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>"><label>Module<input class="finea-input academy-search-input" list="academy-modules" name="module_slug" value="<?= $h($course['module_slug']) ?>"></label><label>Permission<input class="finea-input academy-search-input" list="academy-permissions" name="permission_key" placeholder="acces_decaissement"></label><label>Type<select class="finea-select academy-select-search" name="requirement_type"><option value="recommended">Recommandée</option><option value="mandatory">Obligatoire</option><option value="blocking">Bloquante ciblée</option></select></label><label>Action bloquée<input class="finea-input" name="blocking_action" placeholder="create_feb"></label><label>Score requis<input class="finea-input" type="number" name="required_score" value="<?= (int)$course['required_score'] ?>"></label><label>Délai jours<input class="finea-input" type="number" name="deadline_days" placeholder="7"></label><label class="academy-toggle"><input type="checkbox" name="is_active" value="1" checked> Active</label><button class="finea-action-btn finea-action-btn--accent">Ajouter la règle</button></form><div class="finea-table-wrap academy-table-wrap"><table class="finea-table"><thead><tr><th>Type</th><th>Permission</th><th>Action</th><th>Score</th><th>Délai</th></tr></thead><tbody><?php foreach (($editor['requirements'] ?? []) as $r): ?><tr><td><?= $h($r['requirement_type']) ?></td><td><?= $h($r['permission_key']) ?></td><td><?= $h($r['blocking_action']) ?></td><td><?= (int)$r['required_score'] ?>%</td><td><?= $h($r['deadline_days'] ?? '-') ?></td></tr><?php endforeach; ?></tbody></table></div></section><?php endif; ?>
-        <?php elseif ($action === 'reports'): ?>
+        <?php elseif ($action === 'paths'): ?>
+<section class="academy-panel"><h2>Créer un parcours multicours</h2><form method="post" class="academy-form-grid"><input type="hidden" name="academy_csrf" value="<?= $h($_SESSION['academy_csrf']) ?>"><input type="hidden" name="admin_action" value="save_path"><label>Titre<input name="title" maxlength="190" required class="finea-input"></label><label>Description<textarea name="description" class="finea-input"></textarea></label><fieldset class="wide"><legend>Cours obligatoires (2 minimum)</legend><?php foreach($courses as $c): if(empty($c['is_active']))continue; ?><label class="academy-toggle"><input type="checkbox" name="courses[]" value="<?= (int)$c['id'] ?>"> <?= $h($c['title']) ?></label><?php endforeach; ?></fieldset><button class="finea-action-btn finea-action-btn--primary">Publier le parcours</button></form></section>
+<section class="academy-panel"><h2>Parcours publiés</h2><?php foreach($pdo->query('SELECT p.*, (SELECT COUNT(*) FROM formation_path_courses WHERE path_id=p.id) AS total FROM formation_paths p ORDER BY id DESC')->fetchAll(PDO::FETCH_ASSOC) as $path): ?><p><?= $h($path['title']) ?> — <?= (int)$path['total'] ?> cours</p><?php endforeach; ?></section>
+<?php elseif ($action === 'reports'): ?>
             <section class="academy-panel"><div class="academy-panel-head"><h2>Exports & rapports</h2><span>Rapports Excel brandés · CSV disponible dans le catalogue</span></div><div class="academy-export-grid"><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=courses') ?>"><strong>Parcours</strong><span>Catalogue, modules, règles, permissions</span></a><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=attempts') ?>"><strong>Tentatives QCM</strong><span>Scores, réussites, échecs</span></a><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=certificates') ?>"><strong>Certificats</strong><span>Validations et niveaux obtenus</span></a></div></section>
         <?php endif; ?>
     </main>
