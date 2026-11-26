@@ -137,6 +137,23 @@ ob_start();
         text-align: center;
     }
 
+    .devis-page .ao-detail-head .ao-score {
+        color: var(--dv-text, #17243d) !important;
+        border-color: var(--devis-border, #e2e8f0);
+        border-top-color: var(--brand-accent, #1746b0);
+    }
+    .devis-page .ao-detail-head .ao-score strong { color: inherit !important; }
+    .devis-page .ao-detail-head .ao-score small { color: var(--dv-muted, #64748b) !important; }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-detail-head .ao-score {
+        color: #f5f8fc !important;
+        border-color: #52647e;
+        border-top-color: var(--brand-accent, #1746b0);
+        background: #172337;
+    }
+    :is(html.finea-dark-mode, body.finea-dark-mode) .devis-page .ao-detail-head .ao-score small {
+        color: #c6d0de !important;
+    }
+
     .ao-score strong,
     .ao-score small {
         display: block;
