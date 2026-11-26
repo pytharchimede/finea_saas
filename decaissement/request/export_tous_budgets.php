@@ -6,6 +6,9 @@ require_once __DIR__ . '/../model/Dashboard.php';
 require_once __DIR__ . '/../includes/budget_summary_helper.php';
 require_once __DIR__ . '/../../model/AuditTrail.php';
 
+require_once __DIR__ . '/../../model/CompanyPdfTemplate.php';
+require_once __DIR__ . '/../../model/CompanyExportBranding.php';
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -14,26 +17,9 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class PDFBudgetsChantiers extends TCPDF
 {
-    public string $reportTitle = 'Export budgets chantiers';
-
-    public function Header()
-    {
-        $this->SetY(8);
-        $this->SetFont('dejavusans', 'B', 14);
-        $this->SetTextColor(33, 37, 41);
-        $this->Cell(0, 8, $this->reportTitle, 0, 1, 'C');
-        $this->SetDrawColor(79, 70, 229);
-        $this->SetLineWidth(0.4);
-        $this->Line(10, 19, $this->getPageWidth() - 10, 19);
-    }
-
-    public function Footer()
-    {
-        $this->SetY(-12);
-        $this->SetFont('dejavusans', '', 8);
-        $this->SetTextColor(100, 100, 100);
-        $this->Cell(0, 6, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
-    }
+    use CompanyPdfTemplate;
+    public function Header(){ $this->drawCompanyPdfHeader(); }
+    public function Footer(){ $this->drawCompanyPdfFooter(); }
 }
 
 function clean_str($v): string
@@ -169,6 +155,7 @@ try {
 
     if ($format === 'excel') {
         $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()->setCreator(CompanyExportBranding::creator())->setCompany((string)CompanyBranding::get()['company_name']);
         $sheet = $spreadsheet->getActiveSheet();
 
         if ($report === 'summary') {
@@ -177,7 +164,7 @@ try {
             $sheet->setCellValue("A$row", 'Synthèse budgets chantiers');
             $sheet->getStyle("A$row")->getFont()->setBold(true)->setSize(16)->getColor()->setRGB('1F2937');
             $sheet->getStyle("A$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $sheet->getStyle("A$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('EEF2FF');
+            $sheet->getStyle("A$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('F1F5F9');
             $row++;
 
             $filterLines = build_filter_lines($filters);
@@ -188,8 +175,8 @@ try {
 
             $headers = ['Périmètre', 'Chantiers', 'Budget réel (F)', 'Devis (F)', 'Dépensé réel (F)', 'Restant budget réel (F)', 'Marge sur devis (F)', 'Fiches', '% consommation interne', '% consommation devis'];
             $sheet->fromArray($headers, null, "A$row");
-            $sheet->getStyle("A$row:J$row")->getFont()->setBold(true)->getColor()->setRGB('1F2937');
-            $sheet->getStyle("A$row:J$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF8D6');
+            $sheet->getStyle("A$row:J$row")->getFont()->setBold(true)->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
+            $sheet->getStyle("A$row:J$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
             $row++;
 
             $startDataRow = $row;
@@ -259,7 +246,7 @@ try {
         $sheet->setCellValue("A$row", 'Budgets détaillés des chantiers');
         $sheet->getStyle("A$row")->getFont()->setBold(true)->setSize(16)->getColor()->setRGB('1F2937');
         $sheet->getStyle("A$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle("A$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('EEF2FF');
+        $sheet->getStyle("A$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('F1F5F9');
         $row++;
 
         $filterLines = build_filter_lines($filters);
@@ -274,8 +261,8 @@ try {
 
         $headers = ['N° Chantier', 'Chantier', 'Client', 'Entreprise', 'N° Devis', 'Date', 'Budget réel (F)', 'Devis (F)', 'Dépensé réel (F)', 'Restant budget réel (F)', 'Marge sur devis (F)', '% consommation interne', '% consommation devis', 'Fiches', 'Statut'];
         $sheet->fromArray($headers, null, "A$row");
-        $sheet->getStyle("A$row:O$row")->getFont()->setBold(true)->getColor()->setRGB('1F2937');
-        $sheet->getStyle("A$row:O$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FFF8D6');
+        $sheet->getStyle("A$row:O$row")->getFont()->setBold(true)->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
+        $sheet->getStyle("A$row:O$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
         $sheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $row++;
 
@@ -314,7 +301,7 @@ try {
         $sheet->setCellValue("J$row", $sumResteReel);
         $sheet->setCellValue("K$row", $sumMargeDevis);
         $sheet->getStyle("F$row:K$row")->getFont()->setBold(true);
-        $sheet->getStyle("F$row:K$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('EEF2FF');
+        $sheet->getStyle("F$row:K$row")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('F1F5F9');
         $sheet->getStyle("G$row:K$row")->getNumberFormat()->setFormatCode('#,##0');
 
         // Largeurs
@@ -360,12 +347,16 @@ try {
 
     // PDF
     $pdf = new PDFBudgetsChantiers('L', 'mm', 'A4');
-    $pdf->SetCreator('Banamur');
-    $pdf->SetAuthor('Banamur');
+    $pdf->SetCreator(CompanyExportBranding::creator());
+    $pdf->SetAuthor((string)CompanyBranding::get()['company_name']);
     $pdf->SetTitle('Export budgets chantiers');
-    $pdf->SetMargins(10, 24, 10);
-    $pdf->SetAutoPageBreak(true, 14);
-    $pdf->reportTitle = 'BANAMUR - Budgets chantiers';
+    $pdf->SetMargins(10, 39, 10);
+    $pdf->SetAutoPageBreak(true, 25);
+    $pdf->companyPdfTitle = $report === 'summary' ? 'Synthèse des budgets chantiers' : 'Budgets détaillés des chantiers';
+    $pdf->companyPdfType = 'Rapport budgétaire';
+    $pdf->companyPdfCode = 'FIN-BUD';
+    $pdf->companyPdfId = 'FIN-BUD-'.date('Ymd-His');
+    $pdf->companyPdfQrPayload = $pdf->companyPdfId;
 
     $pdf->AddPage();
 
@@ -421,9 +412,9 @@ try {
             ['key' => 'progression_devis', 'label' => '% devis', 'w' => 18, 'align' => 'R'],
         ];
 
-        $pdf->SetFillColor(250, 189, 2);
+        $pdf->SetFillColor(...CompanyExportBranding::rgbArray('primary'));
         $pdf->SetDrawColor(0, 0, 0);
-        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetTextColor(...CompanyExportBranding::rgbArray('primary',true));
         $pdf->SetFont('dejavusans', 'B', 8);
         foreach ($summaryColumns as $col) {
             $pdf->MultiCell($col['w'], 8, $col['label'], 1, 'C', true, 0, '', '', true, 0, false, true, 8, 'M');
@@ -521,9 +512,9 @@ try {
     ];
 
     $drawHeader = function () use ($pdf, $columns) {
-        $pdf->SetFillColor(250, 189, 2);
+        $pdf->SetFillColor(...CompanyExportBranding::rgbArray('primary'));
         $pdf->SetDrawColor(0, 0, 0);
-        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetTextColor(...CompanyExportBranding::rgbArray('primary',true));
         $pdf->SetFont('dejavusans', 'B', 8);
 
         $heights = [];

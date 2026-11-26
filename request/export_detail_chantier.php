@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once __DIR__ . '/../auth_check.php';
+require_once __DIR__ . '/../model/CompanyPdfTemplate.php';
+require_once __DIR__ . '/../model/CompanyExportBranding.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../model/Database.php';
 require_once __DIR__ . '/../model/AuditTrail.php';
@@ -211,11 +214,11 @@ function buildZoneProgressChartItems(array $zoneStats): array
     $items = [];
     foreach ($zoneStats as $index => $zone) {
         $palette = [
-            [59, 130, 246],
+            CompanyExportBranding::rgbArray('primary'),
             [34, 197, 94],
             [234, 179, 8],
             [249, 115, 22],
-            [124, 58, 237],
+            CompanyExportBranding::rgbArray('accent'),
             [20, 184, 166],
         ];
         $items[] = [
@@ -269,7 +272,7 @@ function drawPdfBarChart(TCPDF $pdf, float $x, float $y, float $w, float $h, str
     foreach ($items as $it) {
         $label = (string)($it['label'] ?? '');
         $val = (float)($it['value'] ?? 0);
-        $rgb = $it['rgb'] ?? [59, 130, 246];
+        $rgb = $it['rgb'] ?? CompanyExportBranding::rgbArray('primary');
 
         $pdf->SetXY($x + $pad, $cy + 1);
         $pdf->SetFont('dejavusans', '', 9);
@@ -318,7 +321,7 @@ function exportExcelXlsx(array $details): void
 
     $xlsx = new Spreadsheet();
     $xlsx->getProperties()
-        ->setCreator('BANAMUR')
+        ->setCreator(CompanyExportBranding::creator())->setCompany((string)CompanyBranding::get()['company_name'])
         ->setTitle('Détail budgétaire chantier')
         ->setSubject('Détail budgétaire')
         ->setDescription('Export généré automatiquement');
@@ -338,8 +341,8 @@ function exportExcelXlsx(array $details): void
         'font' => ['bold' => true, 'size' => 9, 'color' => ['rgb' => '475569']],
     ];
     $headStyle = [
-        'font' => ['bold' => true, 'color' => ['rgb' => '111827']],
-        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'E5E7EB']],
+        'font' => ['bold' => true, 'color' => ['rgb' => CompanyExportBranding::rgb('primary',true)]],
+        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => CompanyExportBranding::rgb('primary')]],
     ];
     $borderAll = [
         'borders' => [
@@ -537,70 +540,29 @@ function exportPdfTcpdf(array $details): void
 
     class DetailChantierPDF extends TCPDF
     {
-        public function Header()
-        {
-            $margins = $this->getMargins();
-            $xLeft = $margins['left'];
-            $xRight = $this->getPageWidth() - $margins['right'];
-
-            $details = $GLOBALS['detailsChantierExport'] ?? [];
-            $chantier = $details['chantier'] ?? [];
-
-            $logoPath = '';
-            $candidate = realpath(__DIR__ . '/../logo/default_logo.jpg');
-            if ($candidate && is_file($candidate)) {
-                $logoPath = $candidate;
-            }
-
-            $yTop = 10;
-            $logoH = 16;
-            if ($logoPath) {
-                $this->Image($logoPath, $xLeft, $yTop, 0, $logoH, '', '', '', false, 300, '', false, false, 0, false, false, false);
-            }
-
-            $textX = $logoPath ? ($xLeft + 32) : $xLeft;
-            $this->SetXY($textX, $yTop);
-            $this->SetFont('dejavusans', 'B', 15);
-            $this->SetTextColor(15, 23, 42);
-            $this->Cell(0, 7, Utils::toMbConvertEncoding('Détail budgétaire'), 0, 1, 'L');
-
-            $meta = [];
-            $meta[] = 'Chantier : ' . (string)($chantier['lib_chantier'] ?? $chantier['titre'] ?? '');
-            if (!empty($chantier['numero_devis'])) $meta[] = 'Devis : ' . (string)$chantier['numero_devis'];
-            $clientNom = trim((string)($chantier['nom_client'] ?? ''));
-            if ($clientNom !== '') $meta[] = 'Client : ' . $clientNom;
-            $metaLine = implode('  •  ', array_filter($meta));
-
-            $this->SetX($textX);
-            $this->SetFont('dejavusans', '', 10);
-            $this->SetTextColor(71, 85, 105);
-            $this->Cell(0, 6, Utils::toMbConvertEncoding($metaLine), 0, 1, 'L');
-
-            $yAfterText = $this->GetY();
-            $yAfterLogo = $yTop + ($logoPath ? $logoH : 0);
-            $ySep = max($yAfterText, $yAfterLogo) + 2;
-
-            $this->SetDrawColor(226, 232, 240);
-            $this->SetLineWidth(0.2);
-            $this->Line($xLeft, $ySep, $xRight, $ySep);
-        }
-
-        public function Footer()
-        {
-            $this->SetY(-12);
-            $this->SetFont('dejavusans', '', 8);
-            $this->SetTextColor(100, 116, 139);
-            $this->Cell(0, 8, Utils::toMbConvertEncoding('Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages()), 0, 0, 'C');
-        }
+        use CompanyPdfTemplate;
+        public function Header(){ $this->drawCompanyPdfHeader(); }
+        public function Footer(){ $this->drawCompanyPdfFooter(); }
     }
 
     $GLOBALS['detailsChantierExport'] = $details;
 
     $pdf = new DetailChantierPDF('L', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->SetMargins(10, 34, 10);
-    $pdf->SetAutoPageBreak(true, 14);
+    $pdf->SetCreator(CompanyExportBranding::creator());
+    $pdf->SetAuthor((string)CompanyBranding::get()['company_name']);
+    $pdf->SetTitle('Détail budgétaire chantier');
+    $pdf->companyPdfTitle='Détail budgétaire chantier';
+    $pdf->companyPdfType='Rapport budgétaire';
+    $pdf->companyPdfCode='FIN-BUD-DET';
+    $pdf->companyPdfId='FIN-BUD-DET-'.date('Ymd-His');
+    $pdf->companyPdfQrPayload=$pdf->companyPdfId;
+    $pdf->SetMargins(10, 39, 10);
+    $pdf->SetAutoPageBreak(true, 25);
     $pdf->AddPage('L');
     $pdf->SetFont('dejavusans', '', 10);
+    $pdf->MultiCell(0,6,'Chantier : '.chantierLabel($details).' | Client : '.clientLabel($details),0,'L');
+    $primary=CompanyBranding::palette()['primary'];
+    $onPrimary=CompanyBranding::contrastColor($primary);
     $pdf->SetDrawColor(226, 232, 240);
     $pdf->SetLineWidth(0.15);
 
@@ -608,7 +570,7 @@ function exportPdfTcpdf(array $details): void
 <style>
   .section-title { background-color:#f1f5f9; color:#0f172a; font-weight:bold; padding:6px 8px; border:1px solid #dbe3ec; }
   table.tbl { width:100%; border-collapse:collapse; }
-  table.tbl th { background-color:#f3f4f6; color:#111827; font-weight:bold; padding:6px 6px; border:1px solid #d1d5db; }
+  table.tbl th { background-color:$primary; color:$onPrimary; font-weight:bold; padding:6px 6px; border:1px solid #d1d5db; }
   table.tbl td { padding:6px 6px; border:1px solid #e5e7eb; color:#111827; }
   .right { text-align:right; }
   .center { text-align:center; }
@@ -837,7 +799,7 @@ CSS;
         $boxH,
         'Montants (CFA)',
         [
-            ['label' => 'Budget total', 'value' => $budget, 'rgb' => [59, 130, 246]],
+            ['label' => 'Budget total', 'value' => $budget, 'rgb' => CompanyExportBranding::rgbArray('primary')],
             ['label' => 'Payé', 'value' => $paye, 'rgb' => [34, 197, 94]],
             ['label' => 'Restant', 'value' => $restant, 'rgb' => [249, 115, 22]],
         ],
@@ -856,10 +818,10 @@ CSS;
         'Statuts fiches (quantités)',
         [
             ['label' => 'Décaissées', 'value' => $fichesDecaissees, 'rgb' => [34, 197, 94]],
-            ['label' => 'Approuvées', 'value' => $fichesApprouvees, 'rgb' => [59, 130, 246]],
+            ['label' => 'Approuvées', 'value' => $fichesApprouvees, 'rgb' => CompanyExportBranding::rgbArray('primary')],
             ['label' => 'En attente', 'value' => $fichesEnAttente, 'rgb' => [234, 179, 8]],
             ['label' => 'Refusées', 'value' => $fichesRefusees, 'rgb' => [239, 68, 68]],
-            ['label' => 'Conformes', 'value' => $fichesConformes, 'rgb' => [124, 58, 237]],
+            ['label' => 'Conformes', 'value' => $fichesConformes, 'rgb' => CompanyExportBranding::rgbArray('accent')],
             ['label' => 'OTP validées', 'value' => $fichesOtp, 'rgb' => [20, 184, 166]],
         ],
         function ($v) {
@@ -953,7 +915,7 @@ function renderPrintHtml(array $details): void
     $fiches = $details['fiches'] ?? [];
     $stats = computeFicheStats($fiches, $details['stats_fiches'] ?? []);
 
-    $logoUrl = '../logo/default_logo.jpg';
+    $logoUrl = '../branding_asset.php?type=logo';
     $title = 'Détail budgétaire';
 
     header('Content-Type: text/html; charset=utf-8');

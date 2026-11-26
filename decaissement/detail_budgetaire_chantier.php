@@ -1001,7 +1001,8 @@ require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/navbar.php';
 ?>
 
-<div class="budget-light-page min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+<link rel="stylesheet" href="../assets/css/budget-workspace.css?v=20261126a">
+<div class="budget-workspace min-h-screen">
     <div class="container mx-auto py-10 px-4">
         <?php if (!empty($_SESSION['flash_success'])): ?>
             <div class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-green-800 shadow-sm">
@@ -1023,7 +1024,7 @@ require_once __DIR__ . '/includes/navbar.php';
                     <i class="fas fa-arrow-left mr-2"></i>
                     Retour aux chantiers
                 </a>
-                <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 class="budget-heading">
                     Détail Budgétaire
                 </h1>
                 <p class="text-xl text-gray-600 mt-2"><?= htmlspecialchars($libChantierSafe ?? '', ENT_QUOTES, 'UTF-8') ?></p>
@@ -1317,7 +1318,7 @@ require_once __DIR__ . '/includes/navbar.php';
                     </div>
                 </div>
 
-                <div class="rounded-3xl border border-slate-100 bg-gradient-to-br from-slate-50 via-white to-indigo-50 p-3">
+                <div class="rounded-3xl border border-slate-100 budget-soft p-3">
                     <div id="bandChartViewport" style="max-height: 420px; overflow-y: auto; padding-right: 4px;">
                         <div id="bandChartCanvasWrap" class="relative" style="height: 220px; min-height: 220px;">
                             <canvas id="budgetBandChart"></canvas>
@@ -1343,7 +1344,7 @@ require_once __DIR__ . '/includes/navbar.php';
                     <select id="analyticsFocus" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"></select>
                 </label>
 
-                <div class="rounded-3xl border border-slate-100 bg-gradient-to-br from-white via-slate-50 to-emerald-50 p-4">
+                <div class="rounded-3xl border border-slate-100 budget-soft p-4">
                     <div class="relative mx-auto" style="height: 250px; max-width: 280px;">
                         <canvas id="marginDonutChart"></canvas>
                     </div>
@@ -1427,7 +1428,7 @@ require_once __DIR__ . '/includes/navbar.php';
                 </div>
             </div>
 
-            <div class="rounded-3xl border border-slate-100 bg-gradient-to-br from-white via-slate-50 to-violet-50 p-4">
+            <div class="rounded-3xl border border-slate-100 budget-soft p-4">
                 <div class="relative" style="height: 300px;">
                     <canvas id="progressTimelineChart"></canvas>
                 </div>
@@ -1437,7 +1438,7 @@ require_once __DIR__ . '/includes/navbar.php';
         <!-- Détail des zones et lignes de devis -->
         <?php if (!empty($detailsChantier['zones'])): ?>
             <div class="budget-detail-table bg-white rounded-2xl shadow-xl mb-8 border border-gray-100">
-                <div class="px-6 py-4 bg-gradient-to-r from-indigo-500 to-purple-600">
+                <div class="px-6 py-4 budget-primary">
                     <h2 class="text-xl font-bold text-white flex items-center">
                         <i class="fas fa-list-alt mr-3"></i>
                         Détail par Zone et Ligne de Devis
@@ -1470,14 +1471,14 @@ require_once __DIR__ . '/includes/navbar.php';
                                 $zonePourcentage = $zoneTotalDebourse > 0 ? ($zoneTotalPaye / $zoneTotalDebourse) * 100 : 0;
                                 $zoneIsOver = $zonePourcentage > 100;
                                 $zoneOverPct = $zoneIsOver ? ($zonePourcentage - 100) : 0;
-                                $zoneProgressClass = $zoneIsOver ? 'bg-gradient-to-r from-rose-600 to-red-700' : 'bg-gradient-to-r from-purple-500 to-pink-600';
+                                $zoneProgressClass = $zoneIsOver ? 'bg-gradient-to-r from-rose-600 to-red-700' : 'budget-primary';
                                 ?>
                                 <!-- Ligne de zone -->
                                 <tr class="bg-indigo-50 hover:bg-indigo-100 transition-colors">
                                     <td class="px-2 py-4 text-center">
                                         <button type="button"
                                             onclick="toggleExpand(this, 'zone-expand-<?= $globalIndex ?>')"
-                                            class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all transform hover:scale-110 shadow-md">
+                                            class="inline-flex items-center justify-center w-8 h-8 rounded-full budget-primary text-white  transition-all transform hover:scale-110 shadow-md">
                                             <i class="fas fa-plus text-xs transition-transform duration-300"></i>
                                         </button>
                                     </td>
@@ -1528,7 +1529,7 @@ require_once __DIR__ . '/includes/navbar.php';
                                 <!-- Lignes d'expansion de zone -->
                                 <tr id="zone-expand-<?= $globalIndex ?>" class="hidden">
                                     <td colspan="8" class="px-0 py-0">
-                                        <div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4">
+                                        <div class="budget-soft p-4">
                                             <table class="min-w-full">
                                                 <tbody>
                                                     <?php foreach ($lignesZone as $indexLigne => $ligne): ?>
@@ -1581,7 +1582,7 @@ require_once __DIR__ . '/includes/navbar.php';
                                                             <td class="px-2 py-4 text-center w-12">
                                                                 <button type="button"
                                                                     onclick="toggleExpand(this, 'ligne-expand-<?= $globalIndex ?>-<?= $indexLigne ?>')"
-                                                                    class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 transition-all transform hover:scale-110 shadow-sm">
+                                                                    class="inline-flex items-center justify-center w-6 h-6 rounded-full budget-primary text-white  transition-all transform hover:scale-110 shadow-sm">
                                                                     <i class="fas fa-plus text-xs transition-transform duration-300"></i>
                                                                 </button>
                                                             </td>
@@ -1653,7 +1654,7 @@ require_once __DIR__ . '/includes/navbar.php';
                                                         <!-- Ligne d'expansion détails de ligne -->
                                                         <tr id="ligne-expand-<?= $globalIndex ?>-<?= $indexLigne ?>" class="hidden">
                                                             <td colspan="8" class="px-0 py-0">
-                                                                <div class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6 ml-8 border-l-4 border-indigo-500">
+                                                                <div class="budget-soft p-6 ml-8 border-l-4 border-indigo-500">
                                                                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                                                         <!-- Détails Montant Devis -->
                                                                         <div class="bg-white rounded-xl shadow-sm p-4 border border-indigo-100">
@@ -1983,173 +1984,8 @@ require_once __DIR__ . '/includes/navbar.php';
 </div>
 
 <style>
-    /*
-     * Cette vue reste volontairement claire, même lorsque le thème sombre du
-     * shell est actif. Le sélecteur est limité au contenu de la page afin de
-     * ne modifier ni la barre de navigation ni ses menus.
-     */
-    .budget-light-page {
-        color-scheme: light;
-        background: linear-gradient(135deg, #eef2ff 0%, #ffffff 48%, #faf5ff 100%) !important;
-        color: #334155;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.bg-white, [class~="bg-white/95"]) {
-        background-color: #ffffff !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.bg-gray-50, .bg-slate-50) {
-        background-color: #f8fafc !important;
-    }
-
-    body.finea-dark-mode .budget-light-page .bg-slate-100 {
-        background-color: #f1f5f9 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page .bg-indigo-50 {
-        background-color: #eef2ff !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.text-gray-900, .text-gray-800, .text-slate-900, .text-slate-800) {
-        color: #0f172a !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.text-gray-700, .text-slate-700) {
-        color: #334155 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.text-gray-600, .text-slate-600) {
-        color: #475569 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.text-gray-500, .text-slate-500) {
-        color: #64748b !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.text-gray-400, .text-slate-400) {
-        color: #94a3b8 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(.text-indigo-800, .text-indigo-700) {
-        color: #3730a3 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(input, select, textarea) {
-        background-color: #ffffff !important;
-        border-color: #cbd5e1 !important;
-        color: #0f172a !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(input::placeholder, textarea::placeholder) {
-        color: #94a3b8 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page table {
-        background-color: #ffffff !important;
-        border-color: #e2e8f0 !important;
-        color: #334155 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(thead, th) {
-        background-color: #f8fafc !important;
-        border-color: #e2e8f0 !important;
-        color: #475569 !important;
-    }
-
-    body.finea-dark-mode .budget-light-page :where(td, tbody tr) {
-        border-color: #e2e8f0 !important;
-        color: #334155;
-    }
-
-    body.finea-dark-mode .budget-light-page tbody tr:hover {
-        background-color: #f8fafc !important;
-    }
-
-    /* Le tableau détaillé contient des tableaux imbriqués et des lignes
-       extensibles : on fixe aussi leur surface, indépendamment du thème. */
-    .budget-light-page .budget-detail-table,
-    .budget-light-page .budget-detail-table .overflow-x-auto,
-    .budget-light-page .budget-detail-table table,
-    .budget-light-page .budget-detail-table tbody,
-    .budget-light-page .budget-detail-table td {
-        background-color: #ffffff !important;
-        color-scheme: light;
-    }
-
-    .budget-light-page .budget-detail-table thead,
-    .budget-light-page .budget-detail-table th,
-    .budget-light-page .budget-detail-table tfoot,
-    .budget-light-page .budget-detail-table tfoot td {
-        background: #f8fafc !important;
-        color: #475569 !important;
-    }
-
-    .budget-light-page .budget-detail-table tbody > tr.bg-indigo-50,
-    .budget-light-page .budget-detail-table tbody > tr.bg-indigo-50 > td {
-        background: #eef2ff !important;
-    }
-
-    .budget-light-page .budget-detail-table tr[id^="zone-expand-"] > td > div {
-        background: linear-gradient(135deg, #eef2ff 0%, #faf5ff 52%, #fdf2f8 100%) !important;
-    }
-
-    .budget-light-page .budget-detail-table tr[id^="ligne-expand-"] > td > div {
-        background-color: #f8fafc !important;
-    }
-
-    .budget-light-page .budget-detail-table tbody tr:hover > td {
-        background-color: #f8fafc !important;
-    }
-
-    .budget-light-page .budget-detail-table tbody > tr.bg-indigo-50:hover > td {
-        background-color: #e0e7ff !important;
-    }
-
-    .band-mode-btn.is-active {
-        background: linear-gradient(135deg, #1d4ed8 0%, #6366f1 100%);
-        color: #fff;
-        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.18);
-    }
-
-    .chart-card-soft {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.88));
-        backdrop-filter: blur(6px);
-    }
-
-    /* Animation de rotation du bouton expand */
-    button.rotate-45 i {
-        transform: rotate(45deg) !important;
-    }
-
-    button i {
-        transition: transform 0.3s ease-in-out;
-    }
-
-    /* Animation d'apparition des détails */
-    tr:not(.hidden) {
-        animation: slideDown 0.4s ease-out;
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Effet hover sur le bouton */
-    button[onclick^="toggleExpand"] {
-        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-    }
-
-    button[onclick^="toggleExpand"]:hover {
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
-    }
+.budget-workspace button.rotate-45 i{transform:rotate(45deg)}
+.budget-workspace button i{transition:transform .2s}
 </style>
 
 <script>

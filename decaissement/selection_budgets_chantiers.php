@@ -125,7 +125,8 @@ require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/navbar.php';
 ?>
 
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+<link rel="stylesheet" href="../assets/css/budget-workspace.css?v=20261126a">
+<div class="budget-workspace min-h-screen">
     <script>
         function auditVisualPrintBudgets() {
             const payload = new URLSearchParams({
@@ -171,9 +172,9 @@ require_once __DIR__ . '/includes/navbar.php';
             <?php unset($_SESSION['flash_error']); ?>
         <?php endif; ?>
         <!-- En-tête -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent drop-shadow-lg">
-                💰 Budgets Détaillés des Chantiers
+        <div class="budget-hero mb-8">
+            <h1 class="budget-heading">
+                <i class="fas fa-chart-pie mr-2"></i> Budgets détaillés des chantiers
             </h1>
             <p class="text-xl text-gray-600 mt-4">Sélectionnez un chantier pour voir son détail budgétaire ligne par ligne</p>
             <div class="mt-4 inline-flex max-w-3xl items-start gap-3 rounded-2xl border border-indigo-100 bg-indigo-50 px-5 py-4 text-left text-sm text-indigo-900">
@@ -192,7 +193,7 @@ require_once __DIR__ . '/includes/navbar.php';
         </div>
 
         <!-- Recherche + Exports -->
-        <div class="bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
             <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
                 <form method="get" class="flex-1">
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
