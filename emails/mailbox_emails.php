@@ -233,6 +233,7 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
     }
 </style>
 <link rel="stylesheet" href="mail-theme.css?v=<?= filemtime(__DIR__.'/mail-theme.css') ?>">
+<?php $_SESSION['finea_mail_csrf'] ??= bin2hex(random_bytes(32)); ?>
 <div class="finea-mail mailbox-page container mx-auto px-4 pb-10">
 
     <div class="mailbox-header flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -332,7 +333,21 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
             </div>
         </div>
 
-        <div class="mailbox-window grid grid-cols-1 lg:grid-cols-12 gap-0">
+        <div class="mail-ribbon" role="toolbar" aria-label="Actions de messagerie">
+<a class="mail-compose" href="compose_email.php?folder=<?= urlencode($folder) ?>"><i class="fas fa-pen"></i> Nouveau message</a>
+<button type="button" data-mail-action="read"><i class="fas fa-envelope-open"></i> Lu</button>
+<button type="button" data-mail-action="unread"><i class="fas fa-envelope"></i> Non lu</button>
+<button type="button" data-mail-action="flag"><i class="fas fa-flag"></i> Important</button>
+<button type="button" data-mail-action="unflag">Retirer le drapeau</button>
+<select id="mailMoveTarget" aria-label="Dossier de destination"><option value="">Déplacer vers…</option></select>
+<button type="button" data-mail-action="move">Déplacer</button>
+<button type="button" data-mail-action="archive"><i class="fas fa-archive"></i> Archiver</button>
+<button type="button" data-mail-action="trash"><i class="fas fa-trash"></i> Corbeille</button>
+<button type="button" data-mail-action="create"><i class="fas fa-folder-plus"></i> Dossier</button>
+<label><input type="checkbox" id="mailSelectAll"> Tout sélectionner</label>
+<span id="mailActionStatus" role="status"></span>
+</div>
+<div class="mailbox-window grid grid-cols-1 lg:grid-cols-12 gap-0">
 
             <div class="mailbox-sidebar lg:col-span-3 p-4 lg:p-5">
                 <div class="rounded-[22px] border border-slate-200 bg-white/80 p-4 shadow-sm">
@@ -596,6 +611,32 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
             }
 
             let selectedUid = null;
+            const selected = new Set();
+            let knownFolders = [];
+            const status = document.getElementById('mailActionStatus');
+            const selectAll = document.getElementById('mailSelectAll');
+            selectAll.addEventListener('change',()=>{document.querySelectorAll('.mail-check').forEach(c=>{c.checked=selectAll.checked;if(c.checked)selected.add(Number(c.value));else selected.delete(Number(c.value));});});
+            document.querySelectorAll('[data-mail-action]').forEach(b=>b.addEventListener('click',async()=>{
+                const action=b.dataset.mailAction;
+                const uids=selected.size?[...selected]:(selectedUid?[selectedUid]:[]);
+                let target=document.getElementById('mailMoveTarget').value;
+                if(action==='create'){target=prompt('Nom du dossier');if(!target)return;}
+                if(action==='archive'||action==='trash'){
+                    const pattern=action==='archive'?/(^|[./])(archive|archives)$/i:/(^|[./])(trash|deleted items|corbeille)$/i;
+                    target=knownFolders.find(f=>pattern.test(f.name))?.name||'';
+                }
+                if(action!=='create'&&!uids.length){status.textContent='Sélectionnez un message.';return;}
+                if(['move','archive','trash'].includes(action)&&!target){status.textContent='Dossier de destination introuvable.';return;}
+                if(action==='trash'&&!confirm('Déplacer les messages vers la corbeille ?'))return;
+                b.disabled=true;
+                try{
+                    const res=await fetch('api_mail_actions.php',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,folder,target,uids,csrf:<?= json_encode($_SESSION['finea_mail_csrf']) ?>})});
+                    const data=await res.json();status.textContent=data.message||'Erreur.';
+                    selected.clear();selectAll.checked=false;selectedUid=null;
+                    document.getElementById('mailReadingFrame').hidden=true;document.getElementById('mailReadingEmpty').hidden=false;
+                    await loadFolders(true);await loadAll(true);
+                }catch(e){status.textContent='Erreur réseau.';}finally{b.disabled=false;}
+            }));
             const search = document.getElementById('mailSearch');
             search.addEventListener('input',()=>render(loaded));
             function render(list) {
@@ -687,6 +728,9 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                     row.appendChild(right);
 
                     a.appendChild(row);
+                    const check=document.createElement('input');check.type='checkbox';check.className='mail-check';check.value=String(uid);check.checked=selected.has(uid);check.setAttribute('aria-label','Sélectionner '+subject);check.addEventListener('change',()=>{if(check.checked)selected.add(uid);else selected.delete(uid);});
+                    li.appendChild(check);
+                    if(mail.flagged){const flag=document.createElement('span');flag.textContent='⚑';flag.title='Important';li.appendChild(flag);}
                     li.appendChild(a);
                     frag.appendChild(li);
                 });
@@ -778,6 +822,8 @@ $tabUrl = static function (string $name) use ($limit, $folder): string {
                     const rawFolders = Array.isArray(data.folders) ? data.folders : [];
                     const folders = rawFolders.map(normalizeFolderItem).filter(Boolean);
 
+                    knownFolders=folders;
+                    const targetSelect=document.getElementById('mailMoveTarget');targetSelect.replaceChildren(new Option('Déplacer vers…',''));folders.filter(f=>f.name!==folder).forEach(f=>targetSelect.add(new Option(f.label,f.name)));
                     const byRole = (role) => folders.find(x => String(x.role || '') === role) || null;
                     const inboxFolder = (byRole('inbox')?.name) || 'INBOX';
                     const sentFolder = (byRole('sent')?.name) || null;
