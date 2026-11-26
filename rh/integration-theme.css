@@ -1,0 +1,27 @@
+
+html body.rh-integration-screen{--ri-page:#fff;--ri-panel:var(--brand-surface,#fff);--ri-field:#fff;--ri-soft:color-mix(in srgb,var(--brand-primary) 5%,#fff);--ri-text:var(--brand-text,#172033);--ri-muted:var(--brand-muted,#475569);--ri-border:#cbd5e1;--finea-page:var(--ri-page);--finea-surface:var(--ri-panel);--finea-surface-raised:var(--ri-panel);--finea-surface-soft:var(--ri-soft);background:var(--ri-page)!important;background-image:none!important}
+html.finea-dark-mode body.rh-integration-screen,html body.rh-integration-screen.finea-dark-mode{--ri-page:#0d1727;--ri-panel:#172337;--ri-field:#101c2e;--ri-soft:#1e3048;--ri-text:#f1f5f9;--ri-muted:#cbd5e1;--ri-border:#405773;--finea-input-surface:var(--ri-field);color-scheme:dark}
+html body.rh-integration-screen .rh-integration{background:var(--ri-page)!important;color:var(--ri-text)!important}
+html body.rh-integration-screen .rh-integration :is(section,.rh-integration-actions){background:var(--ri-panel)!important;color:var(--ri-text)!important;border-color:var(--ri-border)!important}
+html body.rh-integration-screen .rh-integration :is(.rh-document,.rh-child,#children-details,.bg-slate-50){background:var(--ri-soft)!important;color:var(--ri-text)!important;border-color:var(--ri-border)!important}
+html body.rh-integration-screen .rh-integration :is(.text-slate-950,.text-slate-900,.text-slate-700,.text-slate-600,.text-indigo-950){color:var(--ri-text)!important}
+html body.rh-integration-screen .rh-integration :is(.text-slate-500,.text-slate-400,.text-indigo-700){color:var(--ri-muted)!important}
+html body.rh-integration-screen .rh-integration .rh-integration-hero{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border-color:var(--brand-accent)!important}
+html body.rh-integration-screen .rh-integration .rh-integration-hero :is(h1,p,a,i){color:var(--brand-on-primary)!important}
+html body.rh-integration-screen .rh-integration .rh-integration-hero a{background:transparent!important;border:1px solid currentColor!important}
+html body.rh-integration-screen .rh-integration :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]),select,textarea,.modern-select>input){background:var(--ri-field)!important;color:var(--ri-text)!important;border-color:var(--ri-border)!important}
+html body.rh-integration-screen .rh-integration input::placeholder{color:var(--ri-muted)!important;opacity:1}
+html body.rh-integration-screen .rh-integration :is(input,select,textarea):focus-visible{outline:2px solid var(--brand-accent)!important;outline-offset:2px}
+html body.rh-integration-screen .rh-integration :is(.modern-options,.modern-drop){background:var(--ri-soft)!important;color:var(--ri-text)!important;border-color:var(--ri-border)!important}
+html body.rh-integration-screen .rh-integration .modern-drop-status{color:var(--ri-muted)!important}
+html body.rh-integration-screen .rh-integration .modern-options>div{color:var(--ri-text)!important;background:transparent!important}
+html body.rh-integration-screen .rh-integration .modern-options>div:is(:hover,.active){background:var(--brand-primary)!important;color:var(--brand-on-primary)!important}
+html body.rh-integration-screen .rh-integration input[type=file]::file-selector-button{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border:0!important}
+html body.rh-integration-screen .rh-integration :is(.rh-integration-submit,#rhIntegrationThemeToggle){background:var(--brand-accent)!important;color:var(--brand-on-accent)!important;border-color:var(--brand-accent)!important}
+html body.rh-integration-screen .rh-integration .rh-integration-cancel{background:var(--ri-field)!important;color:var(--ri-text)!important;border-color:var(--ri-border)!important}
+html.finea-dark-mode body.rh-integration-screen .rh-integration .bg-emerald-50{background:#123c32!important;color:#a7f3d0!important}
+html.finea-dark-mode body.rh-integration-screen .rh-integration :is(.text-emerald-900,.text-emerald-800,.text-emerald-700){color:#a7f3d0!important}
+html.finea-dark-mode body.rh-integration-screen .rh-integration .bg-rose-50{background:#481f2b!important;color:#fecdd3!important}
+html.finea-dark-mode body.rh-integration-screen .rh-integration .text-rose-800{color:#fecdd3!important}
+html body.rh-integration-screen .rh-integration .rh-step{color:var(--ri-text)!important}
+html body.rh-integration-screen .rh-integration .rh-document-icon{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important}
