@@ -41,3 +41,18 @@ body.finea-devis-legacy .finea-unit-create i{color:inherit!important}
 html.finea-dark-mode body.finea-devis-legacy .btn-outline-danger{color:#fda4af!important;border-color:#fda4af!important}
 html.finea-dark-mode body.finea-devis-legacy .btn-outline-success{color:#86efac!important;border-color:#86efac!important}
 body.finea-devis-legacy :is(.wizard-nav,.form-section,.debourse-issues,.quote-progress){background:var(--dl-card)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+
+/* Chantier listing: opaque theme surfaces, including AJAX cards and Select2. */
+body.finea-devis-legacy.finea-chantier-list{--dl-bg:#fff;background:var(--dl-bg)!important}
+html.finea-dark-mode body.finea-devis-legacy.finea-chantier-list,body.finea-dark-mode.finea-devis-legacy.finea-chantier-list{--dl-bg:#08111f;background:var(--dl-bg)!important}
+body.finea-devis-legacy.finea-chantier-list > .container{background:var(--dl-bg)!important;box-shadow:none!important}
+body.finea-devis-legacy.finea-chantier-list :is(.chantier-grid-wrap,.chantier-card,.chantier-empty){background:var(--dl-card)!important;border-color:var(--dl-border)!important;color:var(--dl-text)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body.finea-devis-legacy.finea-chantier-list :is(.chantier-title,.chantier-meta-row,.chantier-grid-wrap h2){color:var(--dl-text)!important}
+body.finea-devis-legacy.finea-chantier-list .chantier-meta-row i{color:var(--dl-muted)!important}
+body.finea-devis-legacy.finea-chantier-list :is(.chantier-icon,.chantier-grid-icon){background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;border-color:transparent!important}
+body.finea-devis-legacy.finea-chantier-list #chantierSearchForm{background:var(--dl-card)!important}
+body.finea-devis-legacy.finea-chantier-list :is(.select2-selection,.select2-dropdown,.select2-search__field,.select2-results){background:var(--dl-field)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy.finea-chantier-list .select2-selection__clear{color:var(--dl-text)!important}
+body.finea-devis-legacy.finea-chantier-list .select2-results__option--selected{background:var(--dl-soft)!important;color:var(--dl-text)!important}
+body.finea-devis-legacy.finea-chantier-list .select2-results__option--highlighted{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+body.finea-devis-legacy.finea-chantier-list .chantier-card:hover{border-color:var(--dl-focus)!important}

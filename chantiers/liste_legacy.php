@@ -34,7 +34,7 @@ require_once 'header/header_liste_chantiers.php';
     <link rel="stylesheet" href="assets/css/finea-master-lists.css">
 </head>
 
-<body>
+<body class="finea-chantier-list">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
