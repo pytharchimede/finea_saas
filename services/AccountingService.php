@@ -11,7 +11,7 @@ final class AccountingService
         }
     }
 
-    private const SCHEMA_VERSION = 5;
+    private const SCHEMA_VERSION = 6;
 
     public function install(): void
     {
@@ -45,6 +45,22 @@ final class AccountingService
     private function installSchema(): void
     {
         if ($this->schemaIsCurrent()) return;
+        // Existing installations may have lost the settings singleton during cloning.
+        $required=['accounting_accounts','accounting_audit','accounting_documents','accounting_entries','accounting_entry_sources','accounting_exercises','accounting_journals','accounting_lines','accounting_sequences','accounting_settings'];
+        $tables=$this->pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
+        if (!array_diff($required,$tables)) {
+            $columns=$this->pdo->query('SHOW COLUMNS FROM accounting_accounts')->fetchAll(PDO::FETCH_COLUMN);
+            $settings=$this->pdo->query('SHOW COLUMNS FROM accounting_settings')->fetchAll(PDO::FETCH_COLUMN);
+            $sources=$this->pdo->query('SHOW COLUMNS FROM accounting_entry_sources')->fetchAll(PDO::FETCH_COLUMN);
+            if (in_array('is_active',$columns,true) && in_array('chart_revision',$settings,true) && in_array('active_fiche_number',$sources,true)) {
+                $this->pdo->prepare('INSERT IGNORE INTO accounting_settings (id,schema_version,chart_revision) VALUES (1,5,?)')->execute([hash_file('sha256',__DIR__.'/../comptabilite/data/plan_fourni.csv')]);
+                if ((int)$this->pdo->query('SELECT schema_version FROM accounting_settings WHERE id=1')->fetchColumn()>=5) {
+                    $this->installPartyColumns();
+                    return;
+                }
+            }
+        }
+        if (!is_file(__DIR__.'/../Database/add_accounting_module.sql')) throw new RuntimeException('Fichier SQL comptable initial absent.');
         $sql = (string) file_get_contents(__DIR__ . '/../Database/add_accounting_module.sql');
         foreach (explode(';', $sql) as $statement) {
             if (trim($statement) !== '') {
@@ -88,6 +104,16 @@ final class AccountingService
             }
             $this->pdo->exec('UPDATE accounting_settings SET schema_version=5 WHERE id=1');
         });
+        $this->installPartyColumns();
+    }
+
+    private function installPartyColumns(): void
+    {
+        $columns=$this->pdo->query('SHOW COLUMNS FROM accounting_accounts')->fetchAll(PDO::FETCH_COLUMN);
+        foreach (['party_kind'=>"VARCHAR(16) NOT NULL DEFAULT 'general'",'party_id'=>'VARCHAR(64) NULL','party_label'=>'VARCHAR(190) NULL'] as $name=>$definition) {
+            if (!in_array($name,$columns,true)) $this->pdo->exec("ALTER TABLE accounting_accounts ADD COLUMN {$name} {$definition}");
+        }
+        $this->pdo->exec('UPDATE accounting_settings SET schema_version=6 WHERE id=1');
     }
 
     /** Automatic first use and annual rollover. Existing/custom and closed exercises are preserved. */
@@ -256,12 +282,24 @@ final class AccountingService
                 $code = trim((string)($account['code']??'')); $label = self::label((string)($account['label']??''));
                 if (!preg_match('/^[1-9][0-9]{2,11}$/D',$code)) { throw new DomainException('Les comptes de saisie doivent comporter 3 à 12 chiffres, dans les classes 1 à 9.'); }
                 if (isset($existing[$code])) {
+                    if (($account['party_kind']??'general')!=='general') throw new DomainException('Ce numéro de compte existe déjà.');
                     if ($existing[$code]['label'] !== $label) { throw new DomainException("Le compte {$code} existe avec un autre libellé."); }
                     continue;
                 }
                 if ($this->rows('SELECT code FROM accounting_accounts WHERE code=? AND is_active=0',[$code])) throw new DomainException("Le compte {$code} est archivé pour conserver son historique. Choisissez un autre code.");
                 if (!isset($existing[substr($code,0,2)]) && !($code[0]==='9' && isset($existing[9]))) { throw new DomainException("Le groupe SYSCOHADA de {$code} est inconnu."); }
-                $this->execute('INSERT INTO accounting_accounts (code,label,postable,source) VALUES (?,?,1,?)',[$code,$label,'personnalise']);
+                $kind=(string)($account['party_kind']??'general'); $partyId=null; $partyLabel=null;
+                if (in_array($kind,['supplier','client','employee'],true)) {
+                    $partyId=(string)($account['party_id']??'');
+                    foreach ($this->accountParties($kind) as $party) if ((string)$party['id']===$partyId) { $partyLabel=self::label((string)$party['label']); break; }
+                    if ($partyLabel===null) throw new DomainException('Tiers introuvable.');
+                } elseif ($kind==='company') {
+                    $partyId='1'; $partyLabel=self::label((string)($this->rows('SELECT company_name FROM finea_company_branding WHERE id=1')[0]['company_name']??''));
+                } elseif ($kind==='other') {
+                    $partyLabel=self::label((string)($account['party_label']??''));
+                } elseif ($kind!=='general') throw new DomainException('Nature de compte invalide.');
+                $this->execute('INSERT INTO accounting_accounts (code,label,postable,source,party_kind,party_id,party_label) VALUES (?,?,1,?,?,?,?)',[$code,$label,'personnalise',$kind,$partyId,$partyLabel]);
+                $this->audit('account_created',$user,null,['code'=>$code,'party_kind'=>$kind,'party_id'=>$partyId,'party_label'=>$partyLabel]);
                 $existing[$code] = ['code'=>$code,'label'=>$label]; $count++;
             }
             // A parent with movements cannot become a grouping account.
