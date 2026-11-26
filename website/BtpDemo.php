@@ -3,6 +3,10 @@ declare(strict_types=1);
 final class BtpDemo {
  public static function ids():array {return array_map(static fn($key)=>md5('finea-btp-demo-'.$key),['building','road','bridge','earth','water','team']);}
  public static function asset(string $id):?string {foreach(['building','road','bridge','earth','water','team'] as $key)if(hash_equals(md5('finea-btp-demo-'.$key),$id))return __DIR__.'/demo/'.$key.'.svg';return null;}
+ public static function photo(string $id):?string {
+ foreach(['building'=>35846752,'road'=>2833686,'bridge'=>4254898,'earth'=>14546539,'water'=>20296265,'team'=>20609453] as $key=>$number)if(hash_equals(md5('finea-btp-demo-'.$key),$id))return 'https://images.pexels.com/photos/'.$number.'/pexels-photo-'.$number.'.jpeg?auto=compress&cs=tinysrgb&w=1600';
+ return null;
+ }
  public static function content(array $brand):array {
  $name=$brand['company_name'];$d=SiteContent::defaults($brand);
  $entry=static fn($title,$body,$key,$category='',$location='')=>['title'=>$title,'body'=>$body,'image'=>md5('finea-btp-demo-'.$key),'category'=>$category,'location'=>$location];
