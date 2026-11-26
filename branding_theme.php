@@ -13,10 +13,15 @@ $hexRgb = static function (string $hex): string {
     return hexdec(substr($hex, 1, 2)) . ' ' . hexdec(substr($hex, 3, 2)) . ' ' . hexdec(substr($hex, 5, 2));
 };
 $contrast = static function (string $hex): string {
-    $r = hexdec(substr($hex, 1, 2));
-    $g = hexdec(substr($hex, 3, 2));
-    $b = hexdec(substr($hex, 5, 2));
-    return (($r * 299 + $g * 587 + $b * 114) / 1000) >= 150 ? '#050505' : '#ffffff';
+    // WCAG relative luminance: choose the stronger contrast against black or white.
+    $linear = static function (int $channel): float {
+        $v = $channel / 255;
+        return $v <= 0.04045 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4;
+    };
+    $l = 0.2126 * $linear(hexdec(substr($hex,1,2)))
+       + 0.7152 * $linear(hexdec(substr($hex,3,2)))
+       + 0.0722 * $linear(hexdec(substr($hex,5,2)));
+    return (($l + 0.05) / 0.05) >= (1.05 / ($l + 0.05)) ? '#000000' : '#ffffff';
 };
 
 $primary = $color('primary_color', '#050505');
@@ -40,6 +45,7 @@ header('Cache-Control: private, max-age=60, must-revalidate');
     --brand-muted: <?= $muted ?>;
     --finea-brand: var(--brand-accent);
     --finea-brand-ink: var(--brand-primary);
+    --finea-brand-on: var(--brand-on-accent);
     --finea-blue: var(--brand-primary);
     --finea-gold: var(--brand-accent);
     --bs-primary: <?= $primary ?>;
@@ -86,3 +92,20 @@ body { color: var(--brand-text); }
 .nav-link.active,.page-item.active .page-link { background-color:var(--brand-primary) !important;border-color:var(--brand-primary) !important;color:var(--brand-on-primary) !important; }
 .page-link { color:var(--brand-primary); }
 ::selection { background:var(--brand-accent);color:var(--brand-on-accent); }
+
+/* Explicit foreground/background pairs for shared interactive components.
+   Do not recolor nested status badges or arbitrary content containers. */
+body :is(a,button,[role="button"],.nav-link,.dropdown-item,.btn):is(.finea-brand-portal,.finea-brand-accent-box,.bg-\[\#ffcc20\],.bg-\[var\(--brand-accent\)\]) {
+    background-color:var(--brand-accent)!important;
+    color:var(--brand-on-accent)!important;
+}
+body :is(a,button,[role="button"],.nav-link,.dropdown-item,.btn):is(.bg-\[var\(--brand-primary\)\],.btn-primary,.nav-link.active) {
+    background-color:var(--brand-primary)!important;
+    color:var(--brand-on-primary)!important;
+}
+body :is(a,button,[role="button"],.nav-link,.dropdown-item,.btn):is(.finea-brand-portal,.finea-brand-accent-box,.bg-\[\#ffcc20\],.bg-\[var\(--brand-accent\)\],.bg-\[var\(--brand-primary\)\],.btn-primary,.nav-link.active) :where(i,svg,span:not([class*="bg-"])) {
+    color:inherit!important;
+}
+body .finea-brand-portal:focus-visible,body .finea-brand-category:focus-visible {
+    outline:2px solid var(--brand-primary);outline-offset:3px;
+}

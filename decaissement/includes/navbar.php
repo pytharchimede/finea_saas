@@ -617,16 +617,18 @@ function navCanAccess($permission): bool
     .finea-brand-action i,.finea-brand-action svg{color:inherit!important}
     .finea-brand-strip{border-color:rgba(255,255,255,.13)!important}
     .finea-brand-category{color:#e2e8f0!important}
-    .finea-brand-category:hover,.finea-mega.is-open .finea-brand-category{background:var(--finea-brand)!important;color:var(--finea-brand-ink)!important}
+    .finea-brand-category:hover,.finea-mega.is-open .finea-brand-category{background:var(--finea-brand)!important;color:var(--brand-on-accent,#fff)!important}
     .finea-brand-category>i{color:var(--finea-brand)!important}
-    .finea-brand-category:hover>i,.finea-mega.is-open .finea-brand-category>i{color:var(--finea-brand-ink)!important}
+    .finea-brand-category:hover>i,.finea-mega.is-open .finea-brand-category>i{color:var(--brand-on-accent,#fff)!important}
     .finea-brand-panel{border-top:4px solid var(--finea-brand)!important}
-    .finea-brand-panel-title{color:#111827!important;border-color:#fde68a!important}
-    .finea-brand-panel-title i{color:#d39e00}
-    .finea-brand-portal{background:var(--finea-brand)!important;color:var(--finea-brand-ink)!important}
-    .finea-brand-portal:hover{background:var(--finea-brand-hover)!important}
+    .finea-brand-panel-title{color:#111827!important;border-color:rgb(var(--brand-accent-rgb) / .35)!important}
+    .finea-brand-panel-title i{color:var(--brand-primary)}
+    .finea-brand-portal{background:var(--finea-brand)!important;color:var(--brand-on-accent,#fff)!important}
+    .finea-brand-portal:hover{background:var(--finea-brand)!important;filter:brightness(.96)}
+    .finea-brand-portal :where(i,svg,span:not([class*="bg-"]),small),.finea-brand-accent-box :where(i,svg){color:inherit!important}
     .finea-brand-label{color:var(--finea-brand)!important}
     .finea-brand-accent-box{background:var(--finea-brand)!important;border-color:var(--finea-brand)!important;color:var(--brand-on-accent,#050505)!important}
+    .finea-brand-mobile-head .finea-brand-label{color:var(--brand-on-primary,#fff)!important}
     .finea-brand-mobile-head{background:var(--brand-primary,#050505)!important;border-color:var(--finea-brand)!important;color:var(--brand-on-primary,#fff)!important}
 </style>
 <nav id="appMenu" class="finea-brand-nav sticky top-0 z-40 mb-6 backdrop-blur-xl">

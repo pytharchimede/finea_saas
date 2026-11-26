@@ -309,3 +309,18 @@ body.employee-space.finea-dark-mode .employee-pointage-page tbody tr:hover {
     transition: none;
   }
 }
+
+/* Light navigation: neutral hover, including icons; active filled links
+   use the tenant foreground pair, independently of the page theme. */
+body:not(.finea-dark-mode) .finea-brand-category:hover > i,
+body:not(.finea-dark-mode) .finea-mega.is-open .finea-brand-category > i {
+  color: var(--brand-primary,#081c65) !important;
+}
+body .finea-brand-portal,
+body .finea-brand-portal :where(i,svg,span:not([class*="bg-"]),small) {
+  color: var(--brand-on-accent,#fff) !important;
+}
+body .finea-brand-accent-box,
+body .finea-brand-accent-box :where(i,svg) {
+  color: var(--brand-on-accent,#fff) !important;
+}
