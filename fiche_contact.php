@@ -258,7 +258,9 @@ require_once __DIR__ . '/decaissement/includes/header.php';
 require_once __DIR__ . '/decaissement/includes/navbar.php';
 ?>
 
-<div class="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#f6f8fc_45%,#eef2ff_100%)]">
+<link rel="stylesheet" href="assets/css/address-book-theme.css?v=<?= filemtime(__DIR__.'/assets/css/address-book-theme.css') ?>">
+<script>document.body.classList.add('address-book-screen');</script>
+<div class="ab-workspace min-h-screen">
     <div class="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:px-8">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -267,6 +269,8 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
                 <p class="mt-2 text-sm text-slate-500"><?= htmlspecialchars((string) ($contact['source_label'] ?? ''), ENT_QUOTES, 'UTF-8') ?> • <?= htmlspecialchars((string) ($contact['subtitle'] ?? ''), ENT_QUOTES, 'UTF-8') ?></p>
             </div>
             <div class="flex flex-wrap gap-3">
+<button type="button" id="abThemeToggle" class="inline-flex items-center rounded-2xl border px-4 py-3 text-sm font-semibold">Mode sombre</button>
+<script>(function(){const root=document.documentElement,b=document.getElementById('abThemeToggle');function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}sync();new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);sync();try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))root.classList.toggle('finea-dark-mode',e.newValue==='dark');});})();</script>
                 <?php if ($mailHref !== ''): ?>
                     <a href="<?= htmlspecialchars($mailHref, ENT_QUOTES, 'UTF-8') ?>" class="contact-track inline-flex items-center gap-2 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-semibold text-sky-700" data-contact-id="<?= htmlspecialchars($contactId, ENT_QUOTES, 'UTF-8') ?>" data-interaction-type="email" data-channel="email" data-subject="Email lancé depuis la fiche contact"><i class="fas fa-envelope"></i> Envoyer mail</a>
                 <?php endif; ?>
@@ -289,7 +293,7 @@ require_once __DIR__ . '/decaissement/includes/navbar.php';
         <div class="mt-8 grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
             <section class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-sm">
                 <div class="grid gap-6 md:grid-cols-[auto_1fr] md:items-start">
-                    <div class="flex h-24 w-24 items-center justify-center rounded-[28px] bg-gradient-to-br from-sky-600 to-indigo-600 text-3xl font-semibold text-white shadow-lg"><?= htmlspecialchars(mb_strtoupper(mb_substr((string) ($contact['display_name'] ?? 'NA'), 0, 2, 'UTF-8'), 'UTF-8'), ENT_QUOTES, 'UTF-8') ?></div>
+                    <div class="ab-avatar flex h-24 w-24 items-center justify-center rounded-[28px] bg-gradient-to-br from-sky-600 to-indigo-600 text-3xl font-semibold text-white shadow-lg"><?= htmlspecialchars(mb_strtoupper(mb_substr((string) ($contact['display_name'] ?? 'NA'), 0, 2, 'UTF-8'), 'UTF-8'), ENT_QUOTES, 'UTF-8') ?></div>
                     <div class="space-y-4">
                         <div class="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-4">
                             <div class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Coordonnées</div>
