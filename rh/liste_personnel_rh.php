@@ -57,27 +57,29 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
         <?php if($categoryFlash):?><div class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 font-bold text-emerald-800"><?=htmlspecialchars($categoryFlash)?></div><?php endif;?><?php if($categoryError):?><div class="mb-5 rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-800"><?=htmlspecialchars($categoryError)?></div><?php endif;?>
         <div class="overflow-hidden rounded-[32px] border border-slate-200 bg-white/95 shadow-[0_18px_60px_rgba(15,23,42,0.09)] backdrop-blur">
             <div class="relative flex flex-col gap-6 overflow-hidden bg-black p-8 text-white lg:flex-row lg:items-end lg:justify-between">
-                <div class="absolute -right-20 -top-28 h-72 w-72 rounded-full bg-[#ffcc20]/20 blur-3xl"></div>
-                <div class="absolute bottom-0 right-[34%] h-1 w-48 bg-[#ffcc20]"></div>
+                <div class="absolute -right-20 -top-28 h-72 w-72 rounded-full bg-[var(--brand-accent)]/20 blur-3xl"></div>
+                <div class="absolute bottom-0 right-[34%] h-1 w-48 bg-[var(--brand-primary)]"></div>
                 <div class="relative flex items-center gap-5">
                     <div class="hidden h-24 w-24 shrink-0 items-center justify-center rounded-[26px] bg-white p-2 shadow-xl sm:flex">
-                        <img src="../logo/default_logo.jpg" alt="BANAMUR" class="h-full w-full rounded-2xl object-contain">
+                        <?php if (!empty($layoutBrandLogoUrl)): ?>
+                        <img src="<?= htmlspecialchars($layoutBrandLogoUrl, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$layoutCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8') ?>" class="h-full w-full rounded-2xl object-contain bg-white p-2">
+                        <?php else: ?><span class="font-bold text-slate-900"><?= htmlspecialchars((string)$layoutCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8') ?></span><?php endif; ?>
                     </div>
                     <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.32em] text-[#ffcc20]">Finea · Ressources humaines</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.32em] text-white">Finea · Ressources humaines</p>
                     <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl"><?=$isProviderDirectory?'Prestataires et consultants':'Personnel interne'?></h1>
                     <p class="mt-3 max-w-3xl text-sm text-slate-300 md:text-base">
                         <?=$isProviderDirectory?'Annuaire séparé des intervenants externes gérés par les RH.':'Salariés, stagiaires et collaborateurs internes, hors prestataires et consultants.'?>
                     </p>
                     <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="dashboard_rh.php" class="inline-flex items-center rounded-xl bg-[#ffcc20] px-4 py-2 text-sm font-bold text-black transition hover:bg-yellow-300"><i class="fas fa-arrow-left mr-2"></i>Dashboard RH</a>
-                        <a href="integration_personnel_rh.php?category=<?=htmlspecialchars($rhPersonnelCategory)?>" class="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"><i class="fas fa-user-plus mr-2 text-[#ffcc20]"></i><?=$isProviderDirectory?'Ajouter un prestataire':'Ajouter un collaborateur'?></a>
+                        <a href="dashboard_rh.php" class="inline-flex items-center rounded-xl bg-[var(--brand-primary)] px-4 py-2 text-sm font-bold text-white transition hover:opacity-90"><i class="fas fa-arrow-left mr-2"></i>Dashboard RH</a>
+                        <a href="integration_personnel_rh.php?category=<?=htmlspecialchars($rhPersonnelCategory)?>" class="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"><i class="fas fa-user-plus mr-2 text-white"></i><?=$isProviderDirectory?'Ajouter un prestataire':'Ajouter un collaborateur'?></a>
                     </div>
                     </div>
                 </div>
                 <div class="relative grid gap-3 sm:grid-cols-3">
                     <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-4 backdrop-blur">
-                        <div class="text-xs font-semibold uppercase tracking-[0.22em] text-[#ffcc20]">Effectif total</div>
+                        <div class="text-xs font-semibold uppercase tracking-[0.22em] text-white">Effectif total</div>
                         <div class="mt-2 text-3xl font-semibold text-white"><?= number_format((int) $quickStats['total'], 0, ',', ' ') ?></div>
                     </div>
                     <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-4 backdrop-blur">
@@ -183,7 +185,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                         <i class="fas fa-sitemap mr-2"></i>
                         Organigramme
                     </a>
-                    <button type="button" id="open-card-export" class="inline-flex items-center rounded-2xl border border-yellow-300 bg-[#ffcc20] px-5 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300">
+                    <button type="button" id="open-card-export" class="inline-flex items-center rounded-2xl border border-[var(--brand-primary)] bg-[var(--brand-primary)] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90">
                         <i class="fas fa-address-card mr-2"></i>
                         Cartes pro A4
                     </button>
@@ -223,7 +225,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     <?php $employeeJobDescription=$jobDescriptionByFunction[(int)($employee['fonction_id']??0)]??null; ?>
                     <article class="relative min-w-0 overflow-hidden rounded-[30px] border border-white/80 bg-white/92 [overflow-wrap:anywhere] shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur transition hover:-translate-y-1 hover:shadow-[0_26px_80px_rgba(15,23,42,0.12)]">
                         <label class="absolute left-4 top-4 z-10 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-white/95 px-3 py-2 text-xs font-semibold text-slate-800 shadow-lg">
-                            <input type="checkbox" class="professional-card-select h-4 w-4 accent-[#ffcc20]" value="<?= (int) $employee['id'] ?>">
+                            <input type="checkbox" class="professional-card-select h-4 w-4 accent-[var(--brand-primary)]" value="<?= (int) $employee['id'] ?>">
                             Sélectionner
                         </label>
                         <div class="h-24 bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-500"></div>
@@ -274,7 +276,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                                 <?php endif; ?>
                             </div>
 
-                            <div class="mt-4 rounded-2xl border p-4 <?=$employeeJobDescription?'border-emerald-200 bg-emerald-50':'border-amber-300 bg-amber-50'?>"><div class="flex min-w-0 items-start gap-3"><i class="fas <?=$employeeJobDescription?'fa-clipboard-check text-emerald-700':'fa-triangle-exclamation text-amber-700'?> mt-1 shrink-0"></i><div class="min-w-0"><b class="block break-words <?=$employeeJobDescription?'text-emerald-900':'text-amber-950'?>"><?=$employeeJobDescription?'Fiche de poste disponible':'Fiche de poste à éditer'?></b><p class="mt-1 break-words text-xs <?=$employeeJobDescription?'text-emerald-700':'text-amber-800'?>"><?=$employeeJobDescription?htmlspecialchars((string)$employeeJobDescription['intitule']).' · version '.htmlspecialchars((string)$employeeJobDescription['version']):'Aucune fiche active ne couvre actuellement cette fonction.'?></p></div></div><a href="fiches_poste_rh.php<?=$employeeJobDescription?'?edit='.(int)$employeeJobDescription['id']:'?fonction_id='.(int)($employee['fonction_id']??0)?>" class="mt-3 flex w-full items-center justify-center rounded-xl <?=$employeeJobDescription?'bg-emerald-700 text-white':'bg-[#ffcc20] text-black'?> px-4 py-2 text-sm font-black"><?=$employeeJobDescription?'Consulter / modifier':'Créer maintenant'?></a></div>
+                            <div class="mt-4 rounded-2xl border p-4 <?=$employeeJobDescription?'border-emerald-200 bg-emerald-50':'border-amber-300 bg-amber-50'?>"><div class="flex min-w-0 items-start gap-3"><i class="fas <?=$employeeJobDescription?'fa-clipboard-check text-emerald-700':'fa-triangle-exclamation text-amber-700'?> mt-1 shrink-0"></i><div class="min-w-0"><b class="block break-words <?=$employeeJobDescription?'text-emerald-900':'text-amber-950'?>"><?=$employeeJobDescription?'Fiche de poste disponible':'Fiche de poste à éditer'?></b><p class="mt-1 break-words text-xs <?=$employeeJobDescription?'text-emerald-700':'text-amber-800'?>"><?=$employeeJobDescription?htmlspecialchars((string)$employeeJobDescription['intitule']).' · version '.htmlspecialchars((string)$employeeJobDescription['version']):'Aucune fiche active ne couvre actuellement cette fonction.'?></p></div></div><a href="fiches_poste_rh.php<?=$employeeJobDescription?'?edit='.(int)$employeeJobDescription['id']:'?fonction_id='.(int)($employee['fonction_id']??0)?>" class="mt-3 flex w-full items-center justify-center rounded-xl <?=$employeeJobDescription?'bg-emerald-700 text-white':'bg-[var(--brand-primary)] text-white'?> px-4 py-2 text-sm font-black"><?=$employeeJobDescription?'Consulter / modifier':'Créer maintenant'?></a></div>
 
                             <div class="mt-6 grid min-w-0 gap-3 sm:grid-cols-2">
                                 <button type="button" class="toggle-details inline-flex items-center justify-center rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800" data-target="<?= htmlspecialchars($detailsId) ?>">
@@ -305,7 +307,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                                     <i class="fas fa-file-signature mr-2"></i>
                                     Contrat paie
                                 </a>
-                                <a href="export_cartes_professionnelles.php?personnel_id=<?= (int) $employee['id'] ?>&photo_mode=auto" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-2xl border border-yellow-300 bg-[#ffcc20] px-4 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300">
+                                <a href="export_cartes_professionnelles.php?personnel_id=<?= (int) $employee['id'] ?>&photo_mode=auto" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-2xl border border-[var(--brand-primary)] bg-[var(--brand-primary)] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90">
                                     <i class="fas fa-address-card mr-2"></i>
                                     Carte pro
                                 </a>
@@ -391,7 +393,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
         <div class="bg-black px-7 py-6 text-white">
             <div class="flex items-start justify-between gap-5">
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#ffcc20]">BANAMUR · Impression</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white"><?= htmlspecialchars((string)$layoutCompanyBranding['company_name'], ENT_QUOTES, 'UTF-8') ?> · Impression</p>
                     <h2 id="card-export-title" class="mt-2 text-2xl font-semibold">Exporter les cartes pro</h2>
                 </div>
                 <button type="button" id="close-card-export" class="rounded-xl border border-white/20 px-3 py-2 text-white hover:bg-white/10" aria-label="Fermer"><i class="fas fa-times"></i></button>
@@ -401,11 +403,11 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <fieldset>
                 <legend class="text-sm font-semibold text-slate-900">Collaborateurs à inclure</legend>
                 <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 p-4">
-                    <input type="radio" name="card_export_scope" value="selected" checked class="mt-1 accent-[#ffcc20]">
+                    <input type="radio" name="card_export_scope" value="selected" checked class="mt-1 accent-[var(--brand-primary)]">
                     <span><strong class="block text-sm text-slate-900">Sélection sur cette page</strong><small id="selected-card-count" class="text-slate-500">0 collaborateur sélectionné</small></span>
                 </label>
                 <label class="mt-2 flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 p-4">
-                    <input type="radio" name="card_export_scope" value="filtered" class="mt-1 accent-[#ffcc20]">
+                    <input type="radio" name="card_export_scope" value="filtered" class="mt-1 accent-[var(--brand-primary)]">
                     <span><strong class="block text-sm text-slate-900">Tous les résultats filtrés</strong><small class="text-slate-500"><?= number_format((int) $result['total'], 0, ',', ' ') ?> collaborateur(s), toutes pages confondues</small></span>
                 </label>
             </fieldset>
@@ -417,12 +419,12 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                 </select>
             </fieldset>
             <label class="flex items-center gap-3 text-sm text-slate-700">
-                <input id="card-cut-marks" type="checkbox" checked class="h-4 w-4 accent-[#ffcc20]">
+                <input id="card-cut-marks" type="checkbox" checked class="h-4 w-4 accent-[var(--brand-primary)]">
                 Lignes de découpe et repère ciseaux
             </label>
             <p class="rounded-2xl bg-yellow-50 px-4 py-3 text-xs leading-5 text-yellow-900">PDF A4 de 10 cartes par feuille. Imprimez en taille réelle, recto-verso, retournement sur le bord long.</p>
             <div id="card-export-error" class="hidden rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
-            <button type="button" id="run-card-export" class="flex w-full items-center justify-center rounded-2xl bg-[#ffcc20] px-5 py-3.5 text-sm font-bold text-black hover:bg-yellow-300">
+            <button type="button" id="run-card-export" class="flex w-full items-center justify-center rounded-2xl bg-[var(--brand-primary)] px-5 py-3.5 text-sm font-bold text-white hover:opacity-90">
                 <i class="fas fa-file-pdf mr-2"></i>Générer le PDF recto-verso
             </button>
         </div>
