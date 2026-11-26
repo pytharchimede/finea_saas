@@ -244,32 +244,37 @@ $activeMenu = 'rh';
 require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
-<div class="min-h-screen w-full max-w-full overflow-x-clip bg-[radial-gradient(circle_at_top_left,_rgba(255,204,32,0.16),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(15,23,42,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f8fafc_100%)] pb-12">
+<link rel="stylesheet" href="dashboard-theme.css?v=<?=filemtime(__DIR__.'/dashboard-theme.css')?>">
+<div class="rh-workspace min-h-screen w-full max-w-full overflow-x-clip pb-12">
+<div class="flex justify-end px-4 pt-4"><button type="button" id="rhThemeToggle" class="rounded-xl px-4 py-2 text-sm font-bold">Mode sombre</button></div>
+<script>
+(function(){const root=document.documentElement,b=document.getElementById('rhThemeToggle');function apply(dark){root.classList.toggle('finea-dark-mode',dark);document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}apply(root.classList.contains('finea-dark-mode'));b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');apply(dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))apply(e.newValue==='dark');});})();
+</script>
     <div class="container mx-auto w-full max-w-full px-4 py-8">
-        <div class="relative overflow-hidden rounded-[32px] border border-yellow-300/40 bg-black px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
+        <div class="rh-hero relative overflow-hidden rounded-[32px] border bg-black px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
             <div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-2xl"></div>
-            <div class="absolute bottom-0 right-24 h-32 w-32 rounded-full bg-[#ffcc20]/25 blur-2xl"></div>
-            <div class="absolute bottom-0 left-0 h-1.5 w-2/5 bg-[#ffcc20]"></div>
+            <div class="absolute bottom-0 right-24 h-32 w-32 rounded-full bg-[var(--brand-accent)]/25 blur-2xl"></div>
+            <div class="absolute bottom-0 left-0 h-1.5 w-2/5 bg-[var(--brand-accent)]"></div>
             <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div class="max-w-3xl">
                     <div class="mb-3 flex flex-wrap items-center gap-3">
-                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-[#ffcc20]">Finea · Ressources humaines</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--brand-on-primary)]"><?= htmlspecialchars((string)($layoutCompanyBranding['company_name'] ?? 'FINEA'), ENT_QUOTES, 'UTF-8') ?> · Ressources humaines</p>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-                            <i class="fas fa-bell mr-2 text-[#ffcc20]"></i>
+                            <i class="fas fa-bell mr-2 text-[var(--brand-on-primary)]"></i>
                             <?= number_format($rhPendingTotal, 0, ',', ' ') ?> action<?= $rhPendingTotal > 1 ? 's' : '' ?> a verifier
                         </span>
                     </div>
-                    <h1 class="text-3xl font-semibold tracking-tight md:text-5xl">Pilotage centralisé du personnel BANAMUR</h1>
+                    <h1 class="text-3xl font-semibold tracking-tight md:text-5xl">Pilotage centralisé du personnel <?= htmlspecialchars((string)($layoutCompanyBranding['company_name'] ?? 'FINEA'), ENT_QUOTES, 'UTF-8') ?></h1>
                     <p class="mt-4 max-w-2xl text-sm text-slate-200 md:text-base">
-                        Le module RH consolide les effectifs, les affectations de service, les fonctions et les recrutements recents sans sortir du shell de navigation decaissement.
+                        Le module RH consolide les effectifs, les affectations de service, les fonctions et les recrutements recents au sein de votre espace de gestion RH.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <a href="liste_personnel_rh.php?scope=all" class="inline-flex items-center rounded-2xl bg-[#ffcc20] px-5 py-3 text-sm font-bold text-black shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-yellow-300">
+                    <a href="liste_personnel_rh.php?scope=all" class="rh-accent inline-flex items-center rounded-2xl bg-[var(--brand-accent)] px-5 py-3 text-sm font-bold text-black shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-yellow-300">
                         <i class="fas fa-id-badge mr-2"></i>
                         Voir tout le personnel
                     </a>
-                    <a href="integration_personnel_rh.php" class="inline-flex items-center rounded-2xl border border-[#ffcc20]/60 bg-[#ffcc20]/10 px-5 py-3 text-sm font-semibold text-[#ffcc20] transition hover:-translate-y-0.5 hover:bg-[#ffcc20]/20">
+                    <a href="integration_personnel_rh.php" class="inline-flex items-center rounded-2xl border border-[var(--brand-accent)]/60 bg-[var(--brand-accent)]/10 px-5 py-3 text-sm font-semibold text-[var(--brand-on-primary)] transition hover:-translate-y-0.5 hover:bg-[var(--brand-accent)]/20">
                         <i class="fas fa-user-plus mr-2"></i>
                         Integrer un collaborateur
                     </a>
@@ -291,7 +296,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                             <span class="ml-2 rounded-full bg-white px-2 py-0.5 text-xs font-bold text-rose-700"><?= (int) ($rhExplanations['pending_response'] ?? 0) ?></span>
                         <?php endif; ?>
                     </a>
-                    <a href="historique_points_financiers_rh.php" class="inline-flex items-center rounded-2xl bg-amber-300 px-5 py-3 text-sm font-bold text-slate-950">Points RH : historique, états et exports</a>
+                    <a href="historique_points_financiers_rh.php" class="rh-accent inline-flex items-center rounded-2xl bg-amber-300 px-5 py-3 text-sm font-bold text-slate-950">Points RH : historique, états et exports</a>
                     <a href="pointage_journalier_rh.php" class="inline-flex items-center rounded-2xl border border-white/15 px-5 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10">
                         <i class="fas fa-user-check mr-2"></i>
                         Pointage journalier
@@ -337,7 +342,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
         ?>
         <section class="mt-6 grid gap-4 lg:grid-cols-3">
             <?php foreach ($dashboardTabs as $key => $tab): ?>
-                <a href="<?= htmlspecialchars($tab['href']) ?>" class="rounded-[26px] border p-5 shadow-[0_16px_45px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 <?= $rhDashboardMode === $key ? 'border-slate-950 bg-slate-950 text-white' : 'border-white/80 bg-white/90 text-slate-800 hover:bg-slate-50' ?>">
+                <a href="<?= htmlspecialchars($tab['href']) ?>" <?= $rhDashboardMode === $key ? 'aria-current="page"' : '' ?> class="rh-view-tab rounded-[26px] border p-5 shadow-[0_16px_45px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 <?= $rhDashboardMode === $key ? 'border-slate-950 bg-slate-950 text-white' : 'border-white/80 bg-white/90 text-slate-800 hover:bg-slate-50' ?>">
                     <div class="flex items-start gap-4">
                         <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl <?= $rhDashboardMode === $key ? 'bg-white/15 text-emerald-200' : 'bg-emerald-50 text-emerald-700' ?>">
                             <i class="fas <?= htmlspecialchars($tab['icon']) ?>"></i>
