@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__.'/BtpDemo.php';
 final class SiteContent {
  public static function defaults(array $brand):array {
- return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[],'slides'=>[],'partners'=>[],'careers'=>[],'contact_form'=>false,'demo'=>false];
+ return ['headline'=>$brand['company_name'],'intro'=>'Découvrez notre entreprise, nos activités et notre savoir-faire.','about'=>'','services'=>[],'projects'=>[],'news'=>[],'seo_title'=>$brand['company_name'],'seo_description'=>'','show_contact'=>false,'hero_image'=>'','about_image'=>'','tagline'=>'','values'=>[],'figures'=>[],'slides'=>[],'partners'=>[],'careers'=>[],'contact_form'=>false,'demo'=>false,'credentials'=>[],'awards'=>[],'footer_text'=>'','legal'=>'','privacy'=>'','hours'=>'','linkedin'=>'','facebook'=>'','instagram'=>''];
  }
  public static function install(PDO $db):void {
  $db->exec("CREATE TABLE IF NOT EXISTS finea_website_content (id TINYINT UNSIGNED PRIMARY KEY,draft_json LONGTEXT NOT NULL,published_json LONGTEXT NULL,published_at DATETIME NULL,updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
@@ -24,24 +24,25 @@ final class SiteContent {
  $data=json_decode($json??'',true);return array_replace(self::defaults($brand),is_array($data)?$data:[]);
  }
  public static function fromPost(array $post):array {
- $out=[];foreach(['headline'=>190,'intro'=>1000,'about'=>10000,'seo_title'=>190,'seo_description'=>320,'tagline'=>120] as $key=>$max){$v=trim((string)($post[$key]??''));if(mb_strlen($v)>$max)throw new InvalidArgumentException('Texte trop long : '.$key);$out[$key]=$v;}
+ $out=[];foreach(['headline'=>190,'intro'=>1000,'about'=>10000,'seo_title'=>190,'seo_description'=>320,'tagline'=>120,'footer_text'=>1000,'legal'=>15000,'privacy'=>15000,'hours'=>300,'linkedin'=>500,'facebook'=>500,'instagram'=>500] as $key=>$max){$v=trim((string)($post[$key]??''));if(mb_strlen($v)>$max)throw new InvalidArgumentException('Texte trop long : '.$key);$out[$key]=$v;}
  if($out['headline']==='')throw new InvalidArgumentException('Le titre est obligatoire.');
  foreach(['values','figures'] as $key){$out[$key]=[];$raw=trim((string)($post[$key]??''));if(mb_strlen($raw)>20000)throw new InvalidArgumentException('Contenu trop long.');foreach(preg_split('/\R/u',$raw) as $line){if(trim($line)==='')continue;[$title,$body]=array_pad(explode('|',$line,2),2,'');if(trim($title)===''||mb_strlen(trim($title))>190||mb_strlen(trim($body))>2000)throw new InvalidArgumentException('Vérifiez les titres et descriptions.');$out[$key][]=['title'=>trim($title),'body'=>trim($body)];}if(count($out[$key])>50)throw new InvalidArgumentException('50 éléments maximum par rubrique.');}
  foreach(['hero_image','about_image'] as $key){$out[$key]=self::imageId((string)($post[$key]??''));}
- foreach(['services','projects','news','slides','partners','careers'] as $key){
+ foreach(['services','projects','news','slides','partners','careers','credentials','awards'] as $key){
  $out[$key]=[];$rows=$post['entries'][$key]??[];if(!is_array($rows)||count($rows)>50)throw new InvalidArgumentException('50 éléments maximum.');
  foreach($rows as $item){if(!is_array($item)||!empty($item['remove']))continue;$title=trim((string)($item['title']??''));if($title==='')continue;
  $entry=['title'=>$title,'body'=>trim((string)($item['body']??'')),'location'=>trim((string)($item['location']??'')),'category'=>trim((string)($item['category']??'')),'image'=>self::imageId((string)($item['image']??''))];
  foreach(['title'=>190,'body'=>15000,'location'=>190,'category'=>100] as $field=>$max)if(mb_strlen($entry[$field])>$max)throw new InvalidArgumentException('Contenu trop long.');
  $out[$key][]=$entry;
  }}
+ foreach(['linkedin','facebook','instagram'] as $key){if($out[$key]!==''&&(!filter_var($out[$key],FILTER_VALIDATE_URL)||strtolower((string)parse_url($out[$key],PHP_URL_SCHEME))!=='https'))throw new InvalidArgumentException('Lien social HTTPS invalide : '.$key);}
  $out['demo']=!empty($post['demo']);
  $out['contact_form']=!empty($post['contact_form']);
  $out['show_contact']=!empty($post['show_contact']);return $out;
  }
  public static function imageIds(array $data):array {
  $ids=[$data['hero_image']??'', $data['about_image']??''];
- foreach(['services','projects','news','slides','partners','careers'] as $key)foreach($data[$key]??[] as $item)$ids[]=$item['image']??'';
+ foreach(['services','projects','news','slides','partners','careers','credentials','awards'] as $key)foreach($data[$key]??[] as $item)$ids[]=$item['image']??'';
  return array_values(array_unique(array_filter($ids)));
  }
  public static function installInbox(PDO $db):void {
