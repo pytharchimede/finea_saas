@@ -49,7 +49,18 @@ try {
     ];
 }
 
+$_SESSION['academy_csrf'] ??= bin2hex(random_bytes(32));
+$allowedCourseIds = array_map('intval', array_column($academyDashboard['courses'] ?? [], 'id'));
+if (!$canAccessFormation || !$currentUserId) { http_response_code(403); exit('Accès refusé'); }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['formation_academy_action'] ?? '') === 'complete_lesson') {
+    if (!hash_equals($_SESSION['academy_csrf'], (string)($_POST['academy_csrf']??'')) || !in_array((int)($_POST['course_id']??0),$allowedCourseIds,true)) {http_response_code(403);exit;}
+    $q=$academyPdo->prepare('SELECT id FROM formation_lessons WHERE id=? AND course_id=? AND is_active=1');$q->execute([(int)$_POST['lesson_id'],(int)$_POST['course_id']]);
+    if (!$q->fetchColumn()) {http_response_code(404);exit;}
+    $academyController->markLessonCompleted($currentUserId,(int)$_POST['course_id'],(int)$_POST['lesson_id'],0);
+    header('Location: '.formationBuildUrl(['academy'=>'course','course'=>(string)$_POST['course_slug']]).'#lesson-'.(int)$_POST['lesson_id']);exit;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (string) ($_POST['formation_academy_action'] ?? '') === 'submit_quiz' && $academyController !== null) {
+    if (!hash_equals($_SESSION['academy_csrf'], (string)($_POST['academy_csrf']??'')) || !in_array((int)($_POST['course_id']??0),$allowedCourseIds,true)) {http_response_code(403);exit;}
     $postedCourseSlug = trim((string) ($_POST['course_slug'] ?? ''));
     try {
         $result = $academyController->submitQuiz(
@@ -79,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (string) ($_POST['formation_academy
 
 if ($academyMode === 'course' && $academyCourseSlug !== '' && $academyController !== null) {
     $academyCourseData = $academyController->course($academyCourseSlug);
+    if (!in_array((int)($academyCourseData['course']['id']??0),$allowedCourseIds,true)) {http_response_code(403);exit;}
     if (is_array($academyCourseData) && !empty($academyCourseData['quiz']['id'])) {
         $academyQuizQuestions = $academyController->quiz((int) $academyCourseData['quiz']['id']);
     }

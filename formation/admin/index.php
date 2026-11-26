@@ -88,9 +88,11 @@ if ($action === 'export') {
     academy_csv_export('finea_academy_' . $type . '_' . date('Ymd_His') . '.csv', $rows);
 }
 
+$_SESSION['academy_csrf'] ??= bin2hex(random_bytes(32));
 $flash = academy_admin_flash();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        if (!hash_equals($_SESSION['academy_csrf'], (string)($_POST['academy_csrf'] ?? ''))) throw new RuntimeException('Session expirée.');
         $postAction = (string)($_POST['admin_action'] ?? '');
         if ($postAction === 'save_course') {
             $id = $controller->saveAdminCourse($_POST);
@@ -103,7 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             academy_admin_redirect($adminUrl . '?action=edit_course&id=' . (int)$_POST['course_id'] . '#requirements');
         }
         if ($postAction === 'save_lesson') {
-            $lessonId = $controller->saveAdminLesson($_POST);
+            $uploaded = null;
+            if (isset($_FILES['lesson_video']) && $_FILES['lesson_video']['error'] !== UPLOAD_ERR_NO_FILE) {
+                require_once dirname(__DIR__).'/model/AcademyMedia.php';
+                $uploaded = academyStoreVideo($_FILES['lesson_video']);
+                $_POST['video_url'] = 'private-video:'.$uploaded;
+                $_POST['lesson_type'] = 'video';
+            }
+            try { $lessonId = $controller->saveAdminLesson($_POST); }
+            catch (Throwable $e) { if ($uploaded) @unlink(academyVideoDirectory().'/'.$uploaded); throw $e; }
             $imagePath = isset($_FILES['lesson_image']) ? academy_upload_image($projectRoot, $_FILES['lesson_image']) : null;
             if ($imagePath) {
                 $controller->saveAdminLessonBlock([
@@ -115,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'sort_order' => 1,
                 ]);
             }
-            if (trim((string)($_POST['video_url'] ?? '')) !== '') {
+            if (!$uploaded && trim((string)($_POST['video_url'] ?? '')) !== '') {
                 $controller->saveAdminLessonBlock([
                     'lesson_id' => $lessonId,
                     'block_type' => 'video',
@@ -175,7 +185,7 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
             <section class="academy-panel"><div class="academy-panel-head"><h2>Catalogue des parcours</h2><div><a class="finea-action-btn finea-action-btn--secondary" href="<?= $h($adminUrl . '?action=export&type=courses') ?>">CSV</a><a class="finea-action-btn finea-action-btn--accent" href="<?= $h($adminUrl . '?action=new_course') ?>">Ajouter</a></div></div><?php include __DIR__ . '/partials_courses_table.php'; ?></section>
         <?php elseif (in_array($action, ['edit_course','new_course'], true)): ?>
             <section class="academy-editor-grid">
-                <form method="post" class="academy-panel academy-form-card">
+                <form method="post" class="academy-panel academy-form-card"><input type="hidden" name="academy_csrf" value="<?= $h($_SESSION['academy_csrf']) ?>">
                     <input type="hidden" name="admin_action" value="save_course"><input type="hidden" name="id" value="<?= (int)($course['id'] ?? 0) ?>">
                     <div class="academy-panel-head"><h2><?= $course ? 'Informations du parcours' : 'Créer un parcours' ?></h2><button class="finea-action-btn finea-action-btn--accent">Enregistrer</button></div>
                     <div class="academy-form-grid">
@@ -195,7 +205,7 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
                 <section id="lessons" class="academy-panel academy-form-card">
                     <div class="academy-panel-head"><h2>Leçons & médias</h2><span>Drag & drop image + aperçu vidéo</span></div>
                     <?php if (!empty($course['id'])): ?>
-                    <form method="post" enctype="multipart/form-data" class="academy-form-grid">
+                    <form method="post" enctype="multipart/form-data" class="academy-form-grid"><input type="hidden" name="academy_csrf" value="<?= $h($_SESSION['academy_csrf']) ?>">
                         <input type="hidden" name="admin_action" value="save_lesson"><input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>">
                         <label>Titre de la leçon<input class="finea-input" name="title" required placeholder="Ex : Ajouter les justificatifs FEB"></label>
                         <label>Type<select class="finea-select academy-select-search" name="lesson_type"><option value="lecture">Lecture</option><option value="video">Vidéo</option><option value="interactive">Interactif</option><option value="quiz">Quiz</option></select></label>
@@ -203,7 +213,7 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
                         <label>Ordre<input class="finea-input" type="number" name="sort_order" value="0"></label>
                         <label>Durée<input class="finea-input" type="number" name="estimated_minutes" value="5"></label>
                         <label class="academy-toggle"><input type="checkbox" name="is_active" value="1" checked> Active</label>
-                        <label class="wide">Lien vidéo<input class="finea-input academy-video-url" name="video_url" placeholder="YouTube, Vimeo, MP4..."></label>
+                        <label class="wide">Vidéo de démonstration (MP4 / WebM)<input type="file" name="lesson_video" accept="video/mp4,video/webm"><small>Maximum 500 Mo, selon la configuration PHP.</small></label><label class="wide">Ou lien vidéo<input class="finea-input academy-video-url" name="video_url" placeholder="YouTube, Vimeo, MP4..."></label>
                         <div class="wide academy-video-preview" data-empty="Aperçu vidéo automatique"></div>
                         <div class="wide academy-dropzone"><input type="file" name="lesson_image" accept="image/jpeg,image/png,image/webp"><div><strong>Glisser-déposer une capture ici</strong><span>ou cliquer pour choisir une image JPG, PNG ou WEBP</span></div><img alt="Aperçu image"></div>
                         <label>Nom de la capture<input class="finea-input" name="image_title" placeholder="Capture étape 1"></label>
@@ -214,7 +224,7 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
                     <?php else: ?><div class="academy-empty">Enregistre d’abord le parcours pour ajouter des leçons, captures et vidéos.</div><?php endif; ?>
                 </section>
             </section>
-            <?php if (!empty($course['id'])): ?><section id="requirements" class="academy-panel academy-form-card"><div class="academy-panel-head"><h2>Obligations progressives</h2><span>Recommandée, obligatoire ou bloquante ciblée</span></div><form method="post" class="academy-form-grid"><input type="hidden" name="admin_action" value="save_requirement"><input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>"><label>Module<input class="finea-input academy-search-input" list="academy-modules" name="module_slug" value="<?= $h($course['module_slug']) ?>"></label><label>Permission<input class="finea-input academy-search-input" list="academy-permissions" name="permission_key" placeholder="acces_decaissement"></label><label>Type<select class="finea-select academy-select-search" name="requirement_type"><option value="recommended">Recommandée</option><option value="mandatory">Obligatoire</option><option value="blocking">Bloquante ciblée</option></select></label><label>Action bloquée<input class="finea-input" name="blocking_action" placeholder="create_feb"></label><label>Score requis<input class="finea-input" type="number" name="required_score" value="<?= (int)$course['required_score'] ?>"></label><label>Délai jours<input class="finea-input" type="number" name="deadline_days" placeholder="7"></label><label class="academy-toggle"><input type="checkbox" name="is_active" value="1" checked> Active</label><button class="finea-action-btn finea-action-btn--accent">Ajouter la règle</button></form><div class="finea-table-wrap academy-table-wrap"><table class="finea-table"><thead><tr><th>Type</th><th>Permission</th><th>Action</th><th>Score</th><th>Délai</th></tr></thead><tbody><?php foreach (($editor['requirements'] ?? []) as $r): ?><tr><td><?= $h($r['requirement_type']) ?></td><td><?= $h($r['permission_key']) ?></td><td><?= $h($r['blocking_action']) ?></td><td><?= (int)$r['required_score'] ?>%</td><td><?= $h($r['deadline_days'] ?? '-') ?></td></tr><?php endforeach; ?></tbody></table></div></section><?php endif; ?>
+            <?php if (!empty($course['id'])): ?><section id="requirements" class="academy-panel academy-form-card"><div class="academy-panel-head"><h2>Obligations progressives</h2><span>Recommandée, obligatoire ou bloquante ciblée</span></div><form method="post" class="academy-form-grid"><input type="hidden" name="academy_csrf" value="<?= $h($_SESSION['academy_csrf']) ?>"><input type="hidden" name="admin_action" value="save_requirement"><input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>"><label>Module<input class="finea-input academy-search-input" list="academy-modules" name="module_slug" value="<?= $h($course['module_slug']) ?>"></label><label>Permission<input class="finea-input academy-search-input" list="academy-permissions" name="permission_key" placeholder="acces_decaissement"></label><label>Type<select class="finea-select academy-select-search" name="requirement_type"><option value="recommended">Recommandée</option><option value="mandatory">Obligatoire</option><option value="blocking">Bloquante ciblée</option></select></label><label>Action bloquée<input class="finea-input" name="blocking_action" placeholder="create_feb"></label><label>Score requis<input class="finea-input" type="number" name="required_score" value="<?= (int)$course['required_score'] ?>"></label><label>Délai jours<input class="finea-input" type="number" name="deadline_days" placeholder="7"></label><label class="academy-toggle"><input type="checkbox" name="is_active" value="1" checked> Active</label><button class="finea-action-btn finea-action-btn--accent">Ajouter la règle</button></form><div class="finea-table-wrap academy-table-wrap"><table class="finea-table"><thead><tr><th>Type</th><th>Permission</th><th>Action</th><th>Score</th><th>Délai</th></tr></thead><tbody><?php foreach (($editor['requirements'] ?? []) as $r): ?><tr><td><?= $h($r['requirement_type']) ?></td><td><?= $h($r['permission_key']) ?></td><td><?= $h($r['blocking_action']) ?></td><td><?= (int)$r['required_score'] ?>%</td><td><?= $h($r['deadline_days'] ?? '-') ?></td></tr><?php endforeach; ?></tbody></table></div></section><?php endif; ?>
         <?php elseif ($action === 'reports'): ?>
             <section class="academy-panel"><div class="academy-panel-head"><h2>Exports & rapports</h2><span>Rapports Excel brandés · CSV disponible dans le catalogue</span></div><div class="academy-export-grid"><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=courses') ?>"><strong>Parcours</strong><span>Catalogue, modules, règles, permissions</span></a><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=attempts') ?>"><strong>Tentatives QCM</strong><span>Scores, réussites, échecs</span></a><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=certificates') ?>"><strong>Certificats</strong><span>Validations et niveaux obtenus</span></a></div></section>
         <?php endif; ?>

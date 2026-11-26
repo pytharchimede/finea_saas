@@ -60,7 +60,10 @@ class FormationAcademyService
 
     public function gradeQuiz(int $userId, int $courseId, int $quizId, array $submitted): array
     {
+        $final = $this->repository->finalQuizForCourse($courseId);
+        if (!$final || (int)$final['id'] !== $quizId || empty($final['is_final'])) throw new \RuntimeException('Évaluation invalide.');
         $questions = $this->repository->quizQuestionsWithAnswers($quizId);
+        if (!$questions) throw new \RuntimeException('Évaluation vide.');
         $totalPoints = 0;
         $earnedPoints = 0.0;
         $rows = [];
@@ -94,7 +97,7 @@ class FormationAcademyService
         $score = $totalPoints > 0 ? round(($earnedPoints / $totalPoints) * 100, 2) : 0.0;
         $quiz = $this->repository->quizById($quizId);
         $requiredScore = (int) ($quiz['min_score'] ?? 75);
-        $passed = $score >= $requiredScore;
+        $passed = $totalPoints > 0 && $score >= max($requiredScore,(int)($this->repository->courseById($courseId)['required_score']??75));
         $attemptId = $this->repository->saveAttempt($userId, $courseId, $quizId, $score, $earnedPoints, $totalPoints, $passed, $rows);
 
         $certificate = null;

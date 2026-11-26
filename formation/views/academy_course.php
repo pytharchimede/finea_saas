@@ -43,15 +43,20 @@ $totalSteps = count($lessons) + (int)$hasQuiz;
                 <div class="academy-lesson-index">Leçon <?= $index + 1 ?></div>
                 <h3><?= htmlspecialchars((string) $lesson['title'], ENT_QUOTES, 'UTF-8') ?></h3>
                 <?php if (!empty($lesson['video_url'])): ?>
-                    <div class="academy-video"><iframe src="<?= htmlspecialchars((string) $lesson['video_url'], ENT_QUOTES, 'UTF-8') ?>" allowfullscreen loading="lazy"></iframe></div>
+                    <?php if (str_starts_with($lesson['video_url'],'private-video:')): ?>
+<div class="academy-video"><video controls playsinline preload="metadata" src="<?= htmlspecialchars($appBasePath.'/formation/video.php?lesson='.(int)$lesson['id'], ENT_QUOTES,'UTF-8') ?>"></video></div>
+<?php elseif (preg_match('~^https://(?:www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)~i',$lesson['video_url'])): ?>
+<div class="academy-video"><iframe sandbox="allow-scripts allow-same-origin allow-presentation" src="<?= htmlspecialchars($lesson['video_url'], ENT_QUOTES,'UTF-8') ?>" allowfullscreen loading="lazy"></iframe></div>
+<?php endif; ?>
                 <?php endif; ?>
                 <?php foreach (($lesson['blocks'] ?? []) as $block): ?>
                     <div class="academy-block academy-block--<?= htmlspecialchars((string) $block['block_type'], ENT_QUOTES, 'UTF-8') ?>">
                         <?php if (!empty($block['title'])): ?><h4><?= htmlspecialchars((string) $block['title'], ENT_QUOTES, 'UTF-8') ?></h4><?php endif; ?>
-                        <?php if (!empty($block['asset_path'])): ?><img src="<?= htmlspecialchars((string) $block['asset_path'], ENT_QUOTES, 'UTF-8') ?>" alt="Capture formation"><?php endif; ?>
+                        <?php if ($block['block_type'] === 'image' && !empty($block['asset_path'])): ?><img src="<?= htmlspecialchars((string) $block['asset_path'], ENT_QUOTES, 'UTF-8') ?>" alt="Capture formation"><?php endif; ?>
                         <?php if (!empty($block['content'])): ?><p><?= nl2br(htmlspecialchars((string) $block['content'], ENT_QUOTES, 'UTF-8')) ?></p><?php endif; ?>
                     </div>
                 <?php endforeach; ?>
+                <form method="post"><input type="hidden" name="academy_csrf" value="<?= htmlspecialchars($_SESSION['academy_csrf'],ENT_QUOTES,'UTF-8') ?>"><input type="hidden" name="formation_academy_action" value="complete_lesson"><input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>"><input type="hidden" name="course_slug" value="<?= htmlspecialchars($course['slug'],ENT_QUOTES,'UTF-8') ?>"><input type="hidden" name="lesson_id" value="<?= (int)$lesson['id'] ?>"><button class="finea-action-btn finea-action-btn--primary">Marquer comme terminée</button></form>
             </article>
         <?php endforeach; ?>
 
@@ -63,7 +68,7 @@ $totalSteps = count($lessons) + (int)$hasQuiz;
                     <p>Choisissez vos réponses puis cliquez sur <strong>Valider ma réponse</strong> pour chaque question. L’envoi final reste bloqué tant que toutes les questions ne sont pas validées.</p>
                 </div>
                 <form method="post" class="academy-quiz-form" data-academy-quiz-form>
-                    <input type="hidden" name="formation_academy_action" value="submit_quiz">
+                    <input type="hidden" name="academy_csrf" value="<?= htmlspecialchars($_SESSION['academy_csrf'],ENT_QUOTES,'UTF-8') ?>"><input type="hidden" name="formation_academy_action" value="submit_quiz">
                     <input type="hidden" name="course_id" value="<?= (int) ($course['id'] ?? 0) ?>">
                     <input type="hidden" name="course_slug" value="<?= htmlspecialchars((string) ($course['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="quiz_id" value="<?= (int) ($quiz['id'] ?? 0) ?>">
