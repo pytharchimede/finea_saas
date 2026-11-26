@@ -4,6 +4,7 @@ declare(strict_types=1);
 if (PHP_SAPI !== 'cli') { http_response_code(403); exit(1); }
 require_once dirname(__DIR__) . '/src/Database/PlatformDatabase.php';
 use Finea\Saas\Database\PlatformDatabase;
+require_once dirname(__DIR__,2).'/model/StandardUnitSeeder.php';
 function fail(string $message): never { fwrite(STDERR, "ERREUR : {$message}\n"); exit(1); }
 $id = filter_var(getenv('FINEA_SEED_TENANT_ID'), FILTER_VALIDATE_INT);
 $db = (string)(getenv('FINEA_SEED_DB_NAME') ?: '');
@@ -41,10 +42,11 @@ try {
   $values=[1,$tenant['company_name'],$tenant['legal_name'],$tenant['capital'],$tenant['logo_path'],$tenant['icon_path'],$tenant['address'],$tenant['phone'],$tenant['email'],$tenant['rccm'],$tenant['tax_number'],$tenant['primary_color'],$tenant['accent_color'],$tenant['surface_color'],$tenant['text_color'],$tenant['muted_color'],$userId];
   $sql='INSERT INTO finea_company_branding (`'.implode('`,`',$columns).'`) VALUES ('.implode(',',array_fill(0,count($columns),'?')).')';
   $pdo->prepare($sql)->execute($values);
+  $unitResult=StandardUnitSeeder::seed($pdo);
   $pdo->commit();
  } catch(Throwable $e) {if($pdo->inTransaction())$pdo->rollBack();throw $e;}
  // Le marquage plateforme intervient après le commit métier; un échec est récupérable manuellement.
  try {$s=$platform->prepare("UPDATE saas_tenant_admin_invites SET status='provisioned',updated_at=NOW() WHERE tenant_id=? AND status='pending'");$s->execute([$id]);}
  catch(Throwable $e){error_log('FINEA seed platform update: '.$e->getMessage());fwrite(STDERR,"ATTENTION : compte créé mais statut d'invitation non synchronisé. Vérifier manuellement.\n");}
- fwrite(STDOUT,"SUCCÈS : administrateur #{$userId} et branding créés dans {$db}. Entreprise NON ACTIVÉE.\n");
+ fwrite(STDOUT,"SUCCÈS : administrateur #{$userId} et branding créés, {$unitResult['added']} unités ajoutées dans {$db}. Entreprise NON ACTIVÉE.\n");
 } catch(Throwable $e) {fail('Initialisation interrompue : '.$e->getMessage());}
