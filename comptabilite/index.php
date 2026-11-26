@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 $accounting->addJournal((string)$_POST['code'],(string)$_POST['label'],(string)$_POST['kind'],$userId);
                 $redirect='index.php?view=settings'; break;
             case 'account':
-                $accounting->importAccounts([['code'=>$_POST['code'],'label'=>$_POST['label']]],$userId);
+                $accounting->importAccounts([['code'=>$_POST['code'],'label'=>$_POST['label'],'party_kind'=>$_POST['party_kind']??'general','party_id'=>$_POST['party_id']??'','party_label'=>$_POST['party_label']??'']],$userId);
                 $redirect='index.php?view=accounts'; break;
             case 'import_accounts':
                 $file=$_FILES['csv']??[];
