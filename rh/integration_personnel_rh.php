@@ -174,13 +174,17 @@ $activeMenu = 'rh';
 require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(236,253,245,0.9),_transparent_42%),radial-gradient(circle_at_top_right,_rgba(191,219,254,0.8),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
+<link rel="stylesheet" href="integration-theme.css?v=<?=filemtime(__DIR__.'/integration-theme.css')?>">
+<script>document.body.classList.add('rh-integration-screen');</script>
+<div class="rh-integration min-h-screen pb-12">
+<div class="flex justify-end px-4 pt-4"><button type="button" id="rhIntegrationThemeToggle" class="rounded-xl px-4 py-2 text-sm font-bold">Mode sombre</button></div>
+<script>(function(){const root=document.documentElement,b=document.getElementById('rhIntegrationThemeToggle');function apply(dark){root.classList.toggle('finea-dark-mode',dark);document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}apply(root.classList.contains('finea-dark-mode'));b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');apply(dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))apply(e.newValue==='dark');});})();</script>
     <div class="container mx-auto px-4 py-8">
 
         <!-- En-tête -->
-        <div class="relative overflow-hidden rounded-[32px] border border-emerald-100 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
+        <div class="rh-integration-hero relative overflow-hidden rounded-[32px] border border-emerald-100 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-900 px-8 py-10 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)]">
             <div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-2xl"></div>
-            <div class="absolute bottom-0 right-24 h-24 w-24 rounded-full bg-emerald-300/20 blur-2xl"></div>
+            <div class="absolute bottom-0 right-24 h-24 w-24 rounded-full bg-[var(--brand-accent)]/20 blur-2xl"></div>
             <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                     <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-emerald-200">Ressources humaines</p>
@@ -214,7 +218,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <!-- Identite -->
             <section class="rounded-[30px] border border-white/80 bg-white/90 p-7 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur">
                 <div class="mb-6">
-                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-600">Etape 1</p>
+                    <p class="rh-step text-xs font-semibold uppercase tracking-[0.28em]">Etape 1</p>
                     <h2 class="mt-1 text-xl font-semibold text-slate-950">Identite du collaborateur</h2>
                 </div>
                 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -272,7 +276,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <!-- Affectation et contrat -->
             <section class="rounded-[30px] border border-white/80 bg-white/90 p-7 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur">
                 <div class="mb-6">
-                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-sky-600">Etape 2</p>
+                    <p class="rh-step text-xs font-semibold uppercase tracking-[0.28em]">Etape 2</p>
                     <h2 class="mt-1 text-xl font-semibold text-slate-950">Affectation et contrat</h2>
                 </div>
                 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -343,7 +347,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <!-- Contacts -->
             <section class="rounded-[30px] border border-white/80 bg-white/90 p-7 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur">
                 <div class="mb-6">
-                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-indigo-600">Etape 3</p>
+                    <p class="rh-step text-xs font-semibold uppercase tracking-[0.28em]">Etape 3</p>
                     <h2 class="mt-1 text-xl font-semibold text-slate-950">Contacts et famille</h2>
                 </div>
                 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -356,7 +360,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     <div>
                         <label class="mb-2 block text-sm font-medium text-slate-700">E-mail professionnel</label>
                         <input type="email" name="email" value="<?= htmlspecialchars((string) ($formData['email'] ?? '')) ?>"
-                            placeholder="prenom.nom@banamur.ci"
+                            placeholder="prenom.nom@entreprise.ci"
                             class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100">
                     </div>
                     <div>
@@ -419,7 +423,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             <!-- Pieces justificatives -->
             <section class="rounded-[30px] border border-white/80 bg-white/90 p-7 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur">
                 <div class="mb-6">
-                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600">Etape 4 (optionnelle)</p>
+                    <p class="rh-step text-xs font-semibold uppercase tracking-[0.28em]">Etape 4 (optionnelle)</p>
                     <h2 class="mt-1 text-xl font-semibold text-slate-950">Pieces justificatives</h2>
                     <p class="mt-1 text-sm text-slate-500">Formats acceptes : PDF, DOC, DOCX, JPG, JPEG, PNG, WEBP. Le numéro et la pièce d’identité sont obligatoires dès la création.</p>
                 </div>
@@ -434,9 +438,9 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     ];
                     foreach ($documentFields as $doc):
                     ?>
-                        <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                        <div class="rh-document rounded-2xl border p-5">
                             <div class="mb-3 flex items-center gap-3">
-                                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+                                <div class="rh-document-icon flex h-9 w-9 items-center justify-center rounded-xl">
                                     <i class="fas <?= $doc['icon'] ?> text-sm"></i>
                                 </div>
                                 <span class="text-sm font-medium text-slate-700"><?= htmlspecialchars($doc['label']) ?></span>
@@ -449,17 +453,17 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </section>
 
             <!-- Actions -->
-            <div class="flex flex-wrap items-center justify-between gap-4 rounded-[30px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur">
+            <div class="rh-integration-actions flex flex-wrap items-center justify-between gap-4 rounded-[30px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur">
                 <div class="text-sm text-slate-500">
                     <i class="fas fa-info-circle mr-1 text-slate-400"></i>
                     Les champs marques <span class="text-rose-500 font-semibold">*</span> sont obligatoires.
                     Les autres peuvent etre completes depuis le dossier RH.
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <a href="liste_personnel_rh.php" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                    <a href="liste_personnel_rh.php" class="rh-integration-cancel rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
                         Annuler
                     </a>
-                    <button type="submit" class="inline-flex items-center rounded-2xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
+                    <button type="submit" class="rh-integration-submit inline-flex items-center rounded-2xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
                         <i class="fas fa-user-plus mr-2"></i>
                         Creer le dossier RH
                     </button>
@@ -484,7 +488,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             list.innerHTML = '';
             for (let i = 0; i < count; i++) {
                 const row = document.createElement('div');
-                row.className = 'rounded-2xl border border-indigo-100 bg-white p-4';
+                row.className = 'rh-child rounded-2xl border p-4';
                 row.innerHTML = `
                     <div class="mb-3 text-sm font-semibold text-slate-900">Enfant ${i + 1}</div>
                     <label class="mb-2 block text-xs font-semibold text-slate-600">Date de naissance</label>
