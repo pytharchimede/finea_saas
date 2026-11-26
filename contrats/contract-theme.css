@@ -17,3 +17,12 @@ html.finea-dark-mode .contract-brand .contract-reference{color:var(--finea-text)
 .contract-brand a:focus-visible{outline:2px solid var(--brand-accent);outline-offset:3px}
 html.finea-dark-mode .contract-brand .bg-emerald-50{background:#15352c!important}
 html.finea-dark-mode .contract-brand .text-emerald-700{color:#a7f3d0!important}
+
+.contract-create select{background:var(--finea-surface-raised);color:var(--finea-text);border-color:var(--finea-border)}
+.contract-create select:focus-visible,.contract-create input:focus-visible{outline:2px solid var(--brand-accent);outline-offset:2px}
+.contract-create input[type=checkbox]{accent-color:var(--brand-primary)}
+.contract-create .contract-line-available{cursor:pointer;transition:border-color .15s,background-color .15s}
+.contract-create .contract-line-available:hover,.contract-create .contract-line-available:has(input:checked){border-color:var(--brand-primary)!important;background:var(--contract-tint)!important}
+.contract-create .line:has(input:disabled){cursor:not-allowed}
+html.finea-dark-mode .contract-create .bg-rose-50{background:#3b222e!important}
+html.finea-dark-mode .contract-create .text-rose-800{color:#fecdd3!important}
