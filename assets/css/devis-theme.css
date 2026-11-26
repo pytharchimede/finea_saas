@@ -588,3 +588,30 @@
 :is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .cd-ok{background:#123c32!important;color:#a7f3d0!important}
 :is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .cd-warn{background:#49351b!important;color:#fde68a!important}
 .devis-page .cd-actions a i,.devis-page .cd-search button i,.devis-page .cd-status i{color:inherit!important}
+
+/* Offers and projects workspace */
+.devis-page .op-workspace{color:var(--dv-text);background:transparent;min-width:0}
+.devis-page .op-recent{margin-top:16px}
+.devis-page .op-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.devis-page .op-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.devis-page .op-card{background:var(--dv-card);border:1px solid var(--devis-border);border-radius:16px;padding:18px;min-width:0;display:grid;gap:10px}
+.devis-page .op-card h3{font-size:17px;font-weight:800;overflow-wrap:anywhere}
+.devis-page .op-card :is(p,small){color:var(--dv-muted);font-size:12px}
+.devis-page .op-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.devis-page .op-metrics>div,.devis-page .op-value{background:var(--dv-soft);border-radius:10px;padding:12px;display:grid;gap:4px}
+.devis-page .op-value strong{font-size:18px;overflow-wrap:anywhere}
+.devis-page .op-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:10px 14px;background:var(--brand-primary,#081c65);color:var(--brand-on-primary,#fff);font-weight:700;font-size:13px}
+.devis-page .offres-listing :is(section,article,form).bg-white,.devis-page .offres-listing>section:first-of-type,.devis-page #projectDialog{background:var(--dv-card)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page .offres-listing :is(.bg-slate-50,.bg-slate-100,.bg-indigo-50){background:var(--dv-soft)!important;color:var(--dv-text)!important}
+.devis-page .offres-listing :is(.text-slate-950,.text-slate-900,.text-slate-800,.text-slate-700,.text-indigo-600,.text-indigo-700,.text-indigo-800){color:var(--dv-text)!important}
+.devis-page .offres-listing :is(.text-slate-500,.text-slate-600){color:var(--dv-muted)!important}
+.devis-page .offres-listing :is(.bg-indigo-600,.bg-slate-950,.bg-amber-500),.devis-page #projectDialog button[type=submit],.devis-page #projectDialog button:not([type]){background:var(--brand-accent,#d71920)!important;color:var(--brand-on-accent,#fff)!important}
+.devis-page #projectDialog form{background:var(--dv-card)!important;color:var(--dv-text)!important}
+.devis-page #projectDialog .bg-gradient-to-r{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+.devis-page #projectDialog .text-slate-500{color:var(--dv-muted)!important}
+.devis-page #projectDialog .bg-slate-100{background:var(--dv-soft)!important;color:var(--dv-text)!important}
+.devis-page .offres-listing a.bg-white{background:var(--dv-field)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .offres-listing .bg-amber-50{background:#49351b!important;color:#fde68a!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .offres-listing .bg-emerald-50{background:#123c32!important;color:#a7f3d0!important}
+:is(html.finea-dark-mode,body.finea-dark-mode) .devis-page .offres-listing .bg-rose-50{background:#481f2b!important;color:#fecdd3!important}
+@media(max-width:760px){.devis-page .op-grid{grid-template-columns:1fr}}

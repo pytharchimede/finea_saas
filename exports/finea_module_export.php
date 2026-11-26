@@ -9,11 +9,11 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 
 $module = $_GET['module'] ?? '';
 $format = $_GET['format'] ?? '';
-if (!in_array($module, ['unites','clients'], true) || !in_array($format, ['pdf','xlsx'], true)) {
+if (!in_array($module, ['unites','clients','offres'], true) || !in_array($format, ['pdf','xlsx'], true)) {
     http_response_code(400);
     exit('Export non pris en charge.');
 }
-$permission = $module === 'clients' ? 'acces_liste_client' : 'acces_liste_unite';
+$permission = ['clients'=>'acces_liste_client','unites'=>'acces_liste_unite','offres'=>'acces_liste_offre'][$module];
 if (!AccessManager::hasPermission($permission)) {
     AccessManager::denyAccess($permission,'exports/finea_module_export.php');
     exit;
@@ -42,6 +42,29 @@ if ($module === 'clients') {
         (string)($row['fiscal_activity_label'] ?? $row['fiscal_activity_status'] ?? 'Non renseignée'),
         ClientBusinessPolicy::usable($row) ? 'Identité validée' : 'À vérifier',
     ], $rows);
+} elseif ($module === 'offres') {
+    require_once dirname(__DIR__).'/model/Offre.php';
+    $pdo=Database::getConnection();
+    foreach (['commercial_dedie'=>'commercial_dedie','date_from'=>'date_offre_from','date_to'=>'date_offre_to'] as $input=>$key) {
+        if (!isset($_GET[$input])) continue;
+        if (!is_string($_GET[$input])) { http_response_code(400); exit('Filtre invalide.'); }
+        $filters[$key]=trim($_GET[$input]);
+    }
+    $scope=$_GET['site_status']??'all';
+    if (!in_array($scope,['all','active','none'],true)) {http_response_code(400);exit('Filtre invalide.');}
+    $projects=(new Offre($pdo))->searchOffres($filters);
+    $metrics=$pdo->prepare('SELECT (SELECT COUNT(*) FROM devis_banamur d WHERE d.offre_id=o.id_offre AND COALESCE(d.masque,0)=0) quote_count,(SELECT COUNT(*) FROM chantier_banamur ch JOIN devis_banamur d ON d.id=ch.devis_id WHERE d.offre_id=o.id_offre AND ch.archived_at IS NULL) site_count,(SELECT COALESCE(SUM(d.total_ttc),0) FROM devis_banamur d WHERE d.offre_id=o.id_offre AND COALESCE(d.masque,0)=0) project_value,cl.nom_client FROM offre_banamur o LEFT JOIN client_banamur cl ON cl.id_client=o.client_id WHERE o.id_offre=?');
+    $headers=['N° projet','Référence','Client','Superviseur','Date','Devis','Chantiers actifs','Valeur TTC (FCFA)'];
+    $widths=[13,23,17,15,9,6,8,9];
+    $rows=[];
+    foreach ($projects as $project) {
+        $metrics->execute([(int)$project['id_offre']]);
+        $m=$metrics->fetch(PDO::FETCH_ASSOC);
+        if (!$m) continue;
+        $sites=(int)$m['site_count'];
+        if (($scope==='active' && !$sites)||($scope==='none' && $sites)) continue;
+        $rows[]=[(string)$project['num_offre'],(string)$project['reference_offre'],(string)($m['nom_client']??''),(string)$project['commercial_dedie'],(string)$project['date_offre'],(int)$m['quote_count'],$sites,(float)$m['project_value']];
+    }
 } else {
     $rows = (new UniteMesure(Database::getConnection()))->search($filters);
     $headers = ['Symbole','Libellé'];
@@ -51,12 +74,12 @@ if ($module === 'clients') {
 $lastColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(count($headers));
 $brand = CompanyBranding::get();
 $palette = CompanyBranding::palette();
-$title = $module === 'clients' ? 'Liste des clients' : 'Liste des unités de mesure';
+$title = ['clients'=>'Liste des clients','unites'=>'Liste des unités de mesure','offres'=>'Portefeuille des projets'][$module];
 if ($format === 'xlsx') {
     $book = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
     $book->getProperties()->setCreator(CompanyExportBranding::creator())->setTitle($title);
     $sheet = $book->getActiveSheet();
-    $sheet->setTitle($module === 'clients' ? 'Clients' : 'Unités');
+    $sheet->setTitle(['clients'=>'Clients','unites'=>'Unités','offres'=>'Projets'][$module]);
     $sheet->fromArray($headers,null,'A1');
     $sheet->getStyle('A1:'.$lastColumn.'1')->applyFromArray([
         'font'=>['bold'=>true,'color'=>['rgb'=>CompanyExportBranding::rgb('primary',true)]],
@@ -66,7 +89,7 @@ if ($format === 'xlsx') {
     foreach ($rows as $row) {
         foreach ($row as $index=>$value) {
             $column = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($index+1);
-            $sheet->setCellValueExplicit($column.$i,$value,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $sheet->setCellValueExplicit($column.$i,$value,is_int($value)||is_float($value)?\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC:\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
         }
         ++$i;
     }
@@ -84,7 +107,7 @@ class FineaUnitsExportPdf extends TCPDF {
     public function Header(): void { $this->drawCompanyPdfHeader(); }
     public function Footer(): void { $this->drawCompanyPdfFooter(); }
 }
-$pdf = new FineaUnitsExportPdf($module === 'clients' ? 'L' : 'P','mm','A4',true,'UTF-8',false);
+$pdf = new FineaUnitsExportPdf($module === 'unites' ? 'P' : 'L','mm','A4',true,'UTF-8',false);
 $pdf->companyPdfTitle=$title;
 $pdf->companyPdfType='Référentiel';
 $pdf->companyPdfShowQr=false;
@@ -101,7 +124,7 @@ foreach ($headers as $index=>$label) $html.='<th width="'.$widths[$index].'%">'.
 $html.='</tr></thead><tbody>';
 foreach ($rows as $row) {
     $html.='<tr>';
-    foreach ($row as $index=>$value) $html.='<td width="'.$widths[$index].'%">'.$escape($value).'</td>';
+    foreach ($row as $index=>$value) $html.='<td width="'.$widths[$index].'%">'.$escape(is_float($value)?number_format($value,0,',',' '):$value).'</td>';
     $html.='</tr>';
 }
 if (!$rows) $html.='<tr><td colspan="'.count($headers).'">Aucun résultat correspondant.</td></tr>';
