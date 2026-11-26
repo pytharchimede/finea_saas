@@ -6,6 +6,7 @@ require_once __DIR__ . '/../model/Database.php';
 require_once __DIR__ . '/../model/EmployeeLegalRequestManager.php';
 require_once __DIR__ . '/../employe/includes/helpers.php';
 require_once __DIR__ . '/../model/AuditTrail.php';
+require_once __DIR__ . '/../model/CompanyExportBranding.php';
 
 function parse_selected_ids(string $raw): array
 {
@@ -154,7 +155,7 @@ echo "\xEF\xBB\xBF"; // BOM UTF-8
 <body>
     <table border="1" cellspacing="0" cellpadding="6">
         <tr>
-            <th colspan="6" style="background:#111827;color:#fff;">Export - Demandes sélectionnées</th>
+            <th colspan="6" style="background:#<?=CompanyExportBranding::rgb('primary')?>;color:#<?=CompanyExportBranding::rgb('primary',true)?>;"><?=htmlspecialchars(CompanyExportBranding::identityLine(),ENT_QUOTES,'UTF-8')?> — Demandes sélectionnées</th>
         </tr>
         <tr>
             <td colspan="3"><b>Nombre sélectionné</b></td>
@@ -165,12 +166,12 @@ echo "\xEF\xBB\xBF"; // BOM UTF-8
             <td colspan="3"><?= htmlspecialchars(format_fcfa_excel($totalAmount), ENT_QUOTES, 'UTF-8') ?></td>
         </tr>
         <tr>
-            <th>Réf.</th>
+            <th style="background:#<?=CompanyExportBranding::rgb('primary')?>;color:#<?=CompanyExportBranding::rgb('primary',true)?>;">Réf.</th>
             <th>Type</th>
             <th>Titre</th>
             <th>Statut</th>
             <th>Date</th>
-            <th>Montant</th>
+            <th>Montant (FCFA)</th>
         </tr>
         <?php foreach ($allowed as $row): ?>
             <?php
@@ -203,7 +204,7 @@ echo "\xEF\xBB\xBF"; // BOM UTF-8
                 <td><?= htmlspecialchars($titleCell, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars(request_status_label($row), ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars((string) ($row['submitted_at'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($amount > 0 ? format_fcfa_excel($amount) : '—', ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= $amount > 0 ? (float)$amount : '' ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

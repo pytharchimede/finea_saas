@@ -3,13 +3,14 @@ require_once __DIR__ . '/../auth_check.php';
 \AccessManager::requirePageAccess();
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../model/CompanyExportBranding.php';
 require_once __DIR__ . '/../model/Database.php';
 require_once __DIR__ . '/../model/EmployeeLegalRequestManager.php';
 require_once __DIR__ . '/../employe/includes/helpers.php';
 
 class PDFEmployeeRequest extends \TCPDF
 {
-    public string $companyName = 'BANAMUR';
+    public string $companyName = '';
     public string $documentTitle = 'Fiche de demande';
     public string $logoPath = '';
 
@@ -19,17 +20,18 @@ class PDFEmployeeRequest extends \TCPDF
         $this->Rect(0, 0, $this->getPageWidth(), 28, 'F');
         $this->SetDrawColor(203, 213, 225);
         $this->Line(12, 24.5, $this->getPageWidth() - 12, 24.5);
-        $this->SetFillColor(250, 189, 2);
+        $this->SetFillColor(...CompanyExportBranding::rgbArray('primary'));
         $this->Rect(12, 24.5, 34, 1.1, 'F');
 
         if ($this->logoPath !== '' && is_file($this->logoPath)) {
-            $this->Image($this->logoPath, 12, 5.8, 15, 0, '', '', '', false, 300);
+            $info = @getimagesize($this->logoPath);
+            if ($info && in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) $this->Image($this->logoPath, 12, 5.8, min(15, 15*$info[0]/$info[1]), 0, '', '', '', false, 300);
         }
 
         $this->SetXY(31, 7.4);
         $this->SetFont('dejavusans', 'B', 15.5);
         $this->SetTextColor(15, 23, 42);
-        $this->Cell(0, 5.8, $this->companyName, 0, 1, 'L');
+        $this->Cell($this->getPageWidth()-115, 5.8, $this->companyName, 0, 1, 'L', false, '', 1);
         $this->SetX(31);
         $this->SetFont('dejavusans', '', 8.5);
         $this->SetTextColor(71, 85, 105);
@@ -53,7 +55,7 @@ class PDFEmployeeRequest extends \TCPDF
         $this->Ln(2.5);
         $this->SetFont('dejavusans', '', 8);
         $this->SetTextColor(100, 116, 139);
-        $this->Cell(0, 5, 'BANAMUR - Dossier employe securise - Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
+        $this->Cell(0, 5, $this->companyName . ' — Espace employé — Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
     }
 }
 
@@ -155,24 +157,24 @@ $statusLabel = match ($status) {
 
 // Créer le PDF
 $pdf = new PDFEmployeeRequest('P', 'mm', 'A4');
-$pdf->SetCreator('Banamur');
-$pdf->SetAuthor('Banamur');
+$pdf->SetCreator(CompanyExportBranding::creator());
+$pdf->SetAuthor((string)CompanyBranding::get()['company_name']);
 $pdf->SetTitle('Fiche de demande #' . $requestId);
 $pdf->SetSubject('Fiche de demande');
 $pdf->SetMargins(12, 30, 12);
 $pdf->SetAutoPageBreak(true, 20);
-$pdf->companyName = 'BANAMUR';
+$pdf->companyName = (string)CompanyBranding::get()['company_name'];
 $pdf->documentTitle = 'Fiche de demande #' . $requestId;
-$pdf->logoPath = __DIR__ . '/../logo/default_logo.jpg';
+$pdf->logoPath = CompanyBranding::logoFile();
 $pdf->AddPage();
 
 $pageWidth = $pdf->getPageWidth() - 24;
 
 // Hero section
-$pdf->SetFillColor(248, 250, 252);
+$pdf->SetFillColor(255, 255, 255);
 $pdf->SetDrawColor(226, 232, 240);
 $pdf->RoundedRect(12, 33, $pageWidth, 30, 4, '1111', 'DF');
-$pdf->SetFillColor(250, 189, 2);
+$pdf->SetFillColor(...CompanyExportBranding::rgbArray('primary'));
 $pdf->RoundedRect(12, 33, 4, 30, 4, '1101', 'F');
 $pdf->SetFont('dejavusans', 'B', 16);
 $pdf->SetTextColor(15, 23, 42);
@@ -207,7 +209,7 @@ $pdf->SetXY(72, 55);
 $pdf->Cell(120, 4, 'Export le ' . date('d/m/Y à H:i'), 0, 1, 'L');
 
 $qrPayload = implode("\n", [
-    'BANAMUR - Fiche de demande',
+    $pdf->companyName . ' — Fiche de demande',
     'Reference: REQ-' . $requestId,
     'Type: ' . $typeLabel,
     'Statut: ' . $statusLabel,
