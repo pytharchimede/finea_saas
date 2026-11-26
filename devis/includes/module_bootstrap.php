@@ -544,6 +544,17 @@ HTML;
             $html = preg_replace('~</body>~i', $moduleFooter . "\n</body>", $html, 1) ?? $html;
         }
 
+        $themeAssets = '<link rel="stylesheet" href="' . $assetBase . 'branding_theme.php">'
+            . '<link rel="stylesheet" href="' . $assetBase . 'assets/css/finea-theme.css?v=20261126">'
+            . '<link rel="stylesheet" href="' . $assetBase . 'assets/css/devis-legacy-theme.css?v=20261126">';
+        $html = preg_replace_callback('~</head>~i', static fn() => $themeAssets . '</head>', $html, 1) ?? $html;
+        $html = preg_replace_callback('~<body\\b([^>]*)>~i', static function(array $m): string {
+            $attrs = $m[1];
+            if (preg_match('~\\bclass\\s*=\\s*(["\'])(.*?)\\1~i', $attrs)) {
+                $attrs = preg_replace_callback('~\\bclass\\s*=\\s*(["\'])(.*?)\\1~i', static fn($a) => 'class='.$a[1].$a[2].' finea-devis-legacy'.$a[1], $attrs, 1);
+            } else { $attrs .= ' class="finea-devis-legacy"'; }
+            return '<body'.$attrs.'>';
+        }, $html, 1) ?? $html;
         echo $html;
     }
 }

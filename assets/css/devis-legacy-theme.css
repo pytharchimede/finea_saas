@@ -1,0 +1,27 @@
+body.finea-devis-legacy{--dl-bg:#f3f6fb;--dl-card:#fff;--dl-soft:#eef2f7;--dl-text:#17243d;--dl-muted:#475569;--dl-border:#cbd5e1;--dl-field:#fff;--dl-focus:var(--brand-primary,#081c65);background:var(--dl-bg)!important;color:var(--dl-text)!important;--bs-body-color:var(--dl-text);--bs-body-bg:var(--dl-card);--bs-border-color:var(--dl-border);--bs-secondary-color:var(--dl-muted)}
+html.finea-dark-mode body.finea-devis-legacy,body.finea-devis-legacy.finea-dark-mode{--dl-bg:#08111f;--dl-card:#172337;--dl-soft:#202e43;--dl-text:#f5f8fc;--dl-muted:#c6d0de;--dl-border:#52647e;--dl-field:#0d1727;--dl-focus:#a5c7ff;color-scheme:dark}
+body.finea-devis-legacy :is(.finea-module-bar,.offer-project-header){background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+body.finea-devis-legacy .finea-module-bar::after{background:var(--brand-accent,#d71920)!important}
+body.finea-devis-legacy :is(.finea-module-title,.offer-project-header) :is(h1,h2,p,.offer-project-kicker){color:var(--brand-on-primary,#fff)!important}
+body.finea-devis-legacy .finea-legacy-aside{background:#172337!important;color:#fff!important}
+body.finea-devis-legacy .finea-legacy-aside-head small{color:#c6d0de!important}
+body.finea-devis-legacy :is(.finea-legacy-nav a.is-active,.finea-module-actions a:last-child){background:var(--brand-accent,#d71920)!important;color:var(--brand-on-accent,#fff)!important;border-color:transparent!important}
+body.finea-devis-legacy :is(.finea-legacy-nav a.is-active,.finea-module-actions a:last-child,.btn-primary,.btn-danger) :is(i,span,svg){color:inherit!important}
+body.finea-devis-legacy > .container,body.finea-devis-legacy :is(#devisSearchForm,#devisGrid .offer-project-group,.card,.card-body,.modal-content,.quote-builder-card,.quote-section,.quote-option,.quote-summary,.quote-table-shell,.dropdown-menu,.list-group-item){background:var(--dl-card)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy :is(.card-header,.card-footer,.quote-builder-intro,.quote-import-help,.bg-light){background:var(--dl-soft)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy :is(.container,.quote-builder,.modal-content) :is(h1,h2,h3,h4,h5,h6,.card-header-title,.devis-title,.info-grid p,.info-grid p strong,.form-label,.quote-section-title,.text-dark){color:var(--dl-text)!important}
+body.finea-devis-legacy :is(.text-muted,.form-text,.select2-selection__placeholder){color:var(--dl-muted)!important}
+body.finea-devis-legacy :is(.form-control,.form-select,.select2-selection,.select2-dropdown,.select2-search__field){background:var(--dl-field)!important;color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy :is(.select2-selection__rendered,.select2-results__option,.dropdown-item){color:var(--dl-text)!important}
+body.finea-devis-legacy :is(.select2-results__option--highlighted,.dropdown-item:hover){background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+body.finea-devis-legacy .table{--bs-table-bg:var(--dl-card);--bs-table-color:var(--dl-text);--bs-table-striped-bg:var(--dl-soft);--bs-table-striped-color:var(--dl-text);--bs-table-hover-bg:var(--dl-soft);--bs-table-hover-color:var(--dl-text);--bs-table-border-color:var(--dl-border)}
+body.finea-devis-legacy .table thead th{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important}
+body.finea-devis-legacy .table tbody tr:hover>*{background:var(--dl-soft)!important;color:var(--dl-text)!important}
+body.finea-devis-legacy .btn-primary{background:var(--brand-primary,#081c65)!important;color:var(--brand-on-primary,#fff)!important;border-color:var(--brand-primary,#081c65)!important}
+body.finea-devis-legacy .btn-danger{background:#b91c1c!important;color:#fff!important}
+body.finea-devis-legacy :is(.btn-outline-secondary,.btn-outline-dark,.btn-outline-primary){color:var(--dl-text)!important;border-color:var(--dl-border)!important}
+body.finea-devis-legacy :is(.btn-outline-secondary,.btn-outline-dark,.btn-outline-primary):hover{background:var(--dl-soft)!important}
+body.finea-devis-legacy :is(a,button,input,select,textarea):focus-visible{outline:2px solid var(--dl-focus)!important;outline-offset:2px}
+html.finea-dark-mode body.finea-devis-legacy :is(.text-success,#totalTtc){color:#86efac!important}
+html.finea-dark-mode body.finea-devis-legacy .text-danger{color:#fda4af!important}
+body.finea-devis-legacy .offer-project-header h2{color:var(--brand-on-primary,#fff)!important}

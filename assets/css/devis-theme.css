@@ -515,3 +515,12 @@
 .devis-page .devis-main table tbody td{color:var(--dv-text);border-color:var(--devis-border)!important}
 .devis-page .devis-main table tbody tr:hover td{background:var(--dv-soft);color:var(--dv-text)}
 .devis-page :is(a,button,input,select,textarea):focus-visible{outline:2px solid var(--dv-focus)!important;outline-offset:3px}
+
+.devis-page :is(.ed-scope,.ed-kpi,.ed-panel,.devis-feature-panel){background:var(--dv-card)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page :is(.ed-kpi strong,.ed-panel h2,.ed-list-item strong,.ed-scope label,.ed-bar-head){color:var(--dv-text)!important}
+.devis-page :is(.ed-kpi span,.ed-kpi small,.ed-panel>p,.ed-list-item small,.ed-scope p){color:var(--dv-muted)!important}
+.devis-page :is(.ed-tabs a,.ed-actions a,.ed-export a){background:var(--dv-field)!important;color:var(--dv-text)!important;border-color:var(--devis-border)!important}
+.devis-page :is(.ed-tabs a.active,.ed-actions a.primary,.ed-client-shortcut a){background:var(--brand-accent)!important;color:var(--brand-on-accent)!important;border-color:transparent!important}
+.devis-page .ed-note{background:var(--dv-soft)!important;color:var(--dv-text)!important;border-left-color:var(--brand-accent)!important}
+.devis-page .ed-fill{background:var(--brand-primary)!important}
+.devis-page .ed-track{background:var(--dv-soft)!important}
