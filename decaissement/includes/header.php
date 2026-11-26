@@ -50,6 +50,9 @@ $layoutCompanyBranding = CompanyBranding::get();
 $layoutBrandIconUrl = !empty($layoutCompanyBranding['icon_path']) || !empty($layoutCompanyBranding['logo_path']) ? $layoutRootBase . 'branding_asset.php?type=icon' : '';
 $layoutBrandLogoUrl = !empty($layoutCompanyBranding['logo_path']) ? $layoutRootBase . 'branding_asset.php?type=logo' : '';
 $layoutIsRhModule = preg_match('~(?:^|/)rh/[^/]+\\.php$~i', str_replace('\\\\', '/', (string)($_SERVER['SCRIPT_NAME'] ?? ''))) === 1;
+$layoutDirectoryScript = str_replace(chr(92), '/', (string)($_SERVER['SCRIPT_NAME'] ?? ''));
+$layoutIsSupplierDirectory = preg_match('~(?:^|/)fournisseur/[^/]+[.]php$~i', $layoutDirectoryScript) === 1;
+$layoutIsAddressBook = in_array(basename($layoutDirectoryScript), ['carnet_adresse.php','fiche_contact.php'], true);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -164,7 +167,10 @@ $layoutIsRhModule = preg_match('~(?:^|/)rh/[^/]+\\.php$~i', str_replace('\\\\', 
 <?php if ($layoutIsRhModule): ?>
 <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>rh/assets/module-theme.css?v=<?= filemtime(__DIR__.'/../../rh/assets/module-theme.css') ?>">
 <?php endif; ?>
+<?php if ($layoutIsSupplierDirectory || $layoutIsAddressBook): ?>
+<link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>assets/css/directory-dark-compat.css?v=<?= filemtime(__DIR__.'/../../assets/css/directory-dark-compat.css') ?>">
+<?php endif; ?>
 </head>
 
-<body class="min-h-screen<?= $layoutIsRhModule ? ' finea-rh-module' : '' ?>" style="background: radial-gradient(1200px 600px at 0% 0%, rgb(var(--brand-accent-rgb, 255 204 32) / .10) 0%, transparent 70%), radial-gradient(1200px 600px at 100% 0%, rgb(var(--brand-primary-rgb, 5 5 5) / .06) 0%, transparent 70%), linear-gradient(180deg, var(--brand-surface, #ffffff) 0%, color-mix(in srgb, var(--brand-surface, #ffffff) 96%, var(--brand-primary, #050505)) 100%);">
+<body class="min-h-screen<?= $layoutIsRhModule ? ' finea-rh-module' : '' ?><?= $layoutIsSupplierDirectory ? ' supplier-module-screen' : '' ?><?= $layoutIsAddressBook ? ' address-book-screen' : '' ?>" style="background: radial-gradient(1200px 600px at 0% 0%, rgb(var(--brand-accent-rgb, 255 204 32) / .10) 0%, transparent 70%), radial-gradient(1200px 600px at 100% 0%, rgb(var(--brand-primary-rgb, 5 5 5) / .06) 0%, transparent 70%), linear-gradient(180deg, var(--brand-surface, #ffffff) 0%, color-mix(in srgb, var(--brand-surface, #ffffff) 96%, var(--brand-primary, #050505)) 100%);">
 
