@@ -151,6 +151,28 @@ try {
 
 $portalModules = array_map('normalizePortalModuleTarget', $portalModules);
 
+// The quotation centre is the primary entry point for its internal workspaces.
+// Keep direct entries only for restricted profiles that cannot open the centre.
+$devisChildKeys = [
+    'module_devis_generation', 'module_devis_liste', 'module_devis_clients',
+    'module_devis_offres', 'module_devis_unites', 'module_devis_chantiers',
+    'module_debours',
+];
+$devisCentreAvailable = false;
+foreach ($portalModules as $portalModule) {
+    if (($portalModule['module_key'] ?? '') === 'module_devis') {
+        $devisCentreAvailable = \AccessManager::hasPermission('acces_dashboard')
+            || \AccessManager::hasPermission('acces_veille_ao');
+        break;
+    }
+}
+if ($devisCentreAvailable) {
+    $portalModules = array_values(array_filter($portalModules, static function (array $module) use ($devisChildKeys): bool {
+        return !in_array((string)($module['module_key'] ?? ''), $devisChildKeys, true);
+    }));
+}
+
+
 $portalModulesByKey = [];
 foreach ($portalModules as $portalModule) {
     $moduleKey = (string) ($portalModule['module_key'] ?? $portalModule['id'] ?? '');
