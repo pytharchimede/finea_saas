@@ -77,31 +77,7 @@ require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
 
-<style>
-.rn-workspace{background:var(--finea-surface,#f8fafc);color:var(--finea-text,#172033)}
-.rn-workspace .rn-hero,.rn-workspace .rn-quick{background:linear-gradient(120deg,var(--finea-primary,#1d2b57),#101827)!important;color:white}
-.rn-workspace .rn-primary{background:var(--finea-accent,#fabd02)!important;color:#111827}
-.finea-dark-mode .rn-workspace{background:#0f172a;color:#e2e8f0;color-scheme:dark}
-.finea-dark-mode .rn-workspace :is([class~="bg-white"],[class~="bg-white/95"],[class~="bg-slate-50"],[class~="bg-slate-100"]){background:#1e293b!important}
-.finea-dark-mode .rn-workspace :is([class~="text-slate-950"],[class~="text-slate-900"],[class~="text-slate-800"],[class~="text-slate-700"],[class~="text-slate-600"],[class~="text-slate-500"]){color:#cbd5e1!important}
-.finea-dark-mode .rn-workspace :is([class~="border-white/80"],[class~="border-slate-100"],[class~="border-slate-200"],[class~="border-slate-300"]){border-color:#475569!important}
-.finea-dark-mode .rn-workspace :is(input:not([type=checkbox]):not([type=hidden]),select,textarea){background:#172033;color:#e2e8f0;border-color:#475569}
-.finea-dark-mode .rn-workspace :is([class~="bg-indigo-50"],[class~="bg-indigo-100"],[class~="bg-blue-50"]){background:#243451!important;color:#c7d2fe!important}
-.finea-dark-mode .rn-workspace :is([class~="bg-orange-50"],[class~="bg-amber-50"]){background:#422d18!important;color:#fed7aa!important}
-.finea-dark-mode .rn-workspace :is([class~="bg-emerald-50"],[class~="bg-rose-50"]){background:#263448!important}
-.finea-dark-mode .rn-workspace :is([class~="text-emerald-700"],[class~="text-emerald-800"]){color:#86efac!important}
-.finea-dark-mode .rn-workspace :is([class~="text-rose-700"],[class~="text-rose-800"],[class~="text-rose-600"]){color:#fda4af!important}
-.finea-dark-mode .rn-workspace :is([class~="text-orange-700"],[class~="text-orange-600"]){color:#fdba74!important}
-.finea-dark-mode .rn-workspace :is([class~="hover:bg-slate-50/70"],[class~="hover:bg-indigo-50"]):hover{background:#334155!important}
-.finea-dark-mode .rn-workspace [class~="divide-slate-100"]>*+*{border-color:#334155!important}
-/* Quick links must retain contrast regardless of the global anchor theme. */
-.rn-workspace .rn-quick a{color:#f8fafc!important;background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.22)!important}
-.rn-workspace .rn-quick a span{color:inherit!important}
-.rn-workspace .rn-quick a span.text-sm{color:#cbd5e1!important}
-.rn-workspace .rn-quick a i{color:#fde68a!important}
-.rn-workspace .rn-quick a:hover,.rn-workspace .rn-quick a:focus-visible{background:rgba(255,255,255,.18)!important;color:#fff!important}
-.rn-workspace .rn-quick a:focus-visible{outline:2px solid #fde68a;outline-offset:2px}
-</style>
+<link rel="stylesheet" href="recurring-theme.css?v=<?= filemtime(__DIR__.'/recurring-theme.css') ?>">
 <div class="rn-workspace min-h-screen pb-12">
     <div class="container mx-auto px-4 py-8"><div class="mb-4 flex justify-end"><button type="button" id="rnThemeToggle" class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Mode sombre</button></div>
         <?php if ($flash): ?>
@@ -110,18 +86,18 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </div>
         <?php endif; ?>
 
-        <section class="rn-hero relative overflow-hidden rounded-[34px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-7 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)] md:px-9 md:py-11">
-            <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#fabd02]/25 blur-2xl"></div>
+        <section class="rn-hero relative overflow-hidden rounded-[34px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[var(--brand-primary)] to-slate-900 px-7 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)] md:px-9 md:py-11">
+            <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[var(--brand-accent)]/25 blur-2xl"></div>
             <div class="absolute -bottom-20 left-20 h-48 w-48 rounded-full bg-white/10 blur-3xl"></div>
             <div class="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
                 <div>
                     <div class="mb-4 flex flex-wrap items-center gap-3">
                         <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200"><?= rn_h($layoutCompanyBranding['company_name'] ?? 'FINEA') ?> · Automatisation FEB</p>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-                            <i class="fas fa-bell mr-2 text-[#fabd02]"></i><?= rn_number(count($alerts)) ?> point(s) à surveiller
+                            <i class="fas fa-bell mr-2 text-[var(--brand-on-primary)]"></i><?= rn_number(count($alerts)) ?> point(s) à surveiller
                         </span>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-                            <i class="fas fa-calendar-check mr-2 text-[#fabd02]"></i>Création automatique J-7
+                            <i class="fas fa-calendar-check mr-2 text-[var(--brand-on-primary)]"></i>Création automatique J-7
                         </span>
                     </div>
                     <h1 class="max-w-4xl text-3xl font-semibold tracking-tight md:text-5xl">Pilotage des besoins récurrents</h1>
@@ -130,7 +106,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     </p>
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                    <a href="add_form.php" class="rn-primary inline-flex items-center justify-center rounded-2xl bg-[#fabd02] px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">
+                    <a href="add_form.php" class="rn-primary inline-flex items-center justify-center rounded-2xl bg-[var(--brand-accent)] px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">
                         <i class="fas fa-plus mr-2"></i>Nouveau besoin
                     </a>
                     <a href="index.php?status=pending_validation" class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-amber-50">
@@ -171,7 +147,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                             <h2 class="mt-2 text-2xl font-bold text-slate-950"><?= $archiveMode?'Archives des besoins récurrents':'Besoins récurrents enregistrés' ?></h2>
                         </div>
                         <form method="get" id="recurringFiltersForm" class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                            <div><div class="mb-1 flex justify-between gap-2"><span class="text-xs font-bold text-slate-600">Recherche globale</span><select name="q_mode" class="rounded-lg border-0 bg-slate-100 px-2 py-1 text-[11px] font-bold"><option value="include" <?=($_GET['q_mode']??'include')==='include'?'selected':''?>>Inclure</option><option value="exclude" <?=($_GET['q_mode']??'')==='exclude'?'selected':''?>>Exclure</option></select></div><input name="q" value="<?= rn_h($_GET['q'] ?? '') ?>" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57]" placeholder="Nom, référence, chantier…"></div>
+                            <div><div class="mb-1 flex justify-between gap-2"><span class="text-xs font-bold text-slate-600">Recherche globale</span><select name="q_mode" class="rounded-lg border-0 bg-slate-100 px-2 py-1 text-[11px] font-bold"><option value="include" <?=($_GET['q_mode']??'include')==='include'?'selected':''?>>Inclure</option><option value="exclude" <?=($_GET['q_mode']??'')==='exclude'?'selected':''?>>Exclure</option></select></div><input name="q" value="<?= rn_h($_GET['q'] ?? '') ?>" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)]" placeholder="Nom, référence, chantier…"></div>
                             <?php foreach ([['requester','Demandeurs','requesters'],['beneficiary','Bénéficiaires','beneficiaries'],['assignment','Affectations / chantiers','assignments']] as [$filterKey,$filterLabel,$optionKey]): $selectedValues=array_values(array_filter(array_map('strval',(array)($_GET[$filterKey]??[])))); ?>
                                 <div data-multi-filter="<?= rn_h($filterKey) ?>" data-options='<?= rn_h(json_encode($filterOptions[$optionKey]??[],JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)) ?>' class="relative min-w-0">
                                     <div class="mb-1 flex items-center justify-between gap-2"><span class="text-xs font-bold text-slate-600"><?= rn_h($filterLabel) ?></span><select name="<?= rn_h($filterKey) ?>_mode" class="rounded-lg border-0 bg-slate-100 px-2 py-1 text-[11px] font-bold text-slate-700"><option value="include" <?= ($_GET[$filterKey.'_mode']??'include')==='include'?'selected':'' ?>>Inclure</option><option value="exclude" <?= ($_GET[$filterKey.'_mode']??'')==='exclude'?'selected':'' ?>>Exclure</option></select></div>
@@ -182,21 +158,21 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                                     <div data-multi-results class="absolute z-50 mt-1 hidden max-h-64 w-full overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl"></div>
                                 </div>
                             <?php endforeach; ?>
-                            <select name="status" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57]">
+                            <select name="status" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)]">
                                 <option value="">Tous statuts</option>
                                 <?php foreach ($archiveMode?['cancelled'=>'Annulé','expired'=>'Arrivé à terme']:['pending_validation' => 'À valider', 'active' => 'Actif', 'suspended' => 'Suspendu', 'draft' => 'Brouillon'] as $s => $label): ?>
                                     <option value="<?= rn_h($s) ?>" <?= $currentStatus === $s ? 'selected' : '' ?>><?= rn_h($label) ?></option>
                                     <option value="!<?= rn_h($s) ?>" <?= $currentStatus === '!'.$s ? 'selected' : '' ?>>Tous sauf : <?= rn_h($label) ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <select name="frequency_type" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57]">
+                            <select name="frequency_type" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)]">
                                 <option value="">Toutes fréquences</option>
                                 <?php foreach (['daily'=>'Quotidienne','weekly'=>'Hebdomadaire','monthly'=>'Mensuelle','quarterly'=>'Trimestrielle','semesterly'=>'Semestrielle','yearly'=>'Annuelle','custom'=>'Personnalisée'] as $value=>$label): ?>
                                     <option value="<?= rn_h($value) ?>" <?= (string)($_GET['frequency_type'] ?? '') === $value ? 'selected' : '' ?>><?= rn_h($label) ?></option>
                                     <option value="!<?= rn_h($value) ?>" <?= (string)($_GET['frequency_type'] ?? '') === '!'.$value ? 'selected' : '' ?>>Toutes sauf : <?= rn_h($label) ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <select name="priority" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1d2b57]">
+                            <select name="priority" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[var(--brand-accent)]">
                                 <option value="">Toutes priorités</option>
                                 <?php foreach (['basse'=>'Basse','normale'=>'Normale','haute'=>'Haute','critique'=>'Critique'] as $value=>$label): ?>
                                     <option value="<?= rn_h($value) ?>" <?= (string)($_GET['priority'] ?? '') === $value ? 'selected' : '' ?>><?= rn_h($label) ?></option>
@@ -266,7 +242,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                                             <td class="px-5 py-4"><span class="rounded-full border <?= rn_status_badge_class($item['status'] ?? '') ?> px-3 py-1 text-xs font-bold"><?= rn_h(rn_status_label($item['status'] ?? '')) ?></span></td>
                                             <td class="px-5 py-4 text-right">
                                                 <div class="flex flex-wrap justify-end gap-2">
-                                                        <a href="add_form.php?id=<?= (int)$item['id'] ?>" class="rounded-xl bg-blue-50 px-3 py-2 text-xs font-bold text-[#1d2b57] ring-1 ring-blue-100 hover:bg-blue-100">
+                                                        <a href="add_form.php?id=<?= (int)$item['id'] ?>" class="rounded-xl bg-blue-50 px-3 py-2 text-xs font-bold text-[var(--brand-primary)] ring-1 ring-blue-100 hover:bg-blue-100">
                                                             <i class="fas fa-pen mr-1"></i>Modifier
                                                         </a>
 
@@ -330,7 +306,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                         <?php foreach ($sideLinks as $index => $link): ?>
                             <a href="<?= rn_h($link['href']) ?>" class="relative block rounded-2xl border <?= $index < 2 ? 'border-amber-400/25 bg-amber-500/10 hover:bg-amber-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10' ?> px-4 py-4 transition">
                                 <div class="flex items-center gap-3">
-                                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-[#fabd02]"><i class="fas <?= rn_h($link['icon']) ?>"></i></span>
+                                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-[var(--brand-on-primary)]"><i class="fas <?= rn_h($link['icon']) ?>"></i></span>
                                     <span><span class="block font-semibold"><?= rn_h($link['label']) ?></span><span class="text-sm text-slate-400"><?= rn_h($link['hint']) ?></span></span>
                                 </div>
                             </a>
