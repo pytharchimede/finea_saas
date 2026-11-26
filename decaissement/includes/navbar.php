@@ -882,7 +882,16 @@ a.finea-engine-link.finea-engine-link:focus-visible {outline:2px solid #6495ed;o
         ['parametrage_rh.php', 'fa-sliders', 'Paramètres'],
     ];
     ?>
-    <div class="finea-brand-mobile-head relative z-30 -mt-6 border-b text-white shadow-lg shadow-slate-950/10">
+    <style>
+html body .rh-quick-nav{background:var(--brand-primary)!important;color:var(--brand-on-primary)!important;border-color:var(--brand-accent)!important}
+html body .rh-quick-nav a.rh-quick-link{background:transparent!important;color:var(--brand-on-primary)!important;border:1px solid transparent!important}
+html body .rh-quick-nav a.rh-quick-link:hover{background:color-mix(in srgb,var(--brand-on-primary) 15%,var(--brand-primary))!important;color:var(--brand-on-primary)!important}
+html body .rh-quick-nav a.rh-quick-link[aria-current="page"]{background:var(--brand-accent)!important;color:var(--brand-on-accent)!important;border-color:var(--brand-accent)!important}
+html body .rh-quick-nav a.rh-quick-link i{color:inherit!important}
+html body .rh-quick-nav .finea-brand-label{color:var(--brand-on-primary)!important}
+html body .rh-quick-nav a.rh-quick-link:focus-visible{outline:2px solid var(--brand-on-primary);outline-offset:2px}
+</style>
+<div class="rh-quick-nav finea-brand-mobile-head relative z-30 -mt-6 border-b text-white shadow-lg shadow-slate-950/10">
         <div class="mx-auto flex max-w-[1600px] items-center gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:thin]">
             <div class="mr-2 hidden shrink-0 items-center gap-2 border-r border-white/15 pr-4 lg:flex">
                 <span class="finea-brand-accent-box flex h-8 w-8 items-center justify-center rounded-xl"><i class="fas fa-people-group"></i></span>
@@ -890,7 +899,7 @@ a.finea-engine-link.finea-engine-link:focus-visible {outline:2px solid #6495ed;o
             </div>
             <?php foreach ($rhQuickLinks as [$rhHref, $rhIcon, $rhLabel]): ?>
                 <?php $rhIsActive = $rhCurrentPage === $rhHref; ?>
-                <a href="<?= htmlspecialchars($layoutRootBase . 'rh/' . $rhHref) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition <?= $rhIsActive ? 'finea-brand-portal shadow-md' : 'text-slate-200 hover:bg-white/10 hover:text-white' ?>">
+                <a href="<?= htmlspecialchars($layoutRootBase . 'rh/' . $rhHref) ?>" <?= $rhIsActive ? 'aria-current="page"' : '' ?> class="rh-quick-link inline-flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition <?= $rhIsActive ? 'finea-brand-portal shadow-md' : 'text-slate-200 hover:bg-white/10 hover:text-white' ?>">
                     <i class="fas <?= htmlspecialchars($rhIcon) ?>"></i><?= htmlspecialchars($rhLabel) ?>
                 </a>
             <?php endforeach; ?>
