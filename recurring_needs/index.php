@@ -77,21 +77,39 @@ require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
 
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(250,189,2,0.15),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(29,43,87,0.15),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] pb-12">
-    <div class="container mx-auto px-4 py-8">
+<style>
+.rn-workspace{background:var(--finea-surface,#f8fafc);color:var(--finea-text,#172033)}
+.rn-workspace .rn-hero,.rn-workspace .rn-quick{background:linear-gradient(120deg,var(--finea-primary,#1d2b57),#101827)!important;color:white}
+.rn-workspace .rn-primary{background:var(--finea-accent,#fabd02)!important;color:#111827}
+.finea-dark-mode .rn-workspace{background:#0f172a;color:#e2e8f0;color-scheme:dark}
+.finea-dark-mode .rn-workspace :is([class~="bg-white"],[class~="bg-white/95"],[class~="bg-slate-50"],[class~="bg-slate-100"]){background:#1e293b!important}
+.finea-dark-mode .rn-workspace :is([class~="text-slate-950"],[class~="text-slate-900"],[class~="text-slate-800"],[class~="text-slate-700"],[class~="text-slate-600"],[class~="text-slate-500"]){color:#cbd5e1!important}
+.finea-dark-mode .rn-workspace :is([class~="border-white/80"],[class~="border-slate-100"],[class~="border-slate-200"],[class~="border-slate-300"]){border-color:#475569!important}
+.finea-dark-mode .rn-workspace :is(input:not([type=checkbox]):not([type=hidden]),select,textarea){background:#172033;color:#e2e8f0;border-color:#475569}
+.finea-dark-mode .rn-workspace :is([class~="bg-indigo-50"],[class~="bg-indigo-100"],[class~="bg-blue-50"]){background:#243451!important;color:#c7d2fe!important}
+.finea-dark-mode .rn-workspace :is([class~="bg-orange-50"],[class~="bg-amber-50"]){background:#422d18!important;color:#fed7aa!important}
+.finea-dark-mode .rn-workspace :is([class~="bg-emerald-50"],[class~="bg-rose-50"]){background:#263448!important}
+.finea-dark-mode .rn-workspace :is([class~="text-emerald-700"],[class~="text-emerald-800"]){color:#86efac!important}
+.finea-dark-mode .rn-workspace :is([class~="text-rose-700"],[class~="text-rose-800"],[class~="text-rose-600"]){color:#fda4af!important}
+.finea-dark-mode .rn-workspace :is([class~="text-orange-700"],[class~="text-orange-600"]){color:#fdba74!important}
+.finea-dark-mode .rn-workspace :is([class~="hover:bg-slate-50/70"],[class~="hover:bg-indigo-50"]):hover{background:#334155!important}
+.finea-dark-mode .rn-workspace [class~="divide-slate-100"]>*+*{border-color:#334155!important}
+</style>
+<div class="rn-workspace min-h-screen pb-12">
+    <div class="container mx-auto px-4 py-8"><div class="mb-4 flex justify-end"><button type="button" id="rnThemeToggle" class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Mode sombre</button></div>
         <?php if ($flash): ?>
             <div class="mb-5 rounded-2xl border <?= !empty($flash['ok']) ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-rose-200 bg-rose-50 text-rose-800' ?> px-5 py-4 font-semibold shadow-sm">
                 <i class="fas <?= !empty($flash['ok']) ? 'fa-circle-check' : 'fa-triangle-exclamation' ?> mr-2"></i><?= rn_h($flash['message'] ?? '') ?>
             </div>
         <?php endif; ?>
 
-        <section class="relative overflow-hidden rounded-[34px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-7 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)] md:px-9 md:py-11">
+        <section class="rn-hero relative overflow-hidden rounded-[34px] border border-slate-900/10 bg-gradient-to-r from-slate-950 via-[#1d2b57] to-slate-900 px-7 py-9 text-white shadow-[0_24px_80px_rgba(15,23,42,0.32)] md:px-9 md:py-11">
             <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#fabd02]/25 blur-2xl"></div>
             <div class="absolute -bottom-20 left-20 h-48 w-48 rounded-full bg-white/10 blur-3xl"></div>
             <div class="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
                 <div>
                     <div class="mb-4 flex flex-wrap items-center gap-3">
-                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200">FINEA · Automatisation FEB</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200"><?= rn_h($layoutCompanyBranding['company_name'] ?? 'FINEA') ?> · Automatisation FEB</p>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
                             <i class="fas fa-bell mr-2 text-[#fabd02]"></i><?= rn_number(count($alerts)) ?> point(s) à surveiller
                         </span>
@@ -105,7 +123,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     </p>
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                    <a href="add_form.php" class="inline-flex items-center justify-center rounded-2xl bg-[#fabd02] px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">
+                    <a href="add_form.php" class="rn-primary inline-flex items-center justify-center rounded-2xl bg-[#fabd02] px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 hover:bg-amber-300">
                         <i class="fas fa-plus mr-2"></i>Nouveau besoin
                     </a>
                     <a href="index.php?status=pending_validation" class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-amber-50">
@@ -295,7 +313,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
             </main>
 
             <aside class="space-y-6 xl:sticky xl:top-6 xl:self-start">
-                <section class="rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)]">
+                <section class="rn-quick rounded-[30px] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_22px_70px_rgba(15,23,42,0.28)]">
                     <div class="mb-5">
                         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-200">Accès rapides</p>
                         <h2 class="mt-2 text-2xl font-semibold">Besoins récurrents</h2>
@@ -351,6 +369,11 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const themeButton=document.getElementById('rnThemeToggle');
+    const applyTheme=dark=>{document.documentElement.classList.toggle('finea-dark-mode',dark);document.body.classList.toggle('finea-dark-mode',dark);themeButton.textContent=dark?'☀ Mode clair':'☾ Mode sombre';themeButton.setAttribute('aria-pressed',String(dark));};
+    applyTheme(document.documentElement.classList.contains('finea-dark-mode'));
+    themeButton.addEventListener('click',()=>{const dark=!document.documentElement.classList.contains('finea-dark-mode');applyTheme(dark);try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});
+    window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))applyTheme(e.newValue==='dark');});
     document.querySelectorAll('[data-multi-filter]').forEach(root => {
         const key=root.dataset.multiFilter, options=JSON.parse(root.dataset.options||'[]'), search=root.querySelector('[data-multi-search]'), results=root.querySelector('[data-multi-results]'), badges=root.querySelector('[data-multi-badges]'), inputs=root.querySelector('[data-multi-inputs]');
         let selected=Array.from(inputs.querySelectorAll('input')).map(input=>input.value);
