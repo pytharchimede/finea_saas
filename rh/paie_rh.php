@@ -141,7 +141,7 @@ require_once __DIR__ . '/../decaissement/includes/navbar.php';
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <a href="validation_paie_rh.php?period=<?= urlencode($period) ?>" class="inline-flex items-center rounded-2xl bg-amber-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-200"><i class="fas fa-file-signature mr-2"></i>Point de paie et signatures</a>
+                    <a href="validation_paie_rh.php?period=<?= urlencode($period) ?>" class="rh-payroll-signatures inline-flex items-center rounded-2xl px-5 py-3 text-sm font-semibold transition"><i class="fas fa-file-signature mr-2"></i>Point de paie et signatures</a>
                     <a href="pointage_journalier_rh.php" class="inline-flex items-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-rose-50">
                         <i class="fas fa-user-check mr-2 text-rose-600"></i>
                         Pointage journalier
