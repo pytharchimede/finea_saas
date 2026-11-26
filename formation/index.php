@@ -646,18 +646,20 @@ function formationRenderMarkdown(string $markdown, string $baseDir = ''): string
     return implode("\n", $html);
 }
 
-$defaultCaptureCollaborator = 'KOFFI AXEL JAURES';
-$defaultCaptureCollaboratorEmail = 'axelkoffi@banamur.com';
+$defaultCaptureCollaborator = '';
+$defaultCaptureCollaboratorEmail = '';
 $captureMode = $canUseCaptureMode && !empty($_GET['capture_mode']);
 $captureCollaborator = trim((string)($_GET['collaborateur'] ?? $defaultCaptureCollaborator));
 $captureCollaboratorEmail = trim((string)($_GET['collaborateur_email'] ?? $defaultCaptureCollaboratorEmail));
 $appName = 'Finéa';
 $brandSlogan = 'Finéa, pilotez votre entreprise avec fluidité, maîtrise et performance.';
 $brandSignature = 'Finance + innovation + fluidité';
-$appLogoPath = $projectRoot . '/img/app_logo.png';
-$appIconPath = $projectRoot . '/img/app_icon.png';
-$appLogoUrl = is_file($appLogoPath) ? (($appBasePath === '' ? '' : $appBasePath) . '/img/app_logo.png') : null;
-$appIconUrl = is_file($appIconPath) ? (($appBasePath === '' ? '' : $appBasePath) . '/img/app_icon.png') : null;
+require_once $projectRoot . '/model/CompanyBranding.php';
+$academyBrand = \CompanyBranding::get();
+$appLogoPath = \CompanyBranding::logoFile();
+$appIconPath = \CompanyBranding::iconFile();
+$appLogoUrl = \CompanyBranding::logoUrl($appBasePath . '/') ?: null;
+$appIconUrl = \CompanyBranding::iconUrl($appBasePath . '/') ?: null;
 $captureNotes = [
     'presentation_finea' => [
         'utilisateur' => [
@@ -822,7 +824,7 @@ if ($exportMode !== '') {
     $exporterContext = [
         'project_root' => $projectRoot,
         'app_base_path' => $appBasePath,
-        'app_name' => $appName,
+        'app_name' => (string)$academyBrand['company_name'] . ' — FINEA Academy',
         'brand_slogan' => $brandSlogan,
         'brand_signature' => $brandSignature,
         'logo_path' => $appLogoPath,
@@ -1140,7 +1142,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
 <div class="formation-page-shell min-h-screen bg-slate-100 py-6">
     <div class="formation-page-container space-y-6">
         <section class="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.07)]">
-            <div class="bg-[linear-gradient(135deg,#0f172a_0%,#1d4ed8_55%,#dbeafe_100%)] px-6 py-8 text-white md:px-8">
+            <div class="academy-brand-header px-6 py-5 md:px-8">
                 <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div>
                         <div class="text-[11px] font-semibold uppercase tracking-[0.28em] text-blue-100">Formation</div>
@@ -1151,14 +1153,14 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                                 </span>
                             <?php endif; ?>
                             <div>
-                                <h1 class="text-3xl font-bold md:text-4xl">Centre de guides applicatifs <?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?></h1>
-                                <p class="mt-2 max-w-3xl text-sm font-medium text-fuchsia-100 md:text-base"><?= htmlspecialchars($brandSlogan, ENT_QUOTES, 'UTF-8') ?></p>
+                                <h1 class="text-3xl font-bold md:text-4xl">FINEA Academy</h1>
+                                <p class="mt-2 max-w-3xl text-sm font-medium text-fuchsia-100 md:text-base"><?= htmlspecialchars((string)$academyBrand['company_name'], ENT_QUOTES, 'UTF-8') ?></p>
                             </div>
                         </div>
                         <p class="mt-3 max-w-3xl text-sm text-blue-50 md:text-base">Un espace séparé de la gestion documentaire pour apprendre à utiliser <?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?> et transmettre la connaissance technique module par module.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <span class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold">Accès utilisateur</span>
+                        <button type="button" data-academy-theme class="academy-theme-button">Mode sombre</button>
                         <?php if ($canAccessTechnical): ?>
                             <span class="rounded-full border border-white/20 bg-slate-950/30 px-4 py-2 text-sm font-semibold">Accès technique</span>
                         <?php endif; ?>
@@ -1166,7 +1168,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                 </div>
             </div>
             <?php if ($canUseCaptureMode): ?>
-                <div class="border-t border-slate-200 bg-white px-6 py-5 md:px-8">
+                <details class="academy-capture"><summary>Outils techniques et captures</summary><div class="border-t border-slate-200 bg-white px-6 py-5 md:px-8">
                     <form method="get" action="<?= htmlspecialchars($formationHomeUrl, ENT_QUOTES, 'UTF-8') ?>" class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px_320px_auto] xl:items-end">
                         <input type="hidden" name="module" value="<?= htmlspecialchars($currentModule, ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="audience" value="<?= htmlspecialchars($currentAudience, ENT_QUOTES, 'UTF-8') ?>">
@@ -1179,7 +1181,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                         </div>
                         <div>
                             <label for="collaborateur_email" class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Email du collaborateur</label>
-                            <input id="collaborateur_email" name="collaborateur_email" value="<?= htmlspecialchars($captureCollaboratorEmail, ENT_QUOTES, 'UTF-8') ?>" placeholder="Ex: axelkoffi@banamur.com" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-100">
+                            <input id="collaborateur_email" name="collaborateur_email" value="<?= htmlspecialchars($captureCollaboratorEmail, ENT_QUOTES, 'UTF-8') ?>" placeholder="Ex: collaborateur@entreprise.ci" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-100">
                         </div>
                         <label class="inline-flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
                             <input type="checkbox" name="capture_mode" value="1" <?= $captureMode ? 'checked' : '' ?> class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
@@ -1198,9 +1200,10 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                         </div>
                     <?php endif; ?>
                 </div>
+                </details>
             <?php endif; ?>
-            <div class="grid gap-0 lg:grid-cols-[280px_minmax(0,1fr)_360px]">
-                <aside class="border-b border-slate-200 bg-slate-50/80 p-4 lg:border-b-0 lg:border-r">
+            <div class="academy-workspace<?= $academyMode !== '' ? ' academy-workspace-learning' : '' ?>">
+                <aside class="academy-library border-b border-slate-200 bg-slate-50/80 p-4 lg:border-b-0 lg:border-r"><a class="academy-home-link" href="<?= htmlspecialchars(formationBuildUrl(['academy'=>'dashboard']), ENT_QUOTES, 'UTF-8') ?>"><i class="fas fa-graduation-cap"></i> Mes parcours</a><label class="academy-filter-label" for="academyFilter">Rechercher un module</label><input id="academyFilter" type="search" placeholder="Filtrer les guides…">
                     <div class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Modules</div>
                     <div class="space-y-3">
                         <?php if ($moduleCatalog === []): ?>
@@ -1232,7 +1235,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                     </div>
                 </aside>
 
-                <main class="border-b border-slate-200 p-5 lg:border-b-0 lg:border-r">
+                <main class="academy-content border-b border-slate-200 p-5 lg:border-b-0 lg:border-r">
                     <?php if ($academyMode === 'course'): ?>
                         <?php if (is_array($academyCourseData)): ?>
                             <?php require __DIR__ . '/views/academy_course.php'; ?>
@@ -1335,7 +1338,7 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
                     <?php endif; ?>
                 </main>
 
-                <aside class="bg-slate-50/70 p-4">
+                <aside class="academy-doc-sidebar bg-slate-50/70 p-4">
                     <div class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Documents</div>
                     <div class="space-y-3">
                         <?php if (empty($currentDocs)): ?>
@@ -1812,4 +1815,6 @@ require_once $projectRoot . '/decaissement/includes/navbar.php';
     });
 </script>
 
+<link rel="stylesheet" href="<?= htmlspecialchars($appBasePath . '/formation/assets/academy-theme.css?v=' . filemtime(__DIR__.'/assets/academy-theme.css'), ENT_QUOTES, 'UTF-8') ?>">
+<script src="<?= htmlspecialchars($appBasePath . '/formation/assets/academy-theme.js?v=' . filemtime(__DIR__.'/assets/academy-theme.js'), ENT_QUOTES, 'UTF-8') ?>"></script>
 <?php require_once $projectRoot . '/decaissement/includes/footer.php'; ?>

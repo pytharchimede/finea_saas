@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../model/CompanyExportBranding.php';
 
 if (!class_exists('FormationPdfDocument')) {
     class FormationPdfDocument extends \TCPDF
@@ -22,7 +23,7 @@ if (!class_exists('FormationPdfDocument')) {
             $this->Rect(0, 0, $this->getPageWidth(), 30, 'F');
             $this->SetDrawColor(226, 232, 240);
             $this->Line(12, 25, $this->getPageWidth() - 12, 25);
-            $this->SetFillColor(219, 234, 254);
+            $this->SetFillColor(...\CompanyExportBranding::rgbArray('primary'));
             $this->Rect(12, 25, 40, 1.1, 'F');
 
             if ($this->logoPath !== '' && is_file($this->logoPath)) {
@@ -38,16 +39,16 @@ if (!class_exists('FormationPdfDocument')) {
             $this->SetXY($titleX, 7.5);
             $this->SetFont('dejavusans', 'B', 15);
             $this->SetTextColor(15, 23, 42);
-            $this->Cell(0, 5.8, $this->appName, 0, 1, 'L');
+            $this->Cell(76, 5.8, $this->appName, 0, 1, 'L', false, '', 1);
 
             $this->SetXY($titleX, 13.8);
             $this->SetFont('dejavusans', '', 8.4);
             $this->SetTextColor(71, 85, 105);
-            $this->Cell(0, 4.4, $this->slogan !== '' ? $this->slogan : 'Centre de guides applicatifs', 0, 1, 'L');
+            $this->Cell(76, 4.4, 'Centre de guides applicatifs', 0, 1, 'L', false, '', 1);
 
             $this->SetXY($this->getPageWidth() - 88, 7.8);
             $this->SetFont('dejavusans', 'B', 9);
-            $this->SetTextColor(37, 99, 235);
+            $this->SetTextColor(15, 23, 42);
             $this->Cell(76, 4.5, $this->moduleLabel, 0, 1, 'R');
 
             $this->SetX($this->getPageWidth() - 88);
@@ -56,8 +57,8 @@ if (!class_exists('FormationPdfDocument')) {
             $this->Cell(76, 4.2, $this->audienceLabel, 0, 1, 'R');
 
             if ($this->accentLabel !== '') {
-                $this->SetFillColor(245, 243, 255);
-                $this->SetTextColor(126, 34, 206);
+                $this->SetFillColor(...\CompanyExportBranding::rgbArray('accent'));
+                $this->SetTextColor(...\CompanyExportBranding::rgbArray('accent', true));
                 $this->SetFont('dejavusans', 'B', 7.2);
                 $this->RoundedRect($this->getPageWidth() - 68, 18.5, 56, 6.8, 2.5, '1111', 'F');
                 $this->SetXY($this->getPageWidth() - 66, 20.1);
@@ -126,7 +127,7 @@ if (!class_exists('FormationPdfExporter')) {
             $pdf->iconPath = (string) ($this->context['icon_path'] ?? '');
             $pdf->exportedAtLabel = 'Export généré le ' . date('d/m/Y à H:i');
             $pdf->accentLabel = 'PDF Formation Pro';
-            $pdf->SetCreator((string) ($this->context['app_name'] ?? 'Finéa'));
+            $pdf->SetCreator(\CompanyExportBranding::creator());
             $pdf->SetAuthor((string) ($this->context['app_name'] ?? 'Finéa'));
             $pdf->SetTitle($title);
             $pdf->SetSubject((string) ($this->context['module_label'] ?? 'Formation'));
@@ -142,9 +143,9 @@ if (!class_exists('FormationPdfExporter')) {
             $pdf->SetFillColor(248, 250, 252);
             $pdf->SetDrawColor(226, 232, 240);
             $pdf->RoundedRect(14, 38, $pageWidth, 64, 8, '1111', 'DF');
-            $pdf->SetFillColor(29, 78, 216);
+            $pdf->SetFillColor(...\CompanyExportBranding::rgbArray('primary'));
             $pdf->RoundedRect(14, 38, 7, 64, 8, '1101', 'F');
-            $pdf->SetFillColor(245, 243, 255);
+            $pdf->SetFillColor(...\CompanyExportBranding::rgbArray('accent'));
             $pdf->RoundedRect(21, 45, $pageWidth - 18, 16, 4, '1111', 'F');
 
             if (($this->context['logo_path'] ?? '') !== '' && is_file((string) $this->context['logo_path'])) {
@@ -153,7 +154,7 @@ if (!class_exists('FormationPdfExporter')) {
 
             $pdf->SetXY(27, 49.5);
             $pdf->SetFont('dejavusans', 'B', 8.5);
-            $pdf->SetTextColor(126, 34, 206);
+            $pdf->SetTextColor(...\CompanyExportBranding::rgbArray('accent', true));
             $pdf->Cell(0, 4, 'DOSSIER FORMATION CONSOLIDÉ', 0, 1, 'L');
 
             $pdf->SetXY(27, 83);
@@ -227,13 +228,13 @@ if (!class_exists('FormationPdfExporter')) {
             $pdf->SetFillColor(248, 250, 252);
             $pdf->SetDrawColor(226, 232, 240);
             $pdf->RoundedRect(14, 37, $pageWidth, 30, 5, '1111', 'DF');
-            $pdf->SetFillColor(30, 64, 175);
+            $pdf->SetFillColor(...\CompanyExportBranding::rgbArray('primary'));
             $pdf->RoundedRect(14, 37, 4.5, 30, 5, '1101', 'F');
-            $pdf->SetFillColor(245, 243, 255);
+            $pdf->SetFillColor(...\CompanyExportBranding::rgbArray('accent'));
             $pdf->RoundedRect(22, 42, 42, 7, 3, '1111', 'F');
             $pdf->SetXY(24, 44);
             $pdf->SetFont('dejavusans', 'B', 7.4);
-            $pdf->SetTextColor(126, 34, 206);
+            $pdf->SetTextColor(...\CompanyExportBranding::rgbArray('accent', true));
             $pdf->Cell(38, 2.8, $singleDocument ? 'GUIDE INDIVIDUEL' : 'DOCUMENT DU DOSSIER', 0, 0, 'C');
 
             $pdf->SetXY(22, 51.3);

@@ -6,6 +6,7 @@ require_once $projectRoot . '/auth_check.php';
 if (file_exists($projectRoot . '/model/Database.php')) require_once $projectRoot . '/model/Database.php';
 if (file_exists($projectRoot . '/AccessManager.php')) require_once $projectRoot . '/AccessManager.php';
 require_once dirname(__DIR__) . '/controllers/FormationAcademyController.php';
+require_once $projectRoot . '/model/CompanyExportBranding.php';
 
 $permissions = is_array($_SESSION['permissions'] ?? null) ? $_SESSION['permissions'] : [];
 $isFormationAdmin = !empty($permissions['formation_admin']) || !empty($permissions['acces_admin']) || !empty($permissions['administration_systeme']);
@@ -54,7 +55,37 @@ $action = (string)($_GET['action'] ?? 'dashboard');
 $courseId = (int)($_GET['id'] ?? $_GET['course_id'] ?? $_POST['course_id'] ?? 0);
 if ($action === 'export') {
     $type = preg_replace('/[^a-z_]/', '', (string)($_GET['type'] ?? 'courses')) ?: 'courses';
-    academy_csv_export('finea_academy_' . $type . '_' . date('Ymd_His') . '.csv', $controller->adminExportRows($type));
+    if (!in_array($type, ['courses','attempts','certificates'], true)) { http_response_code(400); exit('Rapport inconnu'); }
+    $rows = $controller->adminExportRows($type);
+    if (($_GET['format'] ?? '') === 'xlsx') {
+        require_once $projectRoot . '/vendor/autoload.php';
+        $book = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $book->getProperties()->setCreator(\CompanyExportBranding::creator())->setTitle('FINEA Academy — '.$type);
+        $sheet = $book->getActiveSheet();
+        $sheet->setTitle('Academy');
+        $columns = $rows ? array_keys($rows[0]) : ['Information'];
+        $last = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(max(4,count($columns)));
+        foreach ([1=>\CompanyExportBranding::creator(),2=>'Rapport formation — '.$type,3=>\CompanyExportBranding::identityLine()] as $i=>$label) {
+            $sheet->mergeCells('A'.$i.':'.$last.$i);
+            $sheet->setCellValueExplicit('A'.$i,$label,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        }
+        $sheet->getStyle('A1:'.$last.'2')->getFill()->setFillType('solid')->getStartColor()->setRGB(\CompanyExportBranding::rgb('primary'));
+        $sheet->getStyle('A1:'.$last.'2')->getFont()->setBold(true)->getColor()->setRGB(\CompanyExportBranding::rgb('primary',true));
+        $sheet->fromArray($columns,null,'A5');
+        $end = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(count($columns));
+        $sheet->getStyle('A5:'.$end.'5')->getFill()->setFillType('solid')->getStartColor()->setRGB(\CompanyExportBranding::rgb('accent'));
+        $sheet->getStyle('A5:'.$end.'5')->getFont()->setBold(true)->getColor()->setRGB(\CompanyExportBranding::rgb('accent',true));
+        foreach ($rows as $i=>$row) foreach ($columns as $j=>$key) {
+            $v=$row[$key]??''; $cell=\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($j+1).($i+6);
+            $sheet->setCellValueExplicit($cell,is_scalar($v)?(string)$v:(string)json_encode($v),\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        }
+        for($i=1;$i<=count($columns);$i++) $sheet->getColumnDimension(\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i))->setAutoSize(true);
+        $sheet->freezePane('A6'); $sheet->setAutoFilter('A5:'.$end.(count($rows)+5));
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="finea_academy_'.$type.'.xlsx"');
+        (new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($book))->save('php://output'); exit;
+    }
+    academy_csv_export('finea_academy_' . $type . '_' . date('Ymd_His') . '.csv', $rows);
 }
 
 $flash = academy_admin_flash();
@@ -127,7 +158,7 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
     <main class="academy-admin-main">
         <header class="academy-admin-topbar">
             <div><p class="eyebrow">Administration FINEA Academy</p><h1><?= $action === 'new_course' ? 'Nouveau parcours' : ($action === 'edit_course' ? 'Modifier le parcours' : 'Pilotage de la formation') ?></h1><span>Parcours, obligations, médias, progression, certificats et exports.</span></div>
-            <div class="academy-admin-actions"><a class="finea-action-btn finea-action-btn--secondary" href="<?= $h($adminUrl . '?action=export&type=courses') ?>">Exporter parcours</a><a class="finea-action-btn finea-action-btn--accent" href="<?= $h($adminUrl . '?action=new_course') ?>">Nouveau parcours</a></div>
+            <div class="academy-admin-actions"><button type="button" data-academy-theme class="academy-theme-button">Mode sombre</button><a class="finea-action-btn finea-action-btn--secondary" href="<?= $h($adminUrl . '?action=export&type=courses') ?>">Exporter parcours</a><a class="finea-action-btn finea-action-btn--accent" href="<?= $h($adminUrl . '?action=new_course') ?>">Nouveau parcours</a></div>
         </header>
 
         <?php if ($flash): ?><div class="finea-alert academy-flash academy-flash-<?= $h($flash['type'] ?? 'ok') ?>"><?= $h($flash['message'] ?? '') ?></div><?php endif; ?>
@@ -185,11 +216,12 @@ else { ?><!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
             </section>
             <?php if (!empty($course['id'])): ?><section id="requirements" class="academy-panel academy-form-card"><div class="academy-panel-head"><h2>Obligations progressives</h2><span>Recommandée, obligatoire ou bloquante ciblée</span></div><form method="post" class="academy-form-grid"><input type="hidden" name="admin_action" value="save_requirement"><input type="hidden" name="course_id" value="<?= (int)$course['id'] ?>"><label>Module<input class="finea-input academy-search-input" list="academy-modules" name="module_slug" value="<?= $h($course['module_slug']) ?>"></label><label>Permission<input class="finea-input academy-search-input" list="academy-permissions" name="permission_key" placeholder="acces_decaissement"></label><label>Type<select class="finea-select academy-select-search" name="requirement_type"><option value="recommended">Recommandée</option><option value="mandatory">Obligatoire</option><option value="blocking">Bloquante ciblée</option></select></label><label>Action bloquée<input class="finea-input" name="blocking_action" placeholder="create_feb"></label><label>Score requis<input class="finea-input" type="number" name="required_score" value="<?= (int)$course['required_score'] ?>"></label><label>Délai jours<input class="finea-input" type="number" name="deadline_days" placeholder="7"></label><label class="academy-toggle"><input type="checkbox" name="is_active" value="1" checked> Active</label><button class="finea-action-btn finea-action-btn--accent">Ajouter la règle</button></form><div class="finea-table-wrap academy-table-wrap"><table class="finea-table"><thead><tr><th>Type</th><th>Permission</th><th>Action</th><th>Score</th><th>Délai</th></tr></thead><tbody><?php foreach (($editor['requirements'] ?? []) as $r): ?><tr><td><?= $h($r['requirement_type']) ?></td><td><?= $h($r['permission_key']) ?></td><td><?= $h($r['blocking_action']) ?></td><td><?= (int)$r['required_score'] ?>%</td><td><?= $h($r['deadline_days'] ?? '-') ?></td></tr><?php endforeach; ?></tbody></table></div></section><?php endif; ?>
         <?php elseif ($action === 'reports'): ?>
-            <section class="academy-panel"><div class="academy-panel-head"><h2>Exports & rapports</h2><span>Suivi exploitable dans Excel</span></div><div class="academy-export-grid"><a href="<?= $h($adminUrl . '?action=export&type=courses') ?>"><strong>Parcours</strong><span>Catalogue, modules, règles, permissions</span></a><a href="<?= $h($adminUrl . '?action=export&type=attempts') ?>"><strong>Tentatives QCM</strong><span>Scores, réussites, échecs</span></a><a href="<?= $h($adminUrl . '?action=export&type=certificates') ?>"><strong>Certificats</strong><span>Validations et niveaux obtenus</span></a></div></section>
+            <section class="academy-panel"><div class="academy-panel-head"><h2>Exports & rapports</h2><span>Rapports Excel brandés · CSV disponible dans le catalogue</span></div><div class="academy-export-grid"><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=courses') ?>"><strong>Parcours</strong><span>Catalogue, modules, règles, permissions</span></a><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=attempts') ?>"><strong>Tentatives QCM</strong><span>Scores, réussites, échecs</span></a><a href="<?= $h($adminUrl . '?action=export&format=xlsx&type=certificates') ?>"><strong>Certificats</strong><span>Validations et niveaux obtenus</span></a></div></section>
         <?php endif; ?>
     </main>
 </div>
 <datalist id="academy-modules"><?php foreach($moduleOptions as $m): ?><option value="<?= $h($m) ?>"><?php endforeach; ?><option value="feb"><option value="tickets"><option value="rh"><option value="crm"><option value="logistique"><option value="notifications"></datalist>
 <datalist id="academy-permissions"><?php foreach($permissionOptions as $p): ?><option value="<?= $h($p) ?>"><?php endforeach; ?></datalist>
 <script src="<?= $h($assetBase . '/formation/assets/academy-admin-v12.js') ?>"></script>
+<link rel="stylesheet" href="<?= $h($assetBase . '/formation/assets/academy-theme.css') ?>"><script src="<?= $h($assetBase . '/formation/assets/academy-theme.js') ?>"></script>
 <?php if ($hasPortalChrome) { require_once $projectRoot . '/decaissement/includes/footer.php'; } else { ?></body></html><?php } ?>

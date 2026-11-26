@@ -32,3 +32,7 @@ Verifier :
 ## En resume
 
 Ce module sert a acceder a votre messagerie pro directement depuis l ERP.
+
+## Nouvelle interface FINEA Mail
+
+La navigation latérale présente les dossiers, la liste centrale les messages et le volet de lecture affiche le message sélectionné. Le ruban propose les opérations de lecture, de déplacement et de classement selon les capacités du serveur IMAP. La recherche locale porte sur les messages chargés. Vérifiez la destination avant de déplacer plusieurs messages. Le mode clair ou sombre suit votre préférence FINEA.

@@ -1,6 +1,5 @@
 # Bien demarrer avec {{APP_NAME}}
 
-![PORTAIL DE SELECTION DE MODULE](captures/employe.png "PORTAIL DE SELECTION DE MODULE")
 
 
 ## Pourquoi cette application existe
@@ -54,7 +53,8 @@ En maitrisant {{APP_NAME}}, vous pouvez :
 Chaque module a un role precis. Par exemple :
 
 - Espace employe pour vos demandes et votre suivi personnel ;
-- Mes tâches pour l execution et la coordination ;
+- Ticketing pour les demandes d’assistance et leur suivi ;
+- Emploi du temps pour l’organisation du travail ;
 - Documentation & Archives pour les documents de reference ;
 - Formation pour apprendre a utiliser les modules.
 
@@ -99,10 +99,6 @@ Pour un utilisateur, cela veut dire qu il devient plus simple de retrouver un su
 
 {{APP_NAME}} est un outil de maitrise du travail collectif. Plus vous le maitrisez, plus vos actions sont fluides, visibles et faciles a suivre.
 
-## Preparation des futures illustrations
+## Personnaliser votre espace
 
-Les futures illustrations viendront montrer de facon simple comment un utilisateur entre dans {{APP_NAME}}, se repere dans les modules et commence a travailler efficacement.
-
-![Vue Employe](captures/employe.png "Capture de Employe")
-
-![Vue Employe](captures/employe-capture.png "Capture de Employe")
+Le bouton Mode clair / Mode sombre permet de choisir votre confort de lecture. Le portail et les modules compatibles reprennent les couleurs de votre entreprise. Utilisez le moteur de recherche pour retrouver les ressources auxquelles vous avez accès.
