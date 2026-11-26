@@ -324,3 +324,24 @@ body .finea-brand-accent-box,
 body .finea-brand-accent-box :where(i,svg) {
   color: var(--brand-on-accent,#fff) !important;
 }
+
+/* Shared dark-mode form surfaces and visible keyboard focus. */
+:is(html.finea-dark-mode,body.finea-dark-mode) {
+  --finea-input-surface:#0d1727;
+  --finea-input-border:#52647e;
+  --finea-focus:#a5c7ff;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=hidden]),select,textarea) {
+  color-scheme:dark;
+  background-color:var(--finea-input-surface)!important;
+  border-color:var(--finea-input-border)!important;
+  color:var(--finea-text,#f5f8fc)!important;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) :where(input,select,textarea,button,a):focus-visible {
+  outline:2px solid var(--finea-focus)!important;
+  outline-offset:3px;
+}
+:is(html.finea-dark-mode,body.finea-dark-mode) :where(input,textarea)::placeholder {
+  color:#aab9ce!important;
+  opacity:1;
+}
