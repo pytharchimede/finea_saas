@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+
+require_once __DIR__.'/../../model/CompanyExportBranding.php';
 require_once __DIR__.'/../../auth_check.php';
 require_once __DIR__.'/../../model/Database.php';
 require_once __DIR__.'/../../services/ManualTreasuryService.php';
@@ -47,12 +49,12 @@ $sheetTitle = static function (string $value, array &$used): string {
 };
 $writeHeader = static function ($sheet, string $title, string $subtitle): void {
     $sheet->mergeCells('A1:G1');
-    $sheet->setCellValue('A1', $title)->getStyle('A1')->getFont()->setBold(true)->setSize(16)->getColor()->setRGB('1E3A8A');
+    $sheet->setCellValue('A1', $title)->getStyle('A1')->getFont()->setBold(true)->setSize(16)->getColor()->setRGB(CompanyExportBranding::rgb('primary'));
     $sheet->mergeCells('A2:G2');
     $sheet->setCellValue('A2', $subtitle)->getStyle('A2')->getFont()->setItalic(true)->getColor()->setRGB('64748B');
     $sheet->fromArray(['Déboursé / ligne', 'Catégorie', 'Prévision initiale', 'Déjà décaissé', 'FEB/fiches engagées', 'Reste à payer', 'Référence'], null, 'A4');
-    $sheet->getStyle('A4:G4')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-    $sheet->getStyle('A4:G4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('1E3A8A');
+    $sheet->getStyle('A4:G4')->getFont()->setBold(true)->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
+    $sheet->getStyle('A4:G4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
     $sheet->freezePane('A5');
     foreach (['A'=>38,'B'=>22,'C'=>19,'D'=>19,'E'=>22,'F'=>19,'G'=>18] as $column=>$width) $sheet->getColumnDimension($column)->setWidth($width);
 };
@@ -66,7 +68,7 @@ $writeRows = static function ($sheet, array $items) use ($moneyFormat): array {
     }
     $sheet->fromArray([['SOUS-TOTAL', '', $budget, $paid, $committed, $remaining, '']], null, 'A'.$rowNumber);
     $sheet->getStyle('A'.$rowNumber.':G'.$rowNumber)->getFont()->setBold(true);
-    $sheet->getStyle('A'.$rowNumber.':G'.$rowNumber)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FEF3C7');
+    $sheet->getStyle('A'.$rowNumber.':G'.$rowNumber)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('F1F5F9');
     $sheet->getStyle('C5:F'.$rowNumber)->getNumberFormat()->setFormatCode($moneyFormat);
     $sheet->getStyle('C5:F'.$rowNumber)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
     $sheet->getStyle('A4:G'.$rowNumber)->getBorders()->getAllBorders()->setBorderStyle('thin')->getColor()->setRGB('D1D5DB');
@@ -74,13 +76,14 @@ $writeRows = static function ($sheet, array $items) use ($moneyFormat): array {
 };
 
 $book = new Spreadsheet();
+$book->getProperties()->setCreator(CompanyExportBranding::creator())->setCompany((string)CompanyBranding::get()['company_name']);
 $summary = $book->getActiveSheet(); $summary->setTitle('Récapitulatif');
 $summary->mergeCells('A1:E1');
-$summary->setCellValue('A1', 'PROJECTION DES DÉBOURSÉS — RÉCAPITULATIF')->getStyle('A1')->getFont()->setBold(true)->setSize(16)->getColor()->setRGB('1E3A8A');
+$summary->setCellValue('A1', 'PROJECTION DES DÉBOURSÉS — RÉCAPITULATIF')->getStyle('A1')->getFont()->setBold(true)->setSize(16)->getColor()->setRGB(CompanyExportBranding::rgb('primary'));
 $summary->setCellValue('A2', 'Période de consultation : '.date('d/m/Y', strtotime($from)).' au '.date('d/m/Y', strtotime($to)).' · Tous les chantiers actifs');
 $summary->fromArray([strtoupper($groupHeading), 'Déboursé global', 'Déjà payé', 'FEB/fiches engagées', 'Reste à payer'], null, 'A4');
-$summary->getStyle('A4:E4')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-$summary->getStyle('A4:E4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('1E3A8A');
+$summary->getStyle('A4:E4')->getFont()->setBold(true)->getColor()->setRGB(CompanyExportBranding::rgb('primary',true));
+$summary->getStyle('A4:E4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB(CompanyExportBranding::rgb('primary'));
 foreach (['A'=>42,'B'=>20,'C'=>20,'D'=>24,'E'=>20] as $column=>$width) $summary->getColumnDimension($column)->setWidth($width);
 $summaryRow = 5; $grand = [0,0,0,0]; $used = ['récapitulatif'=>true];
 foreach ($byProject as $project=>$items) {
@@ -92,7 +95,7 @@ foreach ($byProject as $project=>$items) {
 }
 $summary->fromArray([['TOTAL GÉNÉRAL', $grand[0], $grand[1], $grand[2], $grand[3]]], null, 'A'.$summaryRow);
 $summary->getStyle('A'.$summaryRow.':E'.$summaryRow)->getFont()->setBold(true);
-$summary->getStyle('A'.$summaryRow.':E'.$summaryRow)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('FEF3C7');
+$summary->getStyle('A'.$summaryRow.':E'.$summaryRow)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('F1F5F9');
 $summary->getStyle('B5:E'.$summaryRow)->getNumberFormat()->setFormatCode($moneyFormat);
 $summary->getStyle('B5:E'.$summaryRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $summary->getStyle('A4:E'.$summaryRow)->getBorders()->getAllBorders()->setBorderStyle('thin')->getColor()->setRGB('D1D5DB');

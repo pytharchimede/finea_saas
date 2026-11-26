@@ -120,7 +120,8 @@ $cardGroups = [
     ]],
 ];
 ?>
-<div class="min-h-screen bg-slate-50 pb-14">
+<link rel="stylesheet" href="../assets/css/billing-workspace.css?v=20261126a">
+<div class="billing-workspace min-h-screen pb-14">
     <main class="<?= $canManageTreasury ? '' : 'treasury-readonly ' ?>mx-auto max-w-7xl px-4 py-8">
         <header class="overflow-hidden rounded-[30px] bg-gradient-to-br from-indigo-800 via-blue-700 to-cyan-700 p-7 text-white shadow-xl">
             <div class="flex flex-wrap items-end justify-between gap-5">
@@ -159,7 +160,7 @@ $cardGroups = [
                 </div><?php endforeach; ?></section>
         </div>
         <div data-treasury-panel="vat" class="hidden">
-        <section class="mt-6 overflow-hidden rounded-[32px] border border-cyan-100 bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 text-white shadow-2xl">
+        <section class="mt-6 overflow-hidden rounded-[32px] border border-cyan-100 billing-banner text-white shadow-2xl">
             <div class="grid gap-0 xl:grid-cols-[1.15fr_.85fr]">
                 <div class="p-6 md:p-8">
                     <div class="flex flex-wrap items-start justify-between gap-4">
@@ -2049,7 +2050,7 @@ $cardGroups = [
 
 <?php if ($canManageTreasury): ?><div id="vatRemitModal" class="treasury-modal hidden fixed inset-0 z-[80] items-center justify-center overflow-y-auto bg-slate-950/70 p-3 backdrop-blur-sm sm:p-4">
     <div class="relative my-auto flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-[26px] border border-emerald-200 bg-white shadow-2xl sm:max-h-[calc(100dvh-2rem)]">
-        <div class="bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 p-6 text-white">
+        <div class="billing-banner p-6 text-white">
             <div class="flex items-start justify-between gap-4"><div><span class="rounded-full bg-emerald-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[.18em] text-emerald-200">Reversement fiscal</span><h3 class="mt-3 text-2xl font-black">Reverser la TVA collectée</h3><p class="mt-2 text-sm text-slate-300">Le reversement sort réellement les fonds de la trésorerie et diminue la dette fiscale TVA.</p></div><button type="button" data-close="vatRemitModal" onclick="document.getElementById('vatRemitModal').classList.add('hidden');document.getElementById('vatRemitModal').classList.remove('grid');return false;" aria-label="Fermer" class="relative z-10 grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-xl bg-white/10 transition hover:bg-white/20"><i class="fas fa-xmark pointer-events-none"></i></button></div>
             <div class="mt-5 rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4"><small class="font-bold uppercase text-emerald-200">TVA actuellement reversable</small><strong class="mt-1 block text-3xl"><?= $money($vat['vat_protected']) ?></strong></div>
         </div>
@@ -2068,7 +2069,7 @@ $cardGroups = [
 
 <?php if ($canManageTreasury): ?><div id="vatBorrowModal" class="treasury-modal hidden fixed inset-0 z-[80] items-center justify-center overflow-y-auto bg-slate-950/70 p-3 backdrop-blur-sm sm:p-4">
     <div class="relative my-auto flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-[26px] border border-cyan-200 bg-white shadow-2xl sm:max-h-[calc(100dvh-2rem)]">
-        <div class="bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 p-6 text-white">
+        <div class="billing-banner p-6 text-white">
             <div class="flex items-start justify-between gap-4"><div><span class="rounded-full bg-cyan-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[.18em] text-cyan-200">Mobilisation temporaire</span><h3 class="mt-3 text-2xl font-black">Emprunter sur la réserve TVA</h3><p class="mt-2 text-sm text-slate-300">Le montant devient disponible immédiatement mais reste une dette interne envers la réserve fiscale.</p></div><button type="button" data-close="vatBorrowModal" onclick="document.getElementById('vatBorrowModal').classList.add('hidden');document.getElementById('vatBorrowModal').classList.remove('grid');return false;" aria-label="Fermer" class="relative z-10 grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-xl bg-white/10 transition hover:bg-white/20"><i class="fas fa-xmark pointer-events-none"></i></button></div>
             <div class="mt-5 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4"><small class="font-bold uppercase text-cyan-200">Maximum mobilisable aujourd’hui</small><strong class="mt-1 block text-3xl"><?= $money($vat['vat_free_to_borrow']) ?></strong></div>
         </div>

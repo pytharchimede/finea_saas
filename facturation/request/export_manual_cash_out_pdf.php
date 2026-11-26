@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+
+require_once __DIR__.'/../../model/CompanyExportBranding.php';
 require_once __DIR__ . '/../../auth_check.php';
 require_once __DIR__ . '/../../model/Database.php';
 require_once __DIR__ . '/../../model/CompanyPdfTemplate.php';
@@ -39,7 +41,7 @@ if (!$row) {
 $userId = (int)($_SESSION['user_id'] ?? 0);
 $cashierUserId = (int)($row['created_by_user_id'] ?? 0);
 $exporter = trim((string)(($_SESSION['prenom'] ?? '') . ' ' . ($_SESSION['nom'] ?? '')))
-    ?: trim((string)($_SESSION['user_name'] ?? 'Utilisateur BANAMUR'));
+    ?: trim((string)($_SESSION['user_name'] ?? 'Utilisateur FINEA'));
 $cashierName = trim((string)($row['created_by_name'] ?? '')) ?: 'Utilisateur ayant enregistré la sortie';
 $documentId = 'FIN-SC-' . str_pad((string)$id, 6, '0', STR_PAD_LEFT) . '-' . date('YmdHis');
 $money = static fn($value): string => number_format((float)$value, 0, ',', ' ') . ' FCFA';
@@ -86,7 +88,7 @@ $pdf->companyPdfQrPayload = json_encode([
     'date' => (string)$row['movement_date'],
     'generated_at' => date(DATE_ATOM),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-$pdf->SetCreator('FINEA');
+$pdf->SetCreator(CompanyExportBranding::creator());
 $pdf->SetAuthor($exporter);
 $pdf->SetTitle('Fiche de sortie de caisse ' . $documentId);
 $pdf->SetMargins(14, 38, 14);

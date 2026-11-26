@@ -330,7 +330,8 @@ $totalAmount = array_sum(array_map(static fn(array $r): float => (float)($r['mon
 require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
-<div class="min-h-screen bg-slate-50">
+<link rel="stylesheet" href="../assets/css/billing-workspace.css?v=20261126a">
+<div class="billing-workspace min-h-screen">
     <div class="mx-auto max-w-7xl px-4 py-8">
         <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

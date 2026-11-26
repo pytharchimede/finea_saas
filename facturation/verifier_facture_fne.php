@@ -13,7 +13,8 @@ $activeMenu = 'facturation';
 require_once __DIR__ . '/../decaissement/includes/header.php';
 require_once __DIR__ . '/../decaissement/includes/navbar.php';
 ?>
-<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_#eef2ff,_transparent_42%),linear-gradient(180deg,_#f8fafc,_#eef2f7)] pb-12">
+<link rel="stylesheet" href="../assets/css/billing-workspace.css?v=20261126a">
+<div class="billing-workspace min-h-screen pb-12">
  <div class="container mx-auto max-w-6xl px-4 py-8">
   <header class="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-slate-950 via-[#172554] to-emerald-800 p-8 text-white shadow-2xl"><div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-emerald-300/15 blur-2xl"></div><div class="relative flex flex-wrap items-end justify-between gap-5"><div><p class="text-xs font-black uppercase tracking-[.3em] text-emerald-300">FINEA · Contrôle DGI Côte d’Ivoire</p><h1 class="mt-3 text-3xl font-black md:text-5xl">Contrôler une facture FNE</h1><p class="mt-3 max-w-3xl text-sm text-slate-200">Déposez la facture PDF : FINEA recherche le QR, l’UUID ou le numéro FNE, puis interroge automatiquement l’API officielle configurée.</p></div><a href="dashboard_facturation.php" class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 font-bold hover:bg-white/20">Retour facturation</a></div></header>
   <?php if(!$fneConfigured):?><div class="mt-5 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950"><i class="fas fa-key mt-1 text-amber-600"></i><div><strong>Connexion DGI à finaliser</strong><p class="mt-1">L’extraction PDF et QR est opérationnelle. Renseignez la clé API dans <code>config/fne.php</code> pour obtenir le statut officiel instantané.</p></div></div><?php endif;?>
