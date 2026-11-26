@@ -13,6 +13,10 @@ final class RhJobDescriptionExcel
 
     public static function download(PDO $pdo, int $selected): void
     {
+        require_once __DIR__.'/../../model/CompanyBranding.php';
+        $palette=CompanyBranding::palette($pdo);
+        $primary=strtoupper(substr($palette['primary'],1));
+        $foreground=strtoupper(substr(CompanyBranding::contrastColor($palette['primary']),1));
         $book = new Spreadsheet();
         $sheet = $book->getActiveSheet();
         $sheet->setTitle('Fiches');
@@ -27,8 +31,8 @@ final class RhJobDescriptionExcel
                 }
             }
         }
-        $sheet->getStyle('A1:L1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-        $sheet->getStyle('A1:L1')->getFill()->setFillType('solid')->getStartColor()->setRGB('081C65');
+        $sheet->getStyle('A1:L1')->getFont()->setBold(true)->getColor()->setRGB($foreground);
+        $sheet->getStyle('A1:L1')->getFill()->setFillType('solid')->getStartColor()->setRGB($primary);
         $sheet->freezePane('C2');
         $sheet->getStyle('K2:L501')->getNumberFormat()->setFormatCode('@');
         foreach (range('A','L') as $col) $sheet->getColumnDimension($col)->setWidth($col === 'A' ? 15 : 30);
@@ -48,8 +52,8 @@ final class RhJobDescriptionExcel
             ['À remplacer','Conducteur de travaux','Piloter les travaux dans le respect du budget, des délais et de la qualité.',"Coordonner les équipes\nContrôler les dépenses","Planifier les travaux\nOrganiser les réunions de chantier","Lecture de plans\nGestion de projet",'Formation BTP et expérience chantier',"Respect des délais\nÉcart budgétaire",'Directeur technique','Déplacements sur chantier','1.0',''],
             ['À remplacer','Comptable','Assurer la fiabilité des écritures et du suivi financier.',"Contrôler les pièces\nTenir les comptes","Saisir les écritures\nEffectuer les rapprochements bancaires","SYSCOHADA\nMaîtrise Excel",'Formation en comptabilité',"Clôtures à temps\nTaux de rapprochement",'Directeur administratif et financier','Travail de bureau','1.0','']
         ], null, 'A2');
-        $examples->getStyle('A1:L1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-        $examples->getStyle('A1:L1')->getFill()->setFillType('solid')->getStartColor()->setRGB('081C65');
+        $examples->getStyle('A1:L1')->getFont()->setBold(true)->getColor()->setRGB($foreground);
+        $examples->getStyle('A1:L1')->getFill()->setFillType('solid')->getStartColor()->setRGB($primary);
         $examples->getStyle('A2:L3')->getAlignment()->setWrapText(true)->setVertical('top');
         foreach(range('A','L') as $col) $examples->getColumnDimension($col)->setWidth(30);
         $examples->getRowDimension(2)->setRowHeight(85);

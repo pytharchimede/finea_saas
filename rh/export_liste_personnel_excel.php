@@ -27,6 +27,11 @@ if (!in_array($filters['search_mode'], ['include', 'exclude'], true)) {
 }
 
 $rows = $directory->getPersonnelRowsForExport($filters, 10000);
+require_once __DIR__.'/../model/CompanyBranding.php';
+$brand=CompanyBranding::get($pdo);
+$palette=CompanyBranding::palette($pdo);
+$primary=$palette['primary'];$accent=$palette['accent'];
+$onPrimary=CompanyBranding::contrastColor($primary);$onAccent=CompanyBranding::contrastColor($accent);
 
 header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
 header('Content-Disposition: attachment; filename="liste_personnel_rh_' . date('Ymd_His') . '.xls"');
@@ -34,13 +39,13 @@ echo "\xEF\xBB\xBF";
 ?>
 <table border="1">
     <tr>
-        <td colspan="13" style="background:#000000;color:#ffffff;font-size:18px;font-weight:bold;padding:12px;">BANAMUR INDUSTRIES ET TECHNOLOGIES - LISTE DU PERSONNEL RH</td>
+        <td colspan="13" style="background:<?= $primary ?>;color:<?= $onPrimary ?>;font-size:18px;font-weight:bold;padding:12px;"><?= htmlspecialchars((string)$brand['company_name'], ENT_QUOTES, 'UTF-8') ?> - LISTE DU PERSONNEL RH</td>
     </tr>
     <tr>
-        <td colspan="13" style="background:#fabd02;color:#000000;font-weight:bold;padding:7px;">Export du <?= date('d/m/Y H:i') ?> - <?= count($rows) ?> collaborateur(s)</td>
+        <td colspan="13" style="background:<?= $accent ?>;color:<?= $onAccent ?>;font-weight:bold;padding:7px;">Export du <?= date('d/m/Y H:i') ?> - <?= count($rows) ?> collaborateur(s)</td>
     </tr>
     <thead>
-        <tr style="background:#fabd02;color:#000000;font-weight:bold;">
+        <tr style="background:<?= $accent ?>;color:<?= $onAccent ?>;font-weight:bold;">
             <th>Matricule</th>
             <th>Nom complet</th>
             <th>Email</th>

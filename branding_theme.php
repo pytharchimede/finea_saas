@@ -12,20 +12,10 @@ $color = static function (string $key, string $fallback) use ($brand): string {
 $hexRgb = static function (string $hex): string {
     return hexdec(substr($hex, 1, 2)) . ' ' . hexdec(substr($hex, 3, 2)) . ' ' . hexdec(substr($hex, 5, 2));
 };
-$contrast = static function (string $hex): string {
-    // WCAG relative luminance: choose the stronger contrast against black or white.
-    $linear = static function (int $channel): float {
-        $v = $channel / 255;
-        return $v <= 0.04045 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4;
-    };
-    $l = 0.2126 * $linear(hexdec(substr($hex,1,2)))
-       + 0.7152 * $linear(hexdec(substr($hex,3,2)))
-       + 0.0722 * $linear(hexdec(substr($hex,5,2)));
-    return (($l + 0.05) / 0.05) >= (1.05 / ($l + 0.05)) ? '#000000' : '#ffffff';
-};
+$contrast = static fn(string $hex): string => CompanyBranding::contrastColor($hex);
 
-$primary = $color('primary_color', '#050505');
-$accent = $color('accent_color', '#ffcc20');
+$primary = $color('primary_color', '#081c65');
+$accent = $color('accent_color', '#1746b0');
 $surface = $color('surface_color', '#ffffff');
 $text = $color('text_color', '#0f172a');
 $muted = $color('muted_color', '#64748b');

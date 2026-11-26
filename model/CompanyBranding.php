@@ -14,6 +14,25 @@ final class CompanyBranding
         try{if(!$pdo){require_once __DIR__.'/Database.php';$pdo=Database::getConnection();}$row=$pdo->query('SELECT * FROM finea_company_branding WHERE id=1')->fetch(PDO::FETCH_ASSOC)?:[];}catch(Throwable $e){$row=[];}
         return self::$cache=array_merge(self::defaults(), $row);
     }
+    public static function contrastColor(string $hex): string
+    {
+        if (!preg_match('/^#[0-9a-f]{6}$/iD', $hex)) throw new InvalidArgumentException('Invalid branding color');
+        $linear = static function (int $channel): float {
+            $v = $channel / 255;
+            return $v <= 0.04045 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4;
+        };
+        $l = 0.2126*$linear(hexdec(substr($hex,1,2))) + 0.7152*$linear(hexdec(substr($hex,3,2))) + 0.0722*$linear(hexdec(substr($hex,5,2)));
+        return ($l + 0.05)/0.05 >= 1.05/($l + 0.05) ? '#000000' : '#ffffff';
+    }
+    public static function palette(?PDO $pdo=null): array
+    {
+        $brand=self::get($pdo);$defaults=self::defaults();$result=[];
+        foreach(['primary','accent','surface','text','muted'] as $key){
+            $value=(string)($brand[$key.'_color']??'');
+            $result[$key]=preg_match('/^#[0-9a-f]{6}$/iD',$value)?strtolower($value):$defaults[$key.'_color'];
+        }
+        return $result;
+    }
     public static function logoFile(?PDO $pdo=null): string
     {
         $configured = self::mediaFile((string)(self::get($pdo)['logo_path'] ?? ''));

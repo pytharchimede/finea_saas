@@ -18,12 +18,7 @@ trait CompanyPdfTemplate
     /** One validated palette for document chrome and report content. */
     public function companyPdfColors(): array
     {
-        $brand=CompanyBranding::get();$defaults=CompanyBranding::defaults();$palette=[];
-        foreach(['primary','accent','surface','text','muted'] as $key){
-            $value=(string)($brand[$key.'_color'] ?? '');
-            $palette[$key]=preg_match('/^#[0-9a-f]{6}$/iD',$value)?strtolower($value):$defaults[$key.'_color'];
-        }
-        return $palette;
+        return CompanyBranding::palette();
     }
 
     public function companyPdfRgb(string $hex): array
@@ -33,8 +28,7 @@ trait CompanyPdfTemplate
 
     public function companyPdfContrast(string $hex): array
     {
-        [$r,$g,$b]=$this->companyPdfRgb($hex);
-        return (0.299*$r+0.587*$g+0.114*$b)>150?[0,0,0]:[255,255,255];
+        return $this->companyPdfRgb(CompanyBranding::contrastColor($hex));
     }
 
     public function companyPdfUrl(string $path): string
