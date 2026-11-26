@@ -7,6 +7,7 @@ function supplierWorkspaceHeader(string $title, string $description, int $suppli
     if (!$assetsLoaded) {
         $version = (string)filemtime(__DIR__.'/../assets/css/supplier-module.css');
         echo '<link rel="stylesheet" href="../assets/css/supplier-directory.css?v='.$version.'"><link rel="stylesheet" href="../assets/css/supplier-module.css?v='.$version.'">';
+        echo '<script>document.body.classList.add("supplier-module-screen");</script>';
         $assetsLoaded = true;
     }
     $page=basename((string)($_SERVER['SCRIPT_NAME'] ?? ''));
@@ -31,6 +32,8 @@ function supplierWorkspaceHeader(string $title, string $description, int $suppli
     <header class="directory-heading">
         <div><p class="directory-eyebrow">PARTENAIRES & ACHATS</p><h1><?= $h($title) ?></h1><p><?= $h($description) ?></p></div>
         <div class="directory-header-actions">
+            <button type="button" id="supplierThemeToggle" class="directory-secondary">Mode sombre</button>
+            <script>(function(){const root=document.documentElement,b=document.getElementById('supplierThemeToggle');function sync(){const dark=root.classList.contains('finea-dark-mode');document.body.classList.toggle('finea-dark-mode',dark);b.textContent=dark?'☀ Mode clair':'☾ Mode sombre';b.setAttribute('aria-pressed',String(dark));}sync();new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['class']});b.addEventListener('click',()=>{const dark=!root.classList.contains('finea-dark-mode');root.classList.toggle('finea-dark-mode',dark);sync();try{['finea.app.theme','finea.portal.theme'].forEach(k=>localStorage.setItem(k,dark?'dark':'light'));}catch(e){}});window.addEventListener('storage',e=>{if(['finea.app.theme','finea.portal.theme'].includes(e.key))root.classList.toggle('finea-dark-mode',e.newValue==='dark');});})();</script>
             <?php if ($page!=='dashboard_fournisseur.php' && $page!=='mes_fournisseurs_employe.php'): ?><a class="directory-secondary" href="<?= $h($directory) ?>">← Répertoire</a><?php endif; ?>
             <?php if (!str_starts_with($page,'ajouter_')): ?><a class="directory-primary" href="<?= $h($create) ?>"><i class="fas fa-plus"></i> Nouveau fournisseur</a><?php endif; ?>
         </div>
