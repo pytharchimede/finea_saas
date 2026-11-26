@@ -49,6 +49,7 @@ require_once $layoutProjectRoot . '/model/CompanyBranding.php';
 $layoutCompanyBranding = CompanyBranding::get();
 $layoutBrandIconUrl = !empty($layoutCompanyBranding['icon_path']) || !empty($layoutCompanyBranding['logo_path']) ? $layoutRootBase . 'branding_asset.php?type=icon' : '';
 $layoutBrandLogoUrl = !empty($layoutCompanyBranding['logo_path']) ? $layoutRootBase . 'branding_asset.php?type=logo' : '';
+$layoutIsRhModule = preg_match('~(?:^|/)rh/[^/]+\\.php$~i', str_replace('\\\\', '/', (string)($_SERVER['SCRIPT_NAME'] ?? ''))) === 1;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -160,7 +161,10 @@ $layoutBrandLogoUrl = !empty($layoutCompanyBranding['logo_path']) ? $layoutRootB
     <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>assets/css/finea-theme.css?v=20260827" />
     <link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>branding_theme.php?v=<?= rawurlencode((string)($layoutCompanyBranding['updated_at'] ?? '1')) ?>" />
 <script src="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>assets/js/financial-workflow-progress.js?v=<?= filemtime(__DIR__.'/../../assets/js/financial-workflow-progress.js') ?>" defer></script>
+<?php if ($layoutIsRhModule): ?>
+<link rel="stylesheet" href="<?= htmlspecialchars($layoutRootBase, ENT_QUOTES, 'UTF-8') ?>rh/assets/module-theme.css?v=<?= filemtime(__DIR__.'/../../rh/assets/module-theme.css') ?>">
+<?php endif; ?>
 </head>
 
-<body class="min-h-screen" style="background: radial-gradient(1200px 600px at 0% 0%, rgb(var(--brand-accent-rgb, 255 204 32) / .10) 0%, transparent 70%), radial-gradient(1200px 600px at 100% 0%, rgb(var(--brand-primary-rgb, 5 5 5) / .06) 0%, transparent 70%), linear-gradient(180deg, var(--brand-surface, #ffffff) 0%, color-mix(in srgb, var(--brand-surface, #ffffff) 96%, var(--brand-primary, #050505)) 100%);">
+<body class="min-h-screen<?= $layoutIsRhModule ? ' finea-rh-module' : '' ?>" style="background: radial-gradient(1200px 600px at 0% 0%, rgb(var(--brand-accent-rgb, 255 204 32) / .10) 0%, transparent 70%), radial-gradient(1200px 600px at 100% 0%, rgb(var(--brand-primary-rgb, 5 5 5) / .06) 0%, transparent 70%), linear-gradient(180deg, var(--brand-surface, #ffffff) 0%, color-mix(in srgb, var(--brand-surface, #ffffff) 96%, var(--brand-primary, #050505)) 100%);">
 
